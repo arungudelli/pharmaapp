@@ -1,6 +1,6 @@
 export interface Hsn {
     id: number | string;
-    hsnCode: number;
+    hsnCode: string;
     description: string;
     gstRate: number;
 }
