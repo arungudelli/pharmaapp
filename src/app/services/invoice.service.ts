@@ -16,7 +16,7 @@ export class InvoiceService {
     return this.http.get<Invoice[]>(this.baseUrl+"/Invoice/get");
   }
 
-  saveInvoice(invoiceData: Invoice[]) {
+  saveInvoice(invoiceData: Invoice) {
     this.http.post(this.baseUrl+"/Invoice/save", invoiceData).subscribe();
   }
 
