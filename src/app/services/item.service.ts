@@ -19,15 +19,15 @@ export class ItemService {
     this.http.post(this.baseUrl+"/Item/save", item).subscribe();
   }
 
-  getItemById(id) {
+  getItemById(id: number) {
     return this.http.get<Item>(this.baseUrl+"/Item/get/"+id);
   }
 
-  getItemByName(name) {
+  getItemByName(name: string) {
     return this.http.get<Item>(this.baseUrl+"/Item/name/"+name);
   }
 
-  updateItem(id, item: Item) {
+  updateItem(id: number, item: Item) {
     
   }
   

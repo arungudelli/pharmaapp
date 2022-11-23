@@ -6,5 +6,5 @@ export interface Item {
     name: string;
     description: string;
     hsn: Hsn;
-    manufacturer: Manufacturer;
+    manfacturer: Manufacturer;
 }
