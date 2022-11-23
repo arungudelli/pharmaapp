@@ -1,70 +1,68 @@
 <div>
-    <div>
-        <h2>Edit Distributor</h2>
+    <h2>Edit Distributor</h2>
+</div>
+
+<form [formGroup]="editDistributorForm" (ngSubmit)="addDistributor()">
+    <div class="row">  
+        <mat-form-field appearance="outline">
+            <mat-label>Distributor Name</mat-label>
+            <input matInput  formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>GSTIN</mat-label>
+            <input matInput required formControlName="gstin">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input type="number" matInput required formControlName="phoneNumber">
+        </mat-form-field>
+    </div>  
+
+    <div class="row"> 
+        <mat-form-field appearance="outline">
+            <mat-label>GST Address</mat-label>
+            <input type="text" matInput formControlName="address">
+        </mat-form-field>
+    </div>  
+
+    <!--
+    <div class="row">
+        <mat-form-field 
+            <mat-label>PAN</mat-label>
+            <input matInput formControlName="PAN">
+        </mat-form-field>
+
+        <mat-form-field 
+            <mat-label>DLNO</mat-label>
+            <input matInput formControlName="DLNO">
+        </mat-form-field>
+    </div>
+    -->
+
+    <div class="row">
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="city" type="text" formControlName="city">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="state" type="text" formControlName="state">
+        </mat-form-field>
     </div>
 
-    <form [formGroup]="editDistributorForm" (ngSubmit)="addDistributor()">
-        <div class="row">  
-            <mat-form-field appearance="outline">
-                <mat-label>Distributor Name</mat-label>
-                <input matInput  formControlName="name">
-            </mat-form-field>
+    <div class="row">
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="Postal Code" type="text" formControlName="pinCode">
+        </mat-form-field>
 
-            <mat-form-field appearance="outline">
-                <mat-label>GSTIN</mat-label>
-                <input matInput required formControlName="gstin">
-            </mat-form-field>
+        <mat-form-field appearance="outline">
+            <input matInput placeholder="Email" type="email" formControlName="email">
+        </mat-form-field>
+    </div>
 
-            <mat-form-field appearance="outline">
-                <mat-label>Phone Number</mat-label>
-                <input type="number" matInput required formControlName="phoneNumber">
-            </mat-form-field>
-        </div>  
-
-        <div class="row"> 
-            <mat-form-field appearance="outline">
-                <mat-label>GST Address</mat-label>
-                <input type="text" matInput formControlName="address">
-            </mat-form-field>
-        </div>  
-
-        <!--
-        <div class="row">
-            <mat-form-field 
-                <mat-label>PAN</mat-label>
-                <input matInput  formControlName="PAN">
-            </mat-form-field>
-
-            <mat-form-field 
-                <mat-label>DLNO</mat-label>
-                <input matInput  formControlName="DLNO">
-            </mat-form-field>
-        </div>
-        -->
-
-        <div class="row">
-            <mat-form-field appearance="outline">
-                <input matInput placeholder="city" type="text" formControlName="city">
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline">
-                <input matInput placeholder="state" type="text" formControlName="state">
-            </mat-form-field>
-        </div>
-
-        <div class="row">
-            <mat-form-field appearance="outline">
-                <input matInput placeholder="Postal Code" type="text" formControlName="pinCode">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <input matInput placeholder="Email" type="email" formControlName="email">
-            </mat-form-field>
-        </div>
-
-        <div class="row">
-            <button mat-button (click)="resetForm()" type="button">CANCEL</button>
-            <button color="primary" mat-raised-button type="submit" [disabled] ="!editDistributorForm.valid">Save</button>
-        </div> 
-    </form>
-</div>
+    <div class="row">
+        <button mat-button (click)="resetForm()" type="button">CANCEL</button>
+        <button color="primary" mat-raised-button type="submit" [disabled] ="!editDistributorForm.valid">Save</button>
+    </div> 
+</form>
