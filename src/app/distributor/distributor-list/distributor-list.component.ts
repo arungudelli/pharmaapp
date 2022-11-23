@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: './distributor-list.component.html',
   styleUrls: ['./distributor-list.component.css']
 })
+
 export class DistributorListComponent {
 
 }

@@ -2,14 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Hsn } from '../models/hsn';
-import { HsnService } from '../services/hsn.service';
+import { Hsn } from 'src/app/models/hsn';
+import { HsnService } from 'src/app/services/hsn.service';
 
 @Component({
   selector: 'app-hsn-list',
   templateUrl: './hsn-list.component.html',
   styleUrls: ['./hsn-list.component.css']
 })
+
 export class HsnListComponent {
 
   hsn: Hsn[] = [];

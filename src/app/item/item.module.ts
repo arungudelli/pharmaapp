@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ItemRoutingModule } from './item-routing.module';
 import { AppMaterialModule } from '../app-material/app-material.module';
+import { ItemRoutingModule } from './item-routing.module';
 import { ItemListComponent } from './item-list/item-list.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 
@@ -19,4 +19,4 @@ import { EditItemComponent } from './edit-item/edit-item.component';
   ]
 })
 
-export class ItemListModule { }
+export class ItemModule { }
