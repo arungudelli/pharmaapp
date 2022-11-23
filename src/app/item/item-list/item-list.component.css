@@ -1,0 +1,23 @@
+.example-full-width {
+    width: 100%;
+}
+
+.example-container {
+    width: 100%;
+    height: 100vh;
+    margin-left:10px;
+}
+
+.example-drawer {
+    width: 30%;
+    height: 100vh;
+    margin-right:10px;
+}
+
+.table {
+    width: 100%;
+}
+
+.example-content mat-card{
+    margin-left:10px;
+}

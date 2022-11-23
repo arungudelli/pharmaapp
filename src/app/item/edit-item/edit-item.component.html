@@ -1,0 +1,67 @@
+<div class="card overflow-hidden" fxFlex="auto">
+    <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+        <h2 class="title m-0">Edit Item</h2>
+    </div>
+
+    <form [formGroup]="editItemForm" (ngSubmit)="savePopupItem()" class="px-6 py-4" fxLayout="column">
+        <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column">  
+            <input formControlName="id" readonly hidden>
+
+            <mat-form-field fxFlex="auto" appearance="outline">
+                <mat-label>Item Name</mat-label>
+                <input matInput  formControlName="name">
+            </mat-form-field>
+            
+            <mat-form-field fxFlex="auto" appearance="outline">
+                <mat-label>Item Description</mat-label>
+                <input matInput  formControlName="description">
+            </mat-form-field>
+        </div>  
+        
+        <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column"> 
+            <mat-form-field fxFlex="auto" appearance="outline">
+                <mat-label>HSN Code</mat-label>
+                <div formGroupName="hsn">
+                <mat-autocomplete autoActiveFirstOption #autoCode="matAutocomplete" (optionSelected)="onSelectHsnCode($event.option.value)">
+                    <mat-option *ngFor="let option of filteredOptionsHsnCode | async" [value]="option">
+                    {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+                <!-- <input type="text" matInput required [formControl]="searchTermHsnCode" [matAutocomplete]="autoCode" formControlName="hsnCode"/> -->
+                <input type="text" matInput required formControlName="hsnCode" [matAutocomplete]="autoCode"/>
+                </div>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="auto" appearance="outline">
+                <mat-label>GST Rate</mat-label>
+                <div formGroupName="hsn"> 
+                    <mat-select formControlName="gstRate">
+                    <mat-option *ngFor="let gst of GstRate" [value]="gst">
+                        {{gst}}
+                    </mat-option>
+                    </mat-select>
+                </div>
+            </mat-form-field>
+        </div>  
+
+        <div fxLayout="row" fxLayoutGap="5px" fxLayout.xs="column"> 
+            <mat-form-field fxFlex="auto" appearance="outline">
+                <mat-label>Manufacturer Name</mat-label>
+                <div formGroupName="manfacturer">
+                <mat-autocomplete autoActiveFirstOption #autoManufacturer="matAutocomplete" (optionSelected)="onSelectManufacturer($event.option.value)">
+                    <mat-option *ngFor="let option of filteredOptionsManufacturer | async" [value]="option">
+                    {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+                <!-- <input type="text" matInput required [formControl]="searchTermManufacturer" [matAutocomplete]="autoManufacturer" formControlName="name"> -->
+                <input type="text" matInput required formControlName="name" [matAutocomplete]="autoManufacturer">
+                </div>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <button mat-button (click)="resetForm()" type="button">CANCEL</button>
+            <button color="primary" mat-raised-button type="submit" [disabled] ="!editItemForm.valid">Save</button>
+        </div> 
+    </form>
+</div>
