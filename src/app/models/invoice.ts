@@ -1,6 +1,18 @@
+import { Item } from "./item";
 
 
 export interface Invoice {
+    id: number;
+    item: Item;
+    BatchNo: string;
+    ExpDate: Date;
+    MfgDate: Date;
+    Qty: number;
+    unit: string;
+    rate: number;
+    tax: number;
+    amount: number;
+
     Hsnsac: string;
     Str: string;
     Ds:string;
@@ -8,18 +20,10 @@ export interface Invoice {
     ProductDescription : string;
     Pack: string;
     Mfg: string;
-    ExpDate: Date,
-    BatchNo: string,
-    Qty: number,
-
     FreeDiscount: number;
     Mrp: number;
-    Rate: number,
-    Amount: number,
     TotalDiscountP: number,
-
     Taxable: number,
     GstPercentage: number,
     GstAmount: number,
 }
-
