@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AppMaterialModule } from '../app-material/app-material.module';
+import { AppMaterialModule } from 'src/app/app-material/app-material.module';
 import { HsnRoutingModule } from './hsn-routing.module';
 import { HsnListComponent } from './hsn-list/hsn-list.component';
 
