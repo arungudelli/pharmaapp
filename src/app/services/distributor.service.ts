@@ -28,11 +28,11 @@ export class DistributorService {
     // );;
   }
 
-  getDistributorById(id) {
+  getDistributorById(id: number) {
     return this.http.get<Distributor>(`${this.baseUrl}//Distributor/get/${id}`);
   }
 
-  updateDistributor(id, distributor: Distributor) {
+  updateDistributor(id: number, distributor: Distributor) {
 
   }
 
