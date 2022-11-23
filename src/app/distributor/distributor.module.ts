@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { DistributorRoutingModule } from './distributor-routing.module';
 import { DistributorListComponent } from './distributor-list/distributor-list.component';
+import { EditDistributorComponent } from './edit-distributor/edit-distributor.component';
 
 
 @NgModule({
   declarations: [
-    DistributorListComponent
+    DistributorListComponent,
+    EditDistributorComponent
   ],
   imports: [
     CommonModule,
