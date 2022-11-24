@@ -1,3 +1,7 @@
+<h2 mat-dialog-title>Add Invoice</h2>
+
+<mat-dialog-content class="mat-typography">
+
 <table mat-table [dataSource]="invoiceDatasource">
   <!-- Dynamically load columns -->
   <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
@@ -70,7 +74,6 @@
   ></mat-paginator>
 </table>
 
-<button mat-button mat-dialog-close>Cancel</button>
 <button
   class="button-add-row"
   color="primary"
@@ -80,3 +83,10 @@
 >
   Add Row
 </button>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button color="primary" mat-raised-button type="submit" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>   
