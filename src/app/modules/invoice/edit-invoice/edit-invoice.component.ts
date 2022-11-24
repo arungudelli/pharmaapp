@@ -22,6 +22,7 @@ export class EditInvoiceComponent {
 
   COLUMN_SCHEMA = [
     {key: 'id', type: 'number', label: '#'},
+    {key: 'items', type: 'text', label: 'Items'},
     // {key: 'item.name', type: 'text', label: 'Item'},
     // {key: 'item.hsn.hsnCode', type: 'text', label: 'HSN Code'},
     // {key: 'invoiceItems.batchNo', type: 'text', label: 'Batch No.'},
@@ -34,7 +35,8 @@ export class EditInvoiceComponent {
     // {key: 'invoiceItems.tax', type: 'number', label: 'Tax'},
     {key: 'amount', type: 'number', label: 'Amount'},
     {key: 'totalDiscount', type: 'number', label: 'Total Discount'},
-    {key: 'actualAmount', type: 'number', label: 'Actual Amount'}
+    {key: 'actualAmount', type: 'number', label: 'Actual Amount'},
+    {key: 'isEdit', type: 'isEdit', label: ''}
   ];
 
   invoiceColumns: string[] = this.COLUMN_SCHEMA.map(col => col.key);
