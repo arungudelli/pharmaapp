@@ -24,14 +24,14 @@ export class EditInvoiceComponent {
     {key: 'id', type: 'number', label: '#'},
     // {key: 'item.name', type: 'text', label: 'Item'},
     // {key: 'item.hsn.hsnCode', type: 'text', label: 'HSN Code'},
-    // {key: 'batchNo', type: 'text', label: 'Batch No.'},
-    // {key: 'expDate', type: 'date', label: 'Exp. Date'},
-    // {key: 'mfgDate', type: 'date', label: 'Mfg. Date.'},
-    // {key: 'qty', type: 'number', label: 'Qty'},
-    // {key: 'unit', type: 'text', label: 'Unit'},
-    // {key: 'rate', type: 'number', label: 'Price/Unit'},
-    // {key: 'item.hsn.gstRate', type: 'number', label: 'Gst %'},
-    // {key: 'tax', type: 'number', label: 'Tax'},
+    // {key: 'invoiceItems.batchNo', type: 'text', label: 'Batch No.'},
+    // {key: 'invoiceItems.expDate', type: 'date', label: 'Exp. Date'},
+    // {key: 'invoiceItems.mfgDate', type: 'date', label: 'Mfg. Date.'},
+    // {key: 'invoiceItems.qty', type: 'number', label: 'Qty'},
+    // {key: 'invoiceItems.pack', type: 'text', label: 'Pack'},
+    // {key: 'invoiceItems.rate', type: 'number', label: 'Price/Pack'},
+    // {key: 'invoiceItems.item.hsn.gstRate', type: 'number', label: 'GST %'},
+    // {key: 'invoiceItems.tax', type: 'number', label: 'Tax'},
     {key: 'amount', type: 'number', label: 'Amount'},
     {key: 'totalDiscount', type: 'number', label: 'Total Discount'},
     {key: 'actualAmount', type: 'number', label: 'Actual Amount'}
@@ -84,7 +84,7 @@ export class EditInvoiceComponent {
     */
 
     this.getInvoiceList();
-    // this.getItemList();
+    this.getItemList();
   }
 
   ngAfterViewInit(): void {
@@ -113,6 +113,7 @@ export class EditInvoiceComponent {
   addRow() {
 
   }
+
   /*
   editFormValue() {
     this.editInvoiceForm.patchValue({
@@ -150,11 +151,11 @@ export class EditInvoiceComponent {
       this.invoiceService.updateInvoice(this.editInvoiceForm.value.id, this.editInvoiceForm.value as Invoice);
     }
   }
-
+  
   resetForm() {
     this.editInvoiceForm.reset();
     this.dialog.closeAll();
   }
   */
-
+  
 }
