@@ -1,88 +1,146 @@
-<button mat-button class="example-full-width" color="primary" (click)="openInvoiceDialog()">Add Invoice</button>
+<button
+  mat-button
+  class="example-full-width"
+  color="primary"
+  (click)="openInvoiceDialog()"
+>
+  Add Invoice
+</button>
 
 <mat-card>
-    Transactions
-    <hr/>
+  Transactions
+  <hr />
 
-    <table mat-table [dataSource]="invoiceDatasource" class="mat-elevation-z8" matSort>
-    
-        <!-- # Column -->
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
-            <tr mat-cell *matCellDef="let row">{{row.id}}</tr>
-        </ng-container>
-    
-        <!-- Item Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Item</th>
-            <tr mat-cell *matCellDef="let row">{{row.item.name}}</tr>
-        </ng-container>
+  <table
+    mat-table
+    [dataSource]="invoiceDatasource"
+    class="mat-elevation-z8"
+    matSort
+  >
+    <!-- # Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.id }}
+      </td>
+    </ng-container>
 
-        <!-- HSN Code Column -->
+    <!-- Item Column -->
+    <ng-container matColumnDef="items">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Items</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.items }}
+      </td>
+    </ng-container>
+
+    <!-- HSN Code Column -->
+    <!--
         <ng-container matColumnDef="hsnCode">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>HSN Code</th>
-            <tr mat-cell *matCellDef="let row">{{row.item.hsn.hsnCode}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.item.hsn.hsnCode}}</td>
         </ng-container>
-        
-        <!-- Batch No. Column -->
+        -->
+
+    <!-- Batch No. Column -->
+    <!--
         <ng-container matColumnDef="BatchNo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Batch No.</th>
-            <tr mat-cell *matCellDef="let row">{{row.BatchNo}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.BatchNo}}</td>
         </ng-container>
-    
-        <!-- Exp. Date Column -->
+    -->
+
+    <!-- Exp. Date Column -->
+    <!--
         <ng-container matColumnDef="ExpDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Exp. Date</th>
-            <tr mat-cell *matCellDef="let row">{{row.ExpDate}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.ExpDate}}</td>
         </ng-container>
-    
-        <!-- Mfg. Date Column -->
+    -->
+
+    <!-- Mfg. Date Column -->
+    <!--
         <ng-container matColumnDef="MfgDate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Mfg. Date</th>
-            <tr mat-cell *matCellDef="let row">{{row.MfgDate}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.MfgDate}}</td>
         </ng-container>
+    -->
 
-        <!-- Qty Column -->
+    <!-- Qty Column -->
+    <!--
         <ng-container matColumnDef="Qty">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Qty</th>
-            <tr mat-cell *matCellDef="let row">{{row.Qty}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.Qty}}</td>
         </ng-container>
-    
-        <!-- Unit Column -->
+    -->
+
+    <!-- Unit Column -->
+    <!--
         <ng-container matColumnDef="unit">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
-            <tr mat-cell *matCellDef="let row">{{row.unit}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.unit}}</td>
         </ng-container>
-    
-        <!-- Price/Unit Column -->
+    -->
+
+    <!-- Price/Unit Column -->
+    <!--
         <ng-container matColumnDef="rate">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Price/Unit</th>
-            <tr mat-cell *matCellDef="let row">{{row.rate}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.rate}}</td>
         </ng-container>
-    
-        <!-- Tax Column -->
+    -->
+
+    <!-- Tax Column -->
+    <!--
         <ng-container matColumnDef="tax">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
-            <tr mat-cell *matCellDef="let row">{{row.tax}}</tr>
+            <td mat-cell *matCellDef="let row">{{row.tax}}</td>
         </ng-container>
-    
-        <!-- Amount Column -->
-        <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-            <tr mat-cell *matCellDef="let row">{{row.amount}}</tr>
-        </ng-container>
+    -->
 
-        <!-- Edit Column -->
-        <ng-container>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Operations</th>
-            <tr mat-cell *matCellDef="let row">
-                <button mat-raised-button color="primary" (click)="editSelectedInvoice(invoice)">Edit Invoice</button>
-            </tr>
-        </ng-container>
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.amount }}
+      </td>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: invoiceColumns;"></tr>
+    <!-- Total Discount Column -->
+    <ng-container matColumnDef="totalDiscount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Discount</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.totalDiscount }}
+      </td>
+    </ng-container>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="select page of invoice"></mat-paginator>
-    </table>
+    <!-- Actual Amount Column -->
+    <ng-container matColumnDef="actualAmount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Actual Amount</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.actualAmount }}
+      </td>
+    </ng-container>
+
+    <!-- Edit Column -->
+    <ng-container>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Operations</th>
+      <td mat-cell *matCellDef="let row">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="editSelectedInvoice(invoice)"
+        >
+          Edit Invoice
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="select page of invoice"
+    ></mat-paginator>
+  </table>
 </mat-card>

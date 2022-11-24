@@ -18,9 +18,9 @@ export class InvoiceListComponent {
 
   selectedInvoice: Invoice = {} as Invoice;
 
-  invoiceColumns: string[] = ['id', 'name', 'hsnCode', 'BatchNo', 'ExpDate', 'MfgDate', 'Qty', 'unit', 'rate', 'tax', 'amount'];
+  invoiceColumns: string[] = ['id', 'items', 'amount', 'totalDiscount', 'actualAmount'];
 
-  invoiceDatasource = new MatTableDataSource<Invoice[]>();
+  invoiceDatasource = new MatTableDataSource<Invoice>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,7 +28,7 @@ export class InvoiceListComponent {
   constructor(public dialog: MatDialog, public invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    // this.getAllInvoices();
+    this.getAllInvoices();
   }
 
   ngAfterViewInit(): void {
@@ -44,7 +44,7 @@ export class InvoiceListComponent {
     this.invoiceService.getInvoices().subscribe(
       res => {
         this.invoice = res;
-        // this.invoiceDatasource.data = res;
+        this.invoiceDatasource.data = res;
       }
     )
   }
