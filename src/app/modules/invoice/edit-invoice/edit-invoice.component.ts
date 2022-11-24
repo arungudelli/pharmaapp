@@ -4,10 +4,13 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { map, Observable, startWith } from 'rxjs';
+import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
-import { Item } from 'src/app/models/item';
+import { Manufacturer } from 'src/app/models/manufacturer';
+import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
-import { ItemService } from 'src/app/services/item.service';
+import { ManufacturerService } from 'src/app/services/manufacturer.service';
 
 @Component({
   selector: 'app-edit-invoice',
@@ -16,13 +19,24 @@ import { ItemService } from 'src/app/services/item.service';
 })
 
 export class EditInvoiceComponent {
-  items: Item[] = [];
+  distributors: Distributor[] = [];
 
   invoice: Invoice[] = [];
 
   selectedInvoice: Invoice = {} as Invoice;
 
-  invoiceColumns: string[] = ['id', 'amount', 'totalDiscount', 'actualAmount'];
+  filteredDistributorOptions?: Observable<string[]>;
+
+  columnSchema = [
+    {key: 'id', type: 'number', label: '#'},
+    {key: 'amount', type: 'number', label: 'Amount'},
+    {key: 'totalDiscount', type: 'number', label: 'Total Discount'},
+    {key: 'actualAmount', type: 'number', label: 'Actual Amount'},
+  ];
+
+  invoiceColumns: string[] = this.columnSchema.map(col => col.key);
+
+  // invoiceColumns: string[] = ['id', 'amount', 'totalDiscount', 'actualAmount'];
   // ['id',['id',['id','name','description',['id','hsnCode','description','gstRate'],['id','name']],['id','name','email','phoneNumber','gstin','pan','dlno','address','city','state','pinCode'],'pack','batchNo','mfgDate','expDate','qty','freeItems','discount','mrp','rate'],'amount','totalDiscount','actualAmount'];
   
   // invoiceDatasource = new MatTableDataSource<Invoice>();
@@ -48,6 +62,8 @@ export class EditInvoiceComponent {
           manfacturer: new FormGroup({
             id: new FormControl(val.invoiceItems.item.manfacturer.id),
             name: new FormControl(val.invoiceItems.item.manfacturer.name),
+            // id: new FormControl(),
+            // name: new FormControl(),
           }),
         }),
         distributor: new FormGroup({
@@ -85,14 +101,15 @@ export class EditInvoiceComponent {
   
   invoiceDatasource = new MatTableDataSource((this.editInvoiceForm.get('invoiceRows') as FormArray).controls);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public itemService: ItemService, public dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     // this.editInvoiceForm.controls.invoiceRows.controls.id.setValue(0);
+    // this.editInvoiceForm.controls.invoiceRows.get('manfacturer')?.setValue({id:0,name:''});
     // this.editInvoiceForm.controls.item.setValue({id: 0, name: '', description: '',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name: ''}});
 
     this.getInvoiceList();
-    this.getItemList();
+    this.getDistributorsList();
   }
 
   ngAfterViewInit(): void {
@@ -110,12 +127,34 @@ export class EditInvoiceComponent {
     )
   }
 
-  getItemList() {
-    this.itemService.getItems().subscribe(
+  getDistributorsList() {
+    this.distributorService.getDistributors().subscribe(
       res => {
-        this.items = res;
+        console.log('get distributors: ', res);
+        this.distributors = res;
+        this.filterSearchDistributors(res);
       }
     )
+  }
+
+  filterSearchDistributors(res: Manufacturer[]) {
+    this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+      },)
+    )
+  }
+
+  onSelectMfr(option: string) {
+    const name = this.distributors.filter(item => item.name === option)[0].name;
+    const phoneNumber = this.distributors.filter(item => item.name === option)[0].phoneNumber;
+
+    console.log(this.editInvoiceForm.controls.invoiceRows.get('distributor'));
+    
+    // this.editInvoiceForm.controls.invoiceRows.get('distributor').setValue({name,phoneNumber});
   }
 
   addRow() {
