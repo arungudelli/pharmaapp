@@ -9,8 +9,13 @@
         placeholder="Select Distributor"
         matInput
         formControlName="name"
+        [matAutocomplete]="autoDistributor"
       />
-      <mat-autocomplete autoActiveFirstOption #autoMfr="matAutocomplete">
+      <mat-autocomplete
+        autoActiveFirstOption
+        #autoDistributor="matAutocomplete"
+        (optionSelected)="onSelectDistributor($event.option.value)"
+      >
         <mat-option
           *ngFor="let option of filteredDistributorOptions | async"
           [value]="option"

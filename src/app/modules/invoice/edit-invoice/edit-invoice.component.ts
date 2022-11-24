@@ -148,7 +148,7 @@ export class EditInvoiceComponent {
     )
   }
 
-  onSelectMfr(option: string) {
+  onSelectDistributor(option: string) {
     const name = this.distributors.filter(item => item.name === option)[0].name;
     const phoneNumber = this.distributors.filter(item => item.name === option)[0].phoneNumber;
 
