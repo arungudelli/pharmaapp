@@ -1,9 +1,9 @@
-import { Items } from "./items";
+import { InvoiceItems } from "./invoiceItems";
 
 
 export interface Invoice {
     id: number;
-    items: Items;
+    invoiceItems: InvoiceItems;
     amount: number;
     totalDiscount: number;
     actualAmount: number;
