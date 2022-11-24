@@ -1,92 +1,86 @@
 <h2 mat-dialog-title>Add Invoice</h2>
 
 <mat-dialog-content class="mat-typography">
+  <form [formGroup]="editInvoiceForm" autocomplete="off">
+    <ng-container formArrayName="invoiceRows">
+      <table
+        #table
+        mat-table
+        [dataSource]="invoiceDatasource"
+        class="mat-elevation-z8"
+      >
+        <!-- # column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          ></td>
+        </ng-container>
+        >
+        <!-- Amount column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          ></td>
+        </ng-container>
+        >
+        <!-- Total Discount column -->
+        <ng-container matColumnDef="totalDiscount">
+          <th mat-header-cell *matHeaderCellDef>Total Discount</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          ></td>
+        </ng-container>
+        >
+        <!-- Actual Amount column -->
+        <ng-container matColumnDef="actualAmount">
+          <th mat-header-cell *matHeaderCellDef>Actual Amount</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          ></td>
+        </ng-container>
 
-<table mat-table [dataSource]="invoiceDatasource">
-  <!-- Dynamically load columns -->
-  <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
-    <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
-    <td mat-cell *matCellDef="let element">
-      <!-- If the edit element button is selected to not edit -->
-      <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
-        <div *ngSwitchCase="'isEdit'">
-          <!-- Toggle button edit element -->
-          <button
-            mat-raised-button
-            color="primary"
-            class="btn-edit"
-            (click)="element.isEdit = !element.isEdit"
-          >
-            Edit
-          </button>
-        </div>
-        <!-- {{ element[col.key] }} -->
-        <span *ngSwitchDefault>{{ element[col.key] }}</span>
-      </div>
+        <!-- row headers & row definitions -->
+        <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
 
-      <!-- If the edit element button is selected to edit -->
-      <div [ngSwitch]="col.type" *ngIf="element.isEdit">
-        <div *ngSwitchCase="'isEdit'">
-          <!-- Toggle button edit element -->
-          <button
-            mat-raised-button
-            color="primary"
-            class="btn-edit"
-            (click)="element.isEdit = !element.isEdit"
-          >
-            <!-- (click)="element.isEdit = !element.isEdit" -->
-            Done
-          </button>
-        </div>
+        <!-- pagination -->
+        <mat-paginator
+          [pageSizeOptions]="[5, 25, 50, 75]"
+          aria-label="select page of invoice"
+        ></mat-paginator>
+      </table>
+    </ng-container>
+  </form>
 
-        <!-- If the input field type is date; use date-picker -->
-        <mat-form-field *ngSwitchCase="'date'" appearance="fill">
-          <mat-label>Choose a Date</mat-label>
-          <input
-            matInput
-            [matDatepicker]="picker"
-            [(ngModel)]="element[col.key]"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-
-        <!-- For the remaining input field types -->
-        <mat-form-field *ngSwitchDefault>
-          <input [type]="col.type" matInput [(ngModel)]="element[col.key]" />
-          <!-- <input [type]="col.type" matInput formControlName="element[col.key]"/> -->
-        </mat-form-field>
-      </div>
-    </td>
-  </ng-container>
-
-  <!-- row headers & row definitions -->
-  <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
-
-  <!-- pagination -->
-  <mat-paginator
-    [pageSizeOptions]="[5, 25, 50, 75]"
-    aria-label="select page of invoice"
-  ></mat-paginator>
-</table>
-
-<button
-  class="button-add-row"
-  color="primary"
-  mat-raised-button
-  type="submit"
-  (click)="addRow()"
->
-  Add Row
-</button>
-
+  <button
+    class="button-add-row"
+    color="primary"
+    mat-raised-button
+    type="submit"
+    (click)="addRow()"
+  >
+    Add Row
+  </button>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button color="primary" mat-raised-button type="submit" [mat-dialog-close]="true">Save</button>
-</mat-dialog-actions>   
+  <button
+    color="primary"
+    mat-raised-button
+    type="submit"
+    [mat-dialog-close]="true"
+  >
+    Save
+  </button>
+</mat-dialog-actions>
