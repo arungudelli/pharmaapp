@@ -18,30 +18,35 @@ import { ItemService } from 'src/app/services/item.service';
 export class EditInvoiceComponent {
   items: Item[] = [];
 
+  invoice: Invoice[] = [];
+
   COLUMN_SCHEMA = [
     {key: 'id', type: 'number', label: '#'},
-    {key: 'item.name', type: 'text', label: 'Item'},
-    {key: 'item.hsn.hsnCode', type: 'text', label: 'HSN Code'},
-    {key: 'BatchNo', type: 'text', label: 'Batch No.'},
-    {key: 'ExpDate', type: 'date', label: 'Exp. Date'},
-    {key: 'MfgDate', type: 'date', label: 'Mfg. Date.'},
-    {key: 'Qty', type: 'number', label: 'Qty'},
-    {key: 'unit', type: 'text', label: 'Unit'},
-    {key: 'rate', type: 'number', label: 'Price/Unit'},
-    {key: 'item.hsn.gstRate', type: 'number', label: 'Gst %'},
-    {key: 'tax', type: 'number', label: 'Tax'},
-    {key: 'amount', type: 'number', label: 'Amount'}
+    // {key: 'item.name', type: 'text', label: 'Item'},
+    // {key: 'item.hsn.hsnCode', type: 'text', label: 'HSN Code'},
+    // {key: 'batchNo', type: 'text', label: 'Batch No.'},
+    // {key: 'expDate', type: 'date', label: 'Exp. Date'},
+    // {key: 'mfgDate', type: 'date', label: 'Mfg. Date.'},
+    // {key: 'qty', type: 'number', label: 'Qty'},
+    // {key: 'unit', type: 'text', label: 'Unit'},
+    // {key: 'rate', type: 'number', label: 'Price/Unit'},
+    // {key: 'item.hsn.gstRate', type: 'number', label: 'Gst %'},
+    // {key: 'tax', type: 'number', label: 'Tax'},
+    {key: 'amount', type: 'number', label: 'Amount'},
+    {key: 'totalDiscount', type: 'number', label: 'Total Discount'},
+    {key: 'actualAmount', type: 'number', label: 'Actual Amount'}
   ];
 
   invoiceColumns: string[] = this.COLUMN_SCHEMA.map(col => col.key);
 
-  invoiceDatasource = new MatTableDataSource<Invoice[]>();
+  invoiceDatasource = new MatTableDataSource<Invoice>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   columnSchema: any = this.COLUMN_SCHEMA;
 
+  /*
   editInvoiceForm = new FormGroup({
     id: new FormControl(),
     item: new FormGroup({  
@@ -68,19 +73,33 @@ export class EditInvoiceComponent {
     tax: new FormControl(0),
     amount: new FormControl(0)
   });
+  */
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public itemService: ItemService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    /*
     this.editInvoiceForm.controls.id.setValue(0);
     this.editInvoiceForm.controls.item.setValue({id: 0, name: '', description: '',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name: ''}});
+    */
 
-    this.getItemList();
+    this.getInvoiceList();
+    // this.getItemList();
   }
 
   ngAfterViewInit(): void {
     this.invoiceDatasource.paginator = this.paginator;
     this.invoiceDatasource.sort = this.sort;
+  }
+  
+  getInvoiceList() {
+    this.invoiceService.getInvoices().subscribe(
+      res => {
+        console.log('get invoices: ', res);
+        this.invoice = res;
+        this.invoiceDatasource.data = res;
+      } 
+    )
   }
 
   getItemList() {
@@ -94,7 +113,7 @@ export class EditInvoiceComponent {
   addRow() {
 
   }
-
+  /*
   editFormValue() {
     this.editInvoiceForm.patchValue({
       id: this.data.invoice.id,
@@ -136,5 +155,6 @@ export class EditInvoiceComponent {
     this.editInvoiceForm.reset();
     this.dialog.closeAll();
   }
+  */
 
 }
