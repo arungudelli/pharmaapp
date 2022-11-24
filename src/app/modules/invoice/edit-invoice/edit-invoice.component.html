@@ -30,28 +30,31 @@
             class="btn-edit"
             (click)="element.isEdit = !element.isEdit"
           >
+            <!-- (click)="element.isEdit = !element.isEdit" -->
             Done
           </button>
         </div>
 
         <!-- If the input field type is date; use date-picker -->
-        <!--
         <mat-form-field *ngSwitchCase="'date'" appearance="fill">
           <mat-label>Choose a Date</mat-label>
-          <input matInput [matDatepicker]="picker" [(ngModel)]="element[col.key]" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="element[col.key]"
+          />
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        -->
 
         <!-- For the remaining input field types -->
-        <!-- <mat-form-field *ngSwitchDefault> -->
-        <!-- <input [type]="col.type" matInput [(ngModel)]="element[col.key]" /> -->
-        <!-- <input [type]="col.type" matInput formControlName="element[col.key]"/> -->
-        <!-- </mat-form-field> -->
+        <mat-form-field *ngSwitchDefault>
+          <input [type]="col.type" matInput [(ngModel)]="element[col.key]" />
+          <!-- <input [type]="col.type" matInput formControlName="element[col.key]"/> -->
+        </mat-form-field>
       </div>
     </td>
   </ng-container>
@@ -66,8 +69,7 @@
     aria-label="select page of invoice"
   ></mat-paginator>
 </table>
-<!-- <div *ngFor="let x of invoiceDatasource.data">{{ x.id }}</div> -->
-<!-- <button mat-button (click)="closeDialog()">Cancel</button> -->
+
 <button mat-button mat-dialog-close>Cancel</button>
 <button
   class="button-add-row"
@@ -76,5 +78,5 @@
   type="submit"
   (click)="addRow()"
 >
-  Add
+  Add Row
 </button>

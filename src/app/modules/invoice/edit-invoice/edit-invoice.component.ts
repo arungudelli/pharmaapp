@@ -20,6 +20,8 @@ export class EditInvoiceComponent {
 
   invoice: Invoice[] = [];
 
+  selectedInvoice: Invoice = {} as Invoice;
+
   COLUMN_SCHEMA = [
     {key: 'id', type: 'number', label: '#'},
     {key: 'items', type: 'text', label: 'Items'},
@@ -113,7 +115,8 @@ export class EditInvoiceComponent {
   }
 
   addRow() {
-
+    const newRow = this.selectedInvoice;
+    this.invoiceDatasource.data = [...this.invoiceDatasource.data, newRow];
   }
 
   /*
