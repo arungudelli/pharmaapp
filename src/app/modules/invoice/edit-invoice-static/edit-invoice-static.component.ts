@@ -40,7 +40,7 @@ const ELEMENT_DATA : StaticInvoiceItems[] = [
 })
 
 export class EditInvoiceStaticComponent {
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
@@ -94,19 +94,32 @@ export class EditInvoiceStaticComponent {
     this.staticInvoiceDatasource.sort = this.sort;
   }
 
+  applyFilter(event:Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.staticInvoiceDatasource.filter = filterValue.trim().toLowerCase();
+
+    if(this.staticInvoiceDatasource.paginator) {
+      this.staticInvoiceDatasource.paginator.firstPage();
+    }
+  }
+
   saveForm(editInvoiceForm: FormGroup, i: number) {
+    /* save edits made */
     ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
   }
   
   cancelForm(editInvoiceForm: FormGroup, i: number) {
+    /* discard edits made */
     ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
   }
   
   editForm(editInvoiceForm: FormGroup, i: number) {
+    /* set the form to be editable */
     ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(false);
   }
 
   initiateInvoiceForm(): FormGroup {
+    /* initialize a blank row */
     return new FormGroup({
       id: new FormControl(), 
       name: new FormControl(), 
@@ -125,9 +138,9 @@ export class EditInvoiceStaticComponent {
   }
 
   addNewRow() {
-    // this.staticInvoiceDatasource = new MatTableDataSource(((this.editInvoiceForm.get('invoiceRows') as FormArray).insert(0, this.initiateInvoiceForm())).controls);
     const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
-    control.insert(0, this.initiateInvoiceForm());
+    /* Add new blank row below the last filled row */
+    control.insert(ELEMENT_DATA.length, this.initiateInvoiceForm());
     this.staticInvoiceDatasource = new MatTableDataSource(control.controls);
   }
 

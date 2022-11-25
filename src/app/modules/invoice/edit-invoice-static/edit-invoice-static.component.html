@@ -1,6 +1,16 @@
 <h2 mat-dialog-title>Add Invoice</h2>
 
 <mat-dialog-content class="mat-typography">
+  <!-- filter -->
+  <mat-form-field appearance="outline">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Enter field names to search"
+      #input
+    />
+  </mat-form-field>
   <form [formGroup]="editInvoiceForm" autocomplete="off">
     <ng-container formArrayName="invoiceRows">
       <table
@@ -8,8 +18,9 @@
         mat-table
         [dataSource]="staticInvoiceDatasource"
         class="mat-elevation-z8"
+        matSort
       >
-        <!-- column headers & cell definitions -->
+        <!-- column headers & cell definitions (iterates over columnSchema array) -->
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
           <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
           <td
@@ -36,6 +47,7 @@
           </td>
         </ng-container>
 
+        <!-- Edit, Save, Discard, Delete button options -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td
@@ -92,14 +104,24 @@
         <tr mat-header-row *matHeaderRowDef="staticinvoiceColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: staticinvoiceColumns"></tr>
 
-        <!-- pagination -->
-        <mat-paginator
-          [pageSizeOptions]="[5, 25, 50, 75]"
-          aria-label="select page of ELEMENT_DATA"
-        ></mat-paginator>
+        <!-- row shown when there is no matching data -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            No data matching the filter "{{ input.value }}"
+          </td>
+        </tr>
       </table>
     </ng-container>
   </form>
+  <br />
+  <!-- pagination -->
+  <mat-paginator
+    [pageSizeOptions]="[5, 25, 50, 75]"
+    aria-label="select page of ELEMENT_DATA"
+  ></mat-paginator>
+
+  <!-- Add New Blank Row -->
+  <button mat-raised-button color="primary" (click)="addNewRow()">Add</button>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
