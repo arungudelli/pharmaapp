@@ -4,11 +4,12 @@
   <!-- filter -->
   <mat-form-field appearance="outline">
     <mat-label>Filter</mat-label>
+
     <input
       matInput
-      (keyup)="applyFilter($event)"
       placeholder="Enter field names to search"
       #input
+      (keyup)="applyFilter($event)"
     />
   </mat-form-field>
   <form [formGroup]="editInvoiceForm" autocomplete="off">
@@ -19,10 +20,18 @@
         [dataSource]="staticInvoiceDatasource"
         class="mat-elevation-z8"
         matSort
+        (matSortChange)="announceSortChange($event)"
       >
         <!-- column headers & cell definitions (iterates over columnSchema array) -->
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
-          <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            [sortActionDescription]="col.sortDescription"
+          >
+            {{ col.label }}
+          </th>
           <td
             mat-cell
             *matCellDef="let element; let i = index"
