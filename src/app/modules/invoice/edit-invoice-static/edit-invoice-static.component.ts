@@ -57,10 +57,9 @@ export class EditInvoiceStaticComponent {
     { key: 'amount', type: 'number', label: 'Amount' }, 
     { key: 'gst', type: 'number', label: 'GST %' }, 
     { key: 'hsnCode', type: 'text', label: 'HSN Code' },
-    // { key: 'action', type: 'text', label: 'Action' }
   ];
 
-  staticinvoiceColumns: string[] = this.columnSchema.map(col => col.key);
+  staticinvoiceColumns: string[] = this.columnSchema.map(col => col.key).concat('action');
 
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(ELEMENT_DATA.map(val => new FormGroup({
@@ -91,19 +90,19 @@ export class EditInvoiceStaticComponent {
   }
 
   saveForm(savedRow: any) {
-    console.log('form: ', savedRow);
+    console.log('save form: ', savedRow);
   }
 
   cancelForm(cancelledRow: any) {
-    console.log('form: ', cancelledRow);
+    console.log('cancel form: ', cancelledRow);
   }
 
   editForm(editedRow: any) {
-    console.log('form: ', editedRow);
+    console.log('edit form: ', editedRow);
   }
 
   deleteForm(deletedRow: any) {
-    console.log('form: ', deletedRow);
+    console.log('delete form: ', deletedRow);
   }
 
 }
