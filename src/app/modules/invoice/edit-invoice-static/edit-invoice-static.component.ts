@@ -89,20 +89,46 @@ export class EditInvoiceStaticComponent {
   ngOninit(): void {
   }
 
-  saveForm(savedRow: any) {
-    console.log('save form: ', savedRow);
+  ngAfterViewInit(): void {
+    this.staticInvoiceDatasource.paginator = this.paginator;
+    this.staticInvoiceDatasource.sort = this.sort;
   }
 
-  cancelForm(cancelledRow: any) {
-    console.log('cancel form: ', cancelledRow);
+  saveForm(editInvoiceForm: FormGroup, i: number) {
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
+  }
+  
+  cancelForm(editInvoiceForm: FormGroup, i: number) {
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
+  }
+  
+  editForm(editInvoiceForm: FormGroup, i: number) {
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(false);
   }
 
-  editForm(editedRow: any) {
-    console.log('edit form: ', editedRow);
+  initiateInvoiceForm(): FormGroup {
+    return new FormGroup({
+      id: new FormControl(), 
+      name: new FormControl(), 
+      pack: new FormControl(), 
+      batchNo: new FormControl(), 
+      expDate: new FormControl(), 
+      qty: new FormControl(), 
+      freeItems: new FormControl(), 
+      mrp: new FormControl(), 
+      rate: new FormControl(), 
+      amount: new FormControl(), 
+      gst: new FormControl(), 
+      hsnCode: new FormControl(),
+      action: new FormControl('newRecord')
+    })
   }
 
-  deleteForm(deletedRow: any) {
-    console.log('delete form: ', deletedRow);
+  addNewRow() {
+    // this.staticInvoiceDatasource = new MatTableDataSource(((this.editInvoiceForm.get('invoiceRows') as FormArray).insert(0, this.initiateInvoiceForm())).controls);
+    const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
+    control.insert(0, this.initiateInvoiceForm());
+    this.staticInvoiceDatasource = new MatTableDataSource(control.controls);
   }
 
 }

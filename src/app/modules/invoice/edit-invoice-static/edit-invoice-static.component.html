@@ -49,7 +49,7 @@
               matTooltip="Save Changes"
               *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
               color="primary"
-              (click)="saveForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+              (click)="saveForm(editInvoiceForm, i)"
             >
               <mat-icon>check_circle</mat-icon>
             </button>
@@ -60,7 +60,7 @@
               matTooltip="Cancel Changes"
               *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
               color="warn"
-              (click)="cancelForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+              (click)="cancelForm(editInvoiceForm, i)"
             >
               <mat-icon>cancel</mat-icon>
             </button>
@@ -71,7 +71,7 @@
               matTooltip="Edit"
               *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
               color="primary"
-              (click)="editForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+              (click)="editForm(editInvoiceForm, i)"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -82,11 +82,7 @@
               matTooltip="Delete"
               *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
               color="warn"
-              (click)="deleteForm(editInvoiceForm.get('invoiceRows')!.value[i])"
             >
-              <!-- col.key === 'action' && -->
-              <!-- (click)="editForm(editInvoiceForm, i)" -->
-              <!-- (click)="editForm(editInvoiceForm.get('invoiceRows')!.value[i])" -->
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -95,6 +91,12 @@
         <!-- row headers & definitions -->
         <tr mat-header-row *matHeaderRowDef="staticinvoiceColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: staticinvoiceColumns"></tr>
+
+        <!-- pagination -->
+        <mat-paginator
+          [pageSizeOptions]="[5, 25, 50, 75]"
+          aria-label="select page of ELEMENT_DATA"
+        ></mat-paginator>
       </table>
     </ng-container>
   </form>
