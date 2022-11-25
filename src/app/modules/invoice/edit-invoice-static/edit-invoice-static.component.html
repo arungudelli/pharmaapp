@@ -1,0 +1,113 @@
+<h2 mat-dialog-title>Add Invoice</h2>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="editInvoiceForm" autocomplete="off">
+    <ng-container formArrayName="invoiceRows">
+      <table
+        #table
+        mat-table
+        [dataSource]="staticInvoiceDatasource"
+        class="mat-elevation-z8"
+      >
+        <!-- column headers & cell definitions -->
+        <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
+          <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          >
+            <mat-form-field
+              [appearance]="
+                editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                  ? 'fill'
+                  : 'outline'
+              "
+            >
+              <input
+                matInput
+                [type]="col.type"
+                formControlName="{{ col.key }}"
+                [readonly]="
+                  editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                "
+              />
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            [formGroup]="element"
+          >
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
+              matTooltip="Save Changes"
+              *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+              color="primary"
+              (click)="saveForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+            >
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu cancel-button"
+              matTooltip="Cancel Changes"
+              *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+              color="warn"
+              (click)="cancelForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
+              matTooltip="Edit"
+              *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+              color="primary"
+              (click)="editForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu delete-button"
+              matTooltip="Delete"
+              *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+              color="warn"
+              (click)="deleteForm(editInvoiceForm.get('invoiceRows')!.value[i])"
+            >
+              <!-- col.key === 'action' && -->
+              <!-- (click)="editForm(editInvoiceForm, i)" -->
+              <!-- (click)="editForm(editInvoiceForm.get('invoiceRows')!.value[i])" -->
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- row headers & definitions -->
+        <tr mat-header-row *matHeaderRowDef="staticinvoiceColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: staticinvoiceColumns"></tr>
+      </table>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    color="primary"
+    mat-raised-button
+    type="submit"
+    [mat-dialog-close]="true"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

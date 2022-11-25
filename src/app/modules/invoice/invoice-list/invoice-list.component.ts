@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { EditInvoiceStaticComponent } from '../edit-invoice-static/edit-invoice-static.component';
 import { EditInvoiceComponent } from '../edit-invoice/edit-invoice.component';
 
 @Component({
@@ -37,7 +38,8 @@ export class InvoiceListComponent {
   }
   
   openInvoiceDialog() {
-    this.dialog.open(EditInvoiceComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
+    // this.dialog.open(EditInvoiceComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
+    this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
   }
 
   getAllInvoices() {
@@ -50,6 +52,7 @@ export class InvoiceListComponent {
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
-    this.dialog.open(EditInvoiceComponent, {data: {invoice}});
+    // this.dialog.open(EditInvoiceComponent, {data: {invoice}});
+    this.dialog.open(EditInvoiceStaticComponent, {data: {invoice}});
   }
 }

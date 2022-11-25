@@ -64,7 +64,7 @@
         [dataSource]="invoiceDatasource"
         class="mat-elevation-z8"
       >
-        <!-- columns -->
+        <!-- columns headers & cell definitions -->
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
           <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
           <td
@@ -74,7 +74,7 @@
           ></td>
         </ng-container>
 
-        <!-- row headers & row definitions -->
+        <!-- row headers & definitions -->
         <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
 
