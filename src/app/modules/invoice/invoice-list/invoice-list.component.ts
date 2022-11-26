@@ -40,7 +40,9 @@ export class InvoiceListComponent {
   openInvoiceDialog() {
     // this.dialog.open(EditInvoiceComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
     // this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
-    this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '100%', height: '100%', panelClass: 'full-screen-modal'});
+    this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '98%', height: '98%', panelClass: 'fixActionRow'
+    ,autoFocus: false
+  });
   }
 
   getAllInvoices() {
