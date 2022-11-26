@@ -238,35 +238,39 @@
   </button>
 
   <form [formGroup]="editInvoiceAccountsForm" autocomplete="on">
-    <mat-form-field appearance="outline">
-      <mat-label>Amount</mat-label>
-      <input
-        type="text"
-        placeholder="amount"
-        matInput
-        formControlName="amount"
-      />
-    </mat-form-field>
+    <div class="leftColumns">
+      <mat-form-field appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input
+          type="text"
+          placeholder="amount"
+          matInput
+          formControlName="amount"
+        />
+      </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Total Discount</mat-label>
-      <input
-        type="text"
-        placeholder="Total Discount"
-        matInput
-        formControlName="totalDiscount"
-      />
-    </mat-form-field>
+    <div class="rightColumns">
+      <mat-form-field appearance="outline">
+        <mat-label>Total Discount</mat-label>
+        <input
+          type="text"
+          placeholder="Total Discount"
+          matInput
+          formControlName="totalDiscount"
+        />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Actual Amount</mat-label>
-      <input
-        type="text"
-        placeholder="Actual Amount"
-        matInput
-        formControlName="actualAmount"
-      />
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Actual Amount</mat-label>
+        <input
+          type="text"
+          placeholder="Actual Amount"
+          matInput
+          formControlName="actualAmount"
+        />
+      </mat-form-field>
+    </div>
   </form>
 </mat-dialog-content>
 
