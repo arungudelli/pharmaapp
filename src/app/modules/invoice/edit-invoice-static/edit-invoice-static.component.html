@@ -3,75 +3,80 @@
 <mat-dialog-content class="mat-typography">
   <!-- filter -->
   <!--
-  <mat-form-field appearance="outline">
-    <mat-label>Filter</mat-label>
-    <input matInput placeholder="Enter field names to search" #input (keyup)="applyFilter($event)" />
-  </mat-form-field>
+    commented code
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="Enter field names to search" #input (keyup)="applyFilter($event)" />
+    </mat-form-field>
   -->
 
   <form [formGroup]="editInvoiceForm" autocomplete="off">
     <ng-container>
       <!-- 
-      <mat-form-field appearance="outline">
-        <mat-label>Distributor Name</mat-label>
-        <input
-          type="text"
-          placeholder="Select Distributor"
-          matInput
-          formControlName="name"
-          [matAutocomplete]="autoDistributor"
-        />
-        <mat-autocomplete
-          autoActiveFirstOption
-          #autoDistributor="matAutocomplete"
-          (optionSelected)="onSelectDistributor($event.option.value)"
-        >
-          <mat-option
-            *ngFor="let option of filteredDistributorOptions | async"
-            [value]="option"
+        commented code
+        <mat-form-field appearance="outline">
+          <mat-label>Distributor Name</mat-label>
+          <input
+            type="text"
+            placeholder="Select Distributor"
+            matInput
+            formControlName="name"
+            [matAutocomplete]="autoDistributor"
+          />
+          <mat-autocomplete
+            autoActiveFirstOption
+            #autoDistributor="matAutocomplete"
+            (optionSelected)="onSelectDistributor($event.option.value)"
           >
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+            <mat-option
+              *ngFor="let option of filteredDistributorOptions | async"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       -->
 
       <!-- 
-      <mat-form-field appearance="outline">
-        <mat-label>Phone Number</mat-label>
-        <input
-          type="text"
-          placeholder="Phone Number"
-          matInput
-          formControlName="phoneNumber"
-        />
-      </mat-form-field>
+        commented code
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input
+            type="text"
+            placeholder="Phone Number"
+            matInput
+            formControlName="phoneNumber"
+          />
+        </mat-form-field>
       -->
 
       <!-- 
-      <mat-form-field appearance="outline">
-        <mat-label>Bill Number</mat-label>
-        <input
-          type="text"
-          placeholder="Bill Number"
-          matInput
-          formControlName=""
-        />
-      </mat-form-field>
+        commented code
+        <mat-form-field appearance="outline">
+          <mat-label>Bill Number</mat-label>
+          <input
+            type="text"
+            placeholder="Bill Number"
+            matInput
+            formControlName=""
+          />
+        </mat-form-field>
       -->
 
       <!-- 
-      <mat-form-field appearance="outline">
-        <mat-label>Bill Date</mat-label>
-        <input
-          [matDatepicker]="picker"
-          placeholder="Bill Date"
-          matInput
-          formControlName=""
-        />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+        commented code
+        <mat-form-field appearance="outline">
+          <mat-label>Bill Date</mat-label>
+          <input
+            [matDatepicker]="picker"
+            placeholder="Bill Date"
+            matInput
+            formControlName=""
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
        -->
     </ng-container>
 
@@ -82,13 +87,20 @@
         [dataSource]="staticInvoiceDatasource"
         class="mat-elevation-z8"
       >
-        <!-- matSort -->
-        <!-- (matSortChange)="announceSortChange($event)" -->
+        <!--
+          commented code 
+          matSort
+          (matSortChange)="announceSortChange($event)" 
+        -->
+
         <!-- column headers & cell definitions (iterates over columnSchema array) -->
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
           <th mat-header-cell *matHeaderCellDef>
-            <!-- mat-sort-header -->
-            <!-- [sortActionDescription]="col.sortDescription" -->
+            <!-- 
+              commented code
+              mat-sort-header
+              [sortActionDescription]="col.sortDescription" 
+            -->
             {{ col.label }}
           </th>
           <td
@@ -96,12 +108,14 @@
             *matCellDef="let element; let i = index"
             [formGroup]="element"
           >
+            <!-- for all inputs except expDate -->
             <mat-form-field
               [appearance]="
                 editInvoiceForm.get('invoiceRows')!.value[i].isEditable
                   ? 'fill'
                   : 'outline'
               "
+              *ngIf="col.key !== 'expDate'"
             >
               <input
                 matInput
@@ -111,6 +125,33 @@
                   editInvoiceForm.get('invoiceRows')!.value[i].isEditable
                 "
               />
+            </mat-form-field>
+
+            <!-- for expDate input -->
+            <mat-form-field
+              [appearance]="
+                editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                  ? 'fill'
+                  : 'outline'
+              "
+              *ngIf="col.key === 'expDate'"
+            >
+              <input
+                [matDatepicker]="expDatePicker"
+                matInput
+                [type]="col.type"
+                formControlName="{{ col.key }}"
+                [readonly]="
+                  editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                "
+              />
+              <!-- {{ editInvoiceForm.get("invoiceRows")!.value[i].expDate }} -->
+
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="expDatePicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #expDatePicker></mat-datepicker>
             </mat-form-field>
           </td>
         </ng-container>
@@ -174,11 +215,12 @@
 
         <!-- row shown when there is no matching data -->
         <!--
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No data matching the filter "{{ input.value }}"
-          </td>
-        </tr>
+          commented code
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the filter "{{ input.value }}"
+            </td>
+          </tr>
         -->
       </table>
     </ng-container>
@@ -196,34 +238,37 @@
   </button>
 
   <!-- 
-  <mat-form-field appearance="outline">
-    <mat-label>Amount</mat-label>
-    <input type="text" placeholder="amount" matInput formControlName="amount" />
-  </mat-form-field>
+    commented code
+    <mat-form-field appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input type="text" placeholder="amount" matInput formControlName="amount" />
+    </mat-form-field>
   -->
 
   <!-- 
-  <mat-form-field appearance="outline">
-    <mat-label>Total Discount</mat-label>
-    <input
-      type="text"
-      placeholder="Total Discount"
-      matInput
-      formControlName="totalDiscount"
-    />
-  </mat-form-field>
+    commented code
+    <mat-form-field appearance="outline">
+      <mat-label>Total Discount</mat-label>
+      <input
+        type="text"
+        placeholder="Total Discount"
+        matInput
+        formControlName="totalDiscount"
+      />
+    </mat-form-field>
   -->
 
   <!-- 
-  <mat-form-field appearance="outline">
-    <mat-label>Actual Amount</mat-label>
-    <input
-      type="text"
-      placeholder="Actual Amount"
-      matInput
-      formControlName="actualAmount"
-    />
-  </mat-form-field>
+    commented code
+    <mat-form-field appearance="outline">
+      <mat-label>Actual Amount</mat-label>
+      <input
+        type="text"
+        placeholder="Actual Amount"
+        matInput
+        formControlName="actualAmount"
+      />
+    </mat-form-field>
   -->
 </mat-dialog-content>
 

@@ -29,7 +29,7 @@ export class InvoiceListComponent {
   constructor(public dialog: MatDialog, public invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    this.getAllInvoices();
+    // this.getAllInvoices();
   }
 
   ngAfterViewInit(): void {

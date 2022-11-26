@@ -1,12 +1,12 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
 import { Distributor } from 'src/app/models/distributor';
+import { PickDateAdapter } from 'src/app/models/pickDateAdapter';
 import { DistributorService } from 'src/app/services/distributor.service';
 
 export interface StaticInvoiceItems {
@@ -24,10 +24,40 @@ export interface StaticInvoiceItems {
   hsnCode: string
 }
 
+const datePickerFormat = {
+  parse: {
+      dateInput: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+      },
+  },
+  display: {
+    dateInput: 'input',
+    monthYearLabel: {
+      year: 'numeric',
+      month: 'numeric',
+    },
+    dateA11yLabel: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    },
+    monthYearA11yLabel: {
+      year: 'numeric',
+      month: 'numeric',
+    }
+  }
+}
+
 @Component({
   selector: 'app-edit-invoice-static',
   templateUrl: './edit-invoice-static.component.html',
-  styleUrls: ['./edit-invoice-static.component.css']
+  styleUrls: ['./edit-invoice-static.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: datePickerFormat }
+  ]
 })
 
 export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
@@ -48,7 +78,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
     { id: 9, name: "Paracetamol 30mg", pack: "1strip", batchNo: "OLI21883", expDate: new Date("2023-11-23"), qty: 30, freeItems: 2, mrp: 30.35, rate: 25.48, amount: 652.38, gst: 12, hsnCode: "30549089" },
     { id: 10, name: "Dysteria 2mg", pack: "2ml", batchNo: "UYI48761", expDate: new Date("2025-11-23"), qty: 25, freeItems: 0, mrp: 15.25, rate: 10.98, amount: 255.56, gst: 12, hsnCode: "30049529" },
   ];
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // @ViewChild(MatSort) sort!: MatSort;
   
@@ -75,7 +105,8 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
       name: new FormControl(val.name), 
       pack: new FormControl(val.pack), 
       batchNo: new FormControl(val.batchNo), 
-      expDate: new FormControl(val.expDate.toISOString().split('T')[0]), 
+      expDate: new FormControl(val.expDate), 
+      // expDate: new FormControl(val.expDate.toISOString().split('T')[0]), // 2022-11-23 : yyyy-MM-dd
       qty: new FormControl(val.qty), 
       freeItems: new FormControl(val.freeItems), 
       mrp: new FormControl(val.mrp), 
@@ -168,7 +199,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
 
   saveForm(editInvoiceForm: FormGroup, i: number) {
     /* save edits made */
-    // console.log('saving object: ', editInvoiceForm.get('invoiceRows')?.value[i]);
+    console.log('saving object: ', editInvoiceForm.get('invoiceRows')?.value[i]);
     // updateInvoice(i, editInvoiceForm.get('invoiceRows')?.value[i]);
     ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
   }
@@ -210,7 +241,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   }
 
   saveInvoice() {
-    
+    console.log("saved form: ", this.editInvoiceForm.get('invoiceRows')?.value);
   }
 
 }
