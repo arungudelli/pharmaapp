@@ -1,17 +1,10 @@
-.mat-column-id {
-  width: 20px;
-}
-
 .mat-column-id mat-form-field {
-  width: 20px;
+  width: 40px;
 }
-
 
 .mat-column-pack mat-form-field {
   width: 80px;
 }
-
-
 
 .mat-column-batchNo mat-form-field {
   width: 120px;
@@ -22,7 +15,7 @@
 }
 
 .mat-column-qty mat-form-field {
-  width: 60px;
+  width: 70px;
 }
 
 .mat-column-freeItems mat-form-field {
@@ -42,7 +35,7 @@
 }
 
 .mat-column-gst mat-form-field {
-  width: 60px;
+  width: 70px;
 }
 
 .mat-column-hsnCode mat-form-field {
