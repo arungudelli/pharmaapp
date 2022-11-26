@@ -12,31 +12,29 @@
 
   <form [formGroup]="editInvoiceAccountsForm">
     <ng-container>
-      <div formGroupName="distributor">
-        <div class="leftColumns">
-          <mat-form-field appearance="outline">
-            <mat-label>Distributor Name</mat-label>
-            <input
-              type="text"
-              placeholder="Select Distributor"
-              matInput
-              formControlName="name"
-              [matAutocomplete]="autoDistributor"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoDistributor="matAutocomplete"
-              (optionSelected)="onSelectDistributor($event.option.value)"
+      <div class="leftColumns" formGroupName="distributor">
+        <mat-form-field appearance="outline">
+          <mat-label>Distributor Name</mat-label>
+          <input
+            type="text"
+            placeholder="Select Distributor"
+            matInput
+            formControlName="name"
+            [matAutocomplete]="autoDistributor"
+          />
+          <mat-autocomplete
+            autoActiveFirstOption
+            #autoDistributor="matAutocomplete"
+            (optionSelected)="onSelectDistributor($event.option.value)"
+          >
+            <mat-option
+              *ngFor="let option of filteredDistributorOptions | async"
+              [value]="option"
             >
-              <mat-option
-                *ngFor="let option of filteredDistributorOptions | async"
-                [value]="option"
-              >
-                {{ option }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Phone Number</mat-label>
