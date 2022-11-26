@@ -1,97 +1,52 @@
 .mat-column-id {
-  width: 20%;
+  width: 20px;
 }
 
 .mat-column-id mat-form-field {
-  width: 20%;
+  width: 20px;
 }
 
-.mat-column-name {
-  width: fit-content;
-}
-
-.mat-column-name mat-form-field {
-  width: fit-content;
-}
-
-.mat-column-pack {
-  width: 50%;
-}
 
 .mat-column-pack mat-form-field {
-  width: 50%;
+  width: 80px;
 }
 
-.mat-column-batchNo {
-  width: 60%;
-}
+
 
 .mat-column-batchNo mat-form-field {
-  width: 60%;
-}
-
-.mat-column-expDate {
-  width: 70%;
+  width: 120px;
 }
 
 .mat-column-expDate mat-form-field {
-  width: 70%;
-}
-
-.mat-column-qty {
-  width: 30%;
+  width: 160px;
 }
 
 .mat-column-qty mat-form-field {
-  width: 30%;
-}
-
-.mat-column-freeItems {
-  width: 30%;
+  width: 60px;
 }
 
 .mat-column-freeItems mat-form-field {
-  width: 30%;
-}
-
-.mat-column-mrp {
-  width: 50%;
+  width: 60px;
 }
 
 .mat-column-mrp mat-form-field {
-  width: 50%;
-}
-
-.mat-column-rate {
-  width: 50%;
+  width: 100px;
 }
 
 .mat-column-rate mat-form-field {
-  width: 50%;
-}
-
-.mat-column-amount {
-  width: 50%;
+  width: 100px;
 }
 
 .mat-column-amount mat-form-field {
-  width: 50%;
-}
-
-.mat-column-gst {
-  width: 40%;
+  width: 100px;
 }
 
 .mat-column-gst mat-form-field {
-  width: 40%;
-}
-
-.mat-column-hsnCode {
-  width: 60%;
+  width: 60px;
 }
 
 .mat-column-hsnCode mat-form-field {
-  width: 60%;
+  width: 120px;
 }
 
 .leftColumns {
