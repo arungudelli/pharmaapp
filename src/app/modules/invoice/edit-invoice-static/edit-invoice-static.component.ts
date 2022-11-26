@@ -43,7 +43,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   ];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  // @ViewChild(MatSort) sort!: MatSort;
   
   columnSchema = [
     { key: 'id', type: 'text', label: '#', sortDescription: 'Sort by id' }, 
@@ -88,22 +88,27 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   constructor(public dialog: MatDialog, private _liveAnouncer: LiveAnnouncer) { }
   
   ngOnInit(): void {
+    /*
     this.staticInvoiceDatasource.sortingDataAccessor = (data: AbstractControl, sorterHeaderId: string) => {
       const value: any = data.value[sorterHeaderId];
       return typeof value === 'string' ? value.toLowerCase() : value;
     };
+    */
 
+    /*
     const filterPredicate = this.staticInvoiceDatasource.filterPredicate;
     this.staticInvoiceDatasource.filterPredicate = (data: AbstractControl, filter) => {
       return filterPredicate.call(this.staticInvoiceDatasource, data.value, filter);
     };
+    */
   }
   
   ngAfterViewInit(): void {
     this.staticInvoiceDatasource.paginator = this.paginator;
-    this.staticInvoiceDatasource.sort = this.sort;
+    // this.staticInvoiceDatasource.sort = this.sort;
   }
 
+  /*
   applyFilter(event:Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.staticInvoiceDatasource.filter = filterValue.trim().toLowerCase();
@@ -112,7 +117,9 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
       this.staticInvoiceDatasource.paginator.firstPage();
     }
   }
+  */
   
+  /*
   announceSortChange(sortState: Sort) {
     if(sortState.direction) {
       this._liveAnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -120,6 +127,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
       this._liveAnouncer.announce('Sorting cleared');
     }
   }
+  */
 
   saveForm(editInvoiceForm: FormGroup, i: number) {
     /* save edits made */

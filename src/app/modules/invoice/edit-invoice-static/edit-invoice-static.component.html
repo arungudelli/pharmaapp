@@ -2,16 +2,13 @@
 
 <mat-dialog-content class="mat-typography">
   <!-- filter -->
+  <!--
   <mat-form-field appearance="outline">
     <mat-label>Filter</mat-label>
-
-    <input
-      matInput
-      placeholder="Enter field names to search"
-      #input
-      (keyup)="applyFilter($event)"
-    />
+    <input matInput placeholder="Enter field names to search" #input (keyup)="applyFilter($event)" />
   </mat-form-field>
+  -->
+
   <form [formGroup]="editInvoiceForm" autocomplete="off">
     <ng-container formArrayName="invoiceRows">
       <table
@@ -19,17 +16,14 @@
         mat-table
         [dataSource]="staticInvoiceDatasource"
         class="mat-elevation-z8"
-        matSort
-        (matSortChange)="announceSortChange($event)"
       >
+        <!-- matSort -->
+        <!-- (matSortChange)="announceSortChange($event)" -->
         <!-- column headers & cell definitions (iterates over columnSchema array) -->
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            [sortActionDescription]="col.sortDescription"
-          >
+          <th mat-header-cell *matHeaderCellDef>
+            <!-- mat-sort-header -->
+            <!-- [sortActionDescription]="col.sortDescription" -->
             {{ col.label }}
           </th>
           <td
@@ -114,11 +108,13 @@
         <tr mat-row *matRowDef="let row; columns: staticinvoiceColumns"></tr>
 
         <!-- row shown when there is no matching data -->
+        <!--
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="4">
             No data matching the filter "{{ input.value }}"
           </td>
         </tr>
+        -->
       </table>
     </ng-container>
   </form>
