@@ -36,13 +36,7 @@ export class EditInvoiceComponent {
 
   invoiceColumns: string[] = this.columnSchema.map(col => col.key);
 
-  // invoiceColumns: string[] = ['id', 'amount', 'totalDiscount', 'actualAmount'];
-  // ['id',['id',['id','name','description',['id','hsnCode','description','gstRate'],['id','name']],['id','name','email','phoneNumber','gstin','pan','dlno','address','city','state','pinCode'],'pack','batchNo','mfgDate','expDate','qty','freeItems','discount','mrp','rate'],'amount','totalDiscount','actualAmount'];
-  
-  // invoiceDatasource = new MatTableDataSource<Invoice>();
-  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
   
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.invoice.map(val => new FormGroup({
@@ -62,8 +56,6 @@ export class EditInvoiceComponent {
           manfacturer: new FormGroup({
             id: new FormControl(val.invoiceItems.item.manfacturer.id),
             name: new FormControl(val.invoiceItems.item.manfacturer.name),
-            // id: new FormControl(),
-            // name: new FormControl(),
           }),
         }),
         distributor: new FormGroup({
@@ -104,17 +96,12 @@ export class EditInvoiceComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    // this.editInvoiceForm.controls.invoiceRows.controls.id.setValue(0);
-    // this.editInvoiceForm.controls.invoiceRows.get('manfacturer')?.setValue({id:0,name:''});
-    // this.editInvoiceForm.controls.item.setValue({id: 0, name: '', description: '',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name: ''}});
-
     this.getInvoiceList();
     this.getDistributorsList();
   }
 
   ngAfterViewInit(): void {
     this.invoiceDatasource.paginator = this.paginator;
-    this.invoiceDatasource.sort = this.sort;
   }
   
   getInvoiceList() {
@@ -122,7 +109,6 @@ export class EditInvoiceComponent {
       res => {
         console.log('get invoices: ', res);
         this.invoice = res;
-        // this.invoiceDatasource.data = res;
       } 
     )
   }
@@ -137,7 +123,7 @@ export class EditInvoiceComponent {
     )
   }
 
-  filterSearchDistributors(res: Manufacturer[]) {
+  filterSearchDistributors(res: Distributor[]) {
     this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
       startWith(''),
       map(term => {
@@ -157,11 +143,86 @@ export class EditInvoiceComponent {
     // this.editInvoiceForm.controls.invoiceRows.get('distributor').setValue({name,phoneNumber});
   }
 
-  addRow() {
-    // const newRow = this.selectedInvoice;
-    // this.invoiceDatasource.data = [...this.invoiceDatasource.data, newRow];
+  initiateInvoiceForm(): FormGroup {
+    /* initialize a blank row */
+    return new FormGroup({
+      id: new FormControl(),
+      invoiceItems: new FormGroup({
+        id: new FormControl(),
+        item: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          description: new FormControl(),
+          hsn: new FormGroup({
+            id: new FormControl(),
+            hsnCode: new FormControl(),
+            description: new FormControl(),
+            gstRate: new FormControl(),
+          }),
+          manfacturer: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+          }),
+        }),
+        distributor: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          email:new FormControl(),
+          phoneNumber: new FormControl(),
+          gstin : new FormControl(),
+          pan: new FormControl(),
+          dlno: new FormControl(),
+          address: new FormControl(),
+          city: new FormControl(),
+          state: new FormControl(),
+          pinCode: new FormControl(),
+        }),
+        pack: new FormControl(),
+        batchNo: new FormControl(),
+        mfgDate: new FormControl(),
+        expDate: new FormControl(),
+        qty: new FormControl(),
+        freeItems: new FormControl(),
+        discount: new FormControl(),
+        mrp: new FormControl(),
+        rate: new FormControl(),
+      }),
+      amount: new FormControl(),
+      totalDiscount: new FormControl(),
+      actualAmount: new FormControl(),
+      
+      action: new FormControl('existingRecord'),
+    })
   }
 
+  addNewRow() {
+    const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
+    /* Add new blank row below the last filled row */
+    control.insert(this.invoice.length, this.initiateInvoiceForm());
+    this.invoiceDatasource = new MatTableDataSource(control.controls);
+  }
+
+  saveForm(editInvoiceForm: FormGroup, i: number) {
+    /* save edits made */
+    // console.log('saving object: ', editInvoiceForm.get('invoiceRows')?.value[i]);
+    // updateInvoice(i, editInvoiceForm.get('invoiceRows')?.value[i]);
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
+  }
+  
+  cancelForm(editInvoiceForm: FormGroup, i: number) {
+    /* discard edits made */
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(true);
+  }
+  
+  editForm(editInvoiceForm: FormGroup, i: number) {
+    /* set the form to be editable */
+    ((editInvoiceForm.get('invoiceRows') as FormArray).at(i) as FormGroup).get('isEditable')?.patchValue(false);
+  }
+
+  saveInvoice() {
+    
+  }
+  
   /*
   editFormValue() {
     this.editInvoiceForm.patchValue({

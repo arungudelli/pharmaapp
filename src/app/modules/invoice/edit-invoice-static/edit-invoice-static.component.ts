@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { map, Observable, startWith } from 'rxjs';
+import { Distributor } from 'src/app/models/distributor';
+import { DistributorService } from 'src/app/services/distributor.service';
 
 export interface StaticInvoiceItems {
   id: number, 
@@ -29,6 +32,10 @@ export interface StaticInvoiceItems {
 
 export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   
+  distributors: Distributor[] = [];
+  
+  filteredDistributorOptions?: Observable<string[]>;
+
   ELEMENT_DATA : StaticInvoiceItems[] = [
     { id: 1, name: "T Lopez Inj", pack: "2ml", batchNo: "KLL01030", expDate: new Date("2022-11-23"), qty: 40, freeItems: 0, mrp: 17.45, rate: 12.46, amount: 498.40, gst: 12, hsnCode: "30049089" },
     { id: 2, name: "Dolo 650", pack: "1strip", batchNo: "HDD02030", expDate: new Date("2025-11-23"), qty: 23, freeItems: 0, mrp: 18.35, rate: 10.23, amount: 464.48, gst: 12, hsnCode: "30044669" },
@@ -85,7 +92,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
 
   staticInvoiceDatasource = new MatTableDataSource((this.editInvoiceForm.get('invoiceRows') as FormArray).controls);
   
-  constructor(public dialog: MatDialog, private _liveAnouncer: LiveAnnouncer) { }
+  constructor(public dialog: MatDialog, private distributorService: DistributorService/*, private _liveAnouncer: LiveAnnouncer*/) { }
   
   ngOnInit(): void {
     /*
@@ -129,6 +136,36 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   }
   */
 
+  getDistributorsList() {
+    this.distributorService.getDistributors().subscribe(
+      res => {
+        console.log('get distributors: ', res);
+        this.distributors = res;
+        this.filterSearchDistributors(res);
+      }
+    )
+  }
+
+  filterSearchDistributors(res: Distributor[]) {
+    this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+      },)
+    )
+  }
+
+  onSelectDistributor(option: string) {
+    const name = this.distributors.filter(item => item.name === option)[0].name;
+    const phoneNumber = this.distributors.filter(item => item.name === option)[0].phoneNumber;
+
+    console.log(this.editInvoiceForm.controls.invoiceRows.get('distributor'));
+    
+    // this.editInvoiceForm.controls.invoiceRows.get('distributor').setValue({name,phoneNumber});
+  }
+
   saveForm(editInvoiceForm: FormGroup, i: number) {
     /* save edits made */
     // console.log('saving object: ', editInvoiceForm.get('invoiceRows')?.value[i]);
@@ -170,6 +207,10 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
     /* Add new blank row below the last filled row */
     control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
     this.staticInvoiceDatasource = new MatTableDataSource(control.controls);
+  }
+
+  saveInvoice() {
+    
   }
 
 }
