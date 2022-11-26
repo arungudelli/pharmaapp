@@ -10,36 +10,34 @@
     </mat-form-field>
   -->
 
-  <form [formGroup]="editInvoiceForm" autocomplete="off">
+  <form [formGroup]="editInvoiceAccountsForm" autocomplete="on">
     <ng-container>
-      <!-- 
-        commented code
-        <mat-form-field appearance="outline">
-          <mat-label>Distributor Name</mat-label>
-          <input
-            type="text"
-            placeholder="Select Distributor"
-            matInput
-            formControlName="name"
-            [matAutocomplete]="autoDistributor"
-          />
-          <mat-autocomplete
-            autoActiveFirstOption
-            #autoDistributor="matAutocomplete"
-            (optionSelected)="onSelectDistributor($event.option.value)"
-          >
-            <mat-option
-              *ngFor="let option of filteredDistributorOptions | async"
-              [value]="option"
+      <div formGroupName="distributor">
+        <div class="leftColumns">
+          <mat-form-field appearance="outline">
+            <mat-label>Distributor Name</mat-label>
+            <input
+              type="text"
+              placeholder="Select Distributor"
+              matInput
+              formControlName="name"
+              [matAutocomplete]="autoDistributor"
+            />
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoDistributor="matAutocomplete"
+              (optionSelected)="onSelectDistributor($event.option.value)"
             >
-              {{ option }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      -->
+              <mat-option
+                *ngFor="let option of filteredDistributorOptions | async"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
 
-      <!-- 
-        commented code
         <mat-form-field appearance="outline">
           <mat-label>Phone Number</mat-label>
           <input
@@ -47,39 +45,41 @@
             placeholder="Phone Number"
             matInput
             formControlName="phoneNumber"
+            readonly
           />
         </mat-form-field>
-      -->
+      </div>
 
-      <!-- 
-        commented code
+      <div class="rightColumns">
         <mat-form-field appearance="outline">
           <mat-label>Bill Number</mat-label>
           <input
             type="text"
             placeholder="Bill Number"
             matInput
-            formControlName=""
+            formControlName="billNo"
           />
         </mat-form-field>
-      -->
 
-      <!-- 
-        commented code
         <mat-form-field appearance="outline">
           <mat-label>Bill Date</mat-label>
           <input
             [matDatepicker]="picker"
             placeholder="Bill Date"
             matInput
-            formControlName=""
+            formControlName="billDate"
           />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-       -->
+      </div>
     </ng-container>
+  </form>
 
+  <form [formGroup]="editInvoiceForm" autocomplete="off">
     <ng-container formArrayName="invoiceRows">
       <table
         #table
@@ -237,16 +237,17 @@
     Add Row
   </button>
 
-  <!-- 
-    commented code
+  <form [formGroup]="editInvoiceAccountsForm" autocomplete="on">
     <mat-form-field appearance="outline">
       <mat-label>Amount</mat-label>
-      <input type="text" placeholder="amount" matInput formControlName="amount" />
+      <input
+        type="text"
+        placeholder="amount"
+        matInput
+        formControlName="amount"
+      />
     </mat-form-field>
-  -->
 
-  <!-- 
-    commented code
     <mat-form-field appearance="outline">
       <mat-label>Total Discount</mat-label>
       <input
@@ -256,10 +257,7 @@
         formControlName="totalDiscount"
       />
     </mat-form-field>
-  -->
 
-  <!-- 
-    commented code
     <mat-form-field appearance="outline">
       <mat-label>Actual Amount</mat-label>
       <input
@@ -269,7 +267,7 @@
         formControlName="actualAmount"
       />
     </mat-form-field>
-  -->
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

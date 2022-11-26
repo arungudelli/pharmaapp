@@ -93,3 +93,11 @@
 .mat-column-hsnCode mat-form-field {
   width: 60%;
 }
+
+.leftColumns {
+  float: left;
+}
+
+.rightColumns {
+  float: right;
+}

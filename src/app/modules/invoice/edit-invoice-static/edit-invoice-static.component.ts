@@ -121,6 +121,27 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
     })))
   });
 
+  editInvoiceAccountsForm = new FormGroup({
+    distributor: new FormGroup({
+      id: new FormControl(),
+      name: new FormControl(),
+      email: new FormControl(),
+      phoneNumber: new FormControl(),
+      gstin : new FormControl(),
+      pan: new FormControl(),
+      dlno: new FormControl(),
+      address: new FormControl(),
+      city: new FormControl(),
+      state: new FormControl(),
+      pinCode: new FormControl()
+    }),
+    billNo: new FormControl(''),
+    billDate: new FormControl(''),
+    amount: new FormControl(0),
+    totalDiscount: new FormControl(0),
+    actualAmount: new FormControl(0)
+  });
+
   staticInvoiceDatasource = new MatTableDataSource((this.editInvoiceForm.get('invoiceRows') as FormArray).controls);
   
   constructor(public dialog: MatDialog, private distributorService: DistributorService/*, private _liveAnouncer: LiveAnnouncer*/) { }
@@ -139,6 +160,9 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
       return filterPredicate.call(this.staticInvoiceDatasource, data.value, filter);
     };
     */
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',email:'',phoneNumber:0,gstin:'',pan:'',dlno:'',address:'',city:'',state:'',pinCode:''});
+
+    this.getDistributorsList();
   }
   
   ngAfterViewInit(): void {
@@ -170,7 +194,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   getDistributorsList() {
     this.distributorService.getDistributors().subscribe(
       res => {
-        console.log('get distributors: ', res);
+        // console.log('get distributors: ', res);
         this.distributors = res;
         this.filterSearchDistributors(res);
       }
@@ -178,7 +202,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   }
 
   filterSearchDistributors(res: Distributor[]) {
-    this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
+    this.filteredDistributorOptions = this.editInvoiceAccountsForm.controls.distributor.valueChanges.pipe(
       startWith(''),
       map(term => {
         return res
@@ -189,12 +213,17 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
   }
 
   onSelectDistributor(option: string) {
+    const id = this.distributors.filter(item => item.name === option)[0].id;
     const name = this.distributors.filter(item => item.name === option)[0].name;
+    const email = this.distributors.filter(item => item.name === option)[0].email;
     const phoneNumber = this.distributors.filter(item => item.name === option)[0].phoneNumber;
+    const gstin  = this.distributors.filter(item => item.name === option)[0].gstin;
+    const address = this.distributors.filter(item => item.name === option)[0].address;
+    const city = this.distributors.filter(item => item.name === option)[0].city;
+    const state = this.distributors.filter(item => item.name === option)[0].state;
+    const pinCode = this.distributors.filter(item => item.name === option)[0].pinCode;
 
-    console.log(this.editInvoiceForm.controls.invoiceRows.get('distributor'));
-    
-    // this.editInvoiceForm.controls.invoiceRows.get('distributor').setValue({name,phoneNumber});
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id, name, email, phoneNumber, gstin, address, city, state, pinCode,pan:'',dlno:''});
   }
 
   saveForm(editInvoiceForm: FormGroup, i: number) {
@@ -242,6 +271,7 @@ export class EditInvoiceStaticComponent implements OnInit, AfterViewInit {
 
   saveInvoice() {
     console.log("saved form: ", this.editInvoiceForm.get('invoiceRows')?.value);
+    console.log("accounts form: ", this.editInvoiceAccountsForm.value);
   }
 
 }
