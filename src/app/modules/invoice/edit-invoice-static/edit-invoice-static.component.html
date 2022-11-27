@@ -117,13 +117,21 @@
               />
             </mat-form-field>
 
+
+            <!-- [appearance]="
+            editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+              ? 'fill'
+              : 'outline'
+          " -->
+
+
             <!-- for expDate input -->
-            <mat-form-field
-              [appearance]="
-                editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-                  ? 'fill'
-                  : 'outline'
-              "
+            <mat-form-field [appearance]="
+            editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+              ? 'fill'
+              : 'outline'
+          "
+              
               *ngIf="col.key === 'expDate'"
             >
               <input
@@ -215,12 +223,7 @@
       </table>
     </ng-container>
   </form>
-  <br />
-  <!-- pagination -->
-  <mat-paginator
-    [pageSizeOptions]="[5, 25, 50, 75]"
-    aria-label="select page of ELEMENT_DATA"
-  ></mat-paginator>
+
 
   <!-- Add New Blank Row -->
   <button mat-raised-button color="primary" (click)="addNewRow()">
