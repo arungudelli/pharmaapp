@@ -52,6 +52,10 @@
 
 .mat-mdc-dialog-content{
   max-height: 100vh;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 
@@ -81,3 +85,7 @@ display: none;
   padding-left: 5px;
 }
 
+.mat-mdc-dialog-title{
+  margin-bottom: 0px;
+  padding-top: 0px;
+}

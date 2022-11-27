@@ -1,9 +1,12 @@
 <h2 mat-dialog-title>Add Invoice</h2>
 
 <mat-dialog-content class="mat-typography" style="height: calc(100% - 130px);"> 
+<div class="dist-form">
+  
+</div>
 
+  <!-- <div class="dist-form">
   <form [formGroup]="editInvoiceAccountsForm">
-    <ng-container>
       <div class="leftColumns" formGroupName="distributor">
         <mat-form-field appearance="outline">
           <mat-label>Distributor Name</mat-label>
@@ -66,8 +69,9 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
-    </ng-container>
   </form>
+</div> -->
+<div>
 
   <form [formGroup]="editInvoiceForm" autocomplete="off">
     <ng-container formArrayName="invoiceRows">
@@ -223,6 +227,7 @@
       </table>
     </ng-container>
   </form>
+</div>
 
 
   <!-- Add New Blank Row -->
