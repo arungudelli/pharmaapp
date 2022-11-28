@@ -1,9 +1,7 @@
 <h2 mat-dialog-title>Add Invoice</h2>
 
-<mat-dialog-content class="mat-typography" style="height: calc(100% - 130px);"> 
-<div class="dist-form">
-  
-</div>
+<mat-dialog-content class="mat-typography" style="height: calc(100% - 130px)">
+  <div class="dist-form"></div>
 
   <!-- <div class="dist-form">
   <form [formGroup]="editInvoiceAccountsForm">
@@ -71,164 +69,176 @@
       </div>
   </form>
 </div> -->
-<div>
-
-  <form [formGroup]="editInvoiceForm" autocomplete="off">
-    <ng-container formArrayName="invoiceRows">
-      <table
-        #table
-        mat-table
-        [dataSource]="staticInvoiceDatasource"
-        class="mat-elevation-z8"
-      >
-        <!--
-          commented code 
-          matSort
-          (matSortChange)="announceSortChange($event)" 
-        -->
-
-        <!-- column headers & cell definitions (iterates over columnSchema array) -->
-        <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
-          <th mat-header-cell *matHeaderCellDef>
-            <!-- 
-              commented code
-              mat-sort-header
-              [sortActionDescription]="col.sortDescription" 
-            -->
-            {{ col.label }}
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
+  <div>
+    <form [formGroup]="editInvoiceForm" autocomplete="off">
+      <ng-container formArrayName="invoiceRows">
+        <table
+          #table
+          mat-table
+          [dataSource]="staticInvoiceDatasource"
+          class="mat-elevation-z8"
+        >
+          <!-- column headers & cell definitions (iterates over columnSchema array) -->
+          <ng-container
+            [matColumnDef]="col.key"
+            *ngFor="let col of columnSchema"
           >
-            <!-- for all inputs except expDate -->
-            <mat-form-field
-              [appearance]="
-                editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-                  ? 'fill'
-                  : 'outline'
-              "
-              *ngIf="col.key !== 'expDate'"
+            <!-- Checkbox Column -->
+            <div *ngIf="col.key === 'select'">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [aria-label]="checkboxLabel()"
+                >
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  [checked]="selection.isSelected(row)"
+                  [aria-label]="checkboxLabel(row)"
+                  (change)="$event ? selection.toggle(row) : null"
+                ></mat-checkbox>
+              </td>
+            </div>
+
+            <th mat-header-cell *matHeaderCellDef>
+              {{ col.label }}
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
             >
-              <input
-                matInput
-                [type]="col.type"
-                formControlName="{{ col.key }}"
-                [readonly]="
+              <!-- for all inputs except expDate -->
+              <mat-form-field
+                [appearance]="
                   editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                    ? 'fill'
+                    : 'outline'
                 "
-              />
-            </mat-form-field>
+                *ngIf="col.key !== 'expDate'"
+              >
+                <input
+                  matInput
+                  [type]="col.type"
+                  formControlName="{{ col.key }}"
+                  [readonly]="
+                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                  "
+                />
+              </mat-form-field>
 
-
-            <!-- [appearance]="
+              <!-- [appearance]="
             editInvoiceForm.get('invoiceRows')!.value[i].isEditable
               ? 'fill'
               : 'outline'
           " -->
 
-
-            <!-- for expDate input -->
-            <mat-form-field [appearance]="
-            editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-              ? 'fill'
-              : 'outline'
-          "
-              
-              *ngIf="col.key === 'expDate'"
-            >
-              <input
-                [matDatepicker]="expDatePicker"
-                matInput
-                [type]="col.type"
-                formControlName="{{ col.key }}"
-                [readonly]="
+              <!-- for expDate input -->
+              <mat-form-field
+                [appearance]="
                   editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                    ? 'fill'
+                    : 'outline'
                 "
-              />
-              <!-- {{ editInvoiceForm.get("invoiceRows")!.value[i].expDate }} -->
+                *ngIf="col.key === 'expDate'"
+              >
+                <input
+                  [matDatepicker]="expDatePicker"
+                  matInput
+                  [type]="col.type"
+                  formControlName="{{ col.key }}"
+                  [readonly]="
+                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                  "
+                />
+                <!-- {{ editInvoiceForm.get("invoiceRows")!.value[i].expDate }} -->
 
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="expDatePicker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #expDatePicker></mat-datepicker>
-            </mat-form-field>
-          </td>
-        </ng-container>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="expDatePicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #expDatePicker></mat-datepicker>
+              </mat-form-field>
+            </td>
+          </ng-container>
 
-        <!-- Edit, Save, Discard, Delete button options -->
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef>Action</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu save-button"
-              matTooltip="Save Changes"
-              *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
-              color="primary"
-              (click)="saveForm(editInvoiceForm, i)"
+          <!-- Edit, Save, Discard, Delete button options -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
             >
-              <mat-icon>check_circle</mat-icon>
-            </button>
+              <button
+                mat-icon-button
+                class="material-icons app-toolbar-menu save-button"
+                matTooltip="Save Changes"
+                *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+                color="primary"
+                (click)="saveForm(editInvoiceForm, i)"
+              >
+                <mat-icon>check_circle</mat-icon>
+              </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu cancel-button"
-              matTooltip="Cancel Changes"
-              *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
-              color="warn"
-              (click)="cancelForm(editInvoiceForm, i)"
-            >
-              <mat-icon>cancel</mat-icon>
-            </button>
+              <button
+                mat-icon-button
+                class="material-icons app-toolbar-menu cancel-button"
+                matTooltip="Cancel Changes"
+                *ngIf="!editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+                color="warn"
+                (click)="cancelForm(editInvoiceForm, i)"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu save-button"
-              matTooltip="Edit"
-              *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
-              color="primary"
-              (click)="editForm(editInvoiceForm, i)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+              <button
+                mat-icon-button
+                class="material-icons app-toolbar-menu save-button"
+                matTooltip="Edit"
+                *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+                color="primary"
+                (click)="editForm(editInvoiceForm, i)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu delete-button"
-              matTooltip="Delete"
-              *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
-              color="warn"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+              <button
+                mat-icon-button
+                class="material-icons app-toolbar-menu delete-button"
+                matTooltip="Delete"
+                *ngIf="editInvoiceForm.get('invoiceRows')!.value[i].isEditable"
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
-        <!-- row headers & definitions -->
-        <tr mat-header-row *matHeaderRowDef="staticinvoiceColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: staticinvoiceColumns"></tr>
+          <!-- row headers & definitions -->
+          <tr mat-header-row *matHeaderRowDef="staticinvoiceColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: staticinvoiceColumns"
+            (click)="selection.toggle(row)"
+          ></tr>
 
-        <!-- row shown when there is no matching data -->
-        <!--
+          <!-- row shown when there is no matching data -->
+          <!--
           commented code
           <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" colspan="4">
               No data matching the filter "{{ input.value }}"
             </td>
           </tr>
-        -->
-      </table>
-    </ng-container>
-  </form>
-</div>
-
+        --></table>
+      </ng-container>
+    </form>
+  </div>
 
   <!-- Add New Blank Row -->
   <button mat-raised-button color="primary" (click)="addNewRow()">
