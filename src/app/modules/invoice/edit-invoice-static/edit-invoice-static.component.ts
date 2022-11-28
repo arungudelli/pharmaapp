@@ -165,32 +165,18 @@ export class EditInvoiceStaticComponent implements OnInit {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
-      console.log(this.selection.selected);
       return;
     }
 
-    let row = this.staticInvoiceDatasource.data.map(item => Object(item).value);
-    // let row = this.staticInvoiceDatasource.data.map(item => item.value);
-
-    /*
-    row.forEach(item => delete item.action)
-    row.forEach(item => delete item.isEditable)
-    row.forEach(item => delete item.isNewRow)
-    */
-
-    // console.log(row);
-    this.selection.select(...row);
-    console.log(this.selection.selected);
+    this.selection.select(...this.staticInvoiceDatasource.data.map(item => Object(item).value));
   }
 
   /* The label for the checkbox on the passed row */
   checkboxLabel(row?: StaticInvoiceItems): string {
-    let updatedRow = Object(row).value;
-    if(!updatedRow) {
+    if(!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    // console.log(updatedRow);
-    return `${this.selection.isSelected(updatedRow) ? 'deselect' : 'select'} row ${updatedRow.id}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }  
   
   getDistributorsList() {

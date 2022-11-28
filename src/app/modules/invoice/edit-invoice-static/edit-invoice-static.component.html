@@ -99,9 +99,9 @@
               <td mat-cell *matCellDef="let row">
                 <mat-checkbox
                   (click)="$event.stopPropagation()"
-                  (change)="$event ? selection.toggle(row) : null"
-                  [checked]="selection.isSelected(row)"
-                  [aria-label]="checkboxLabel(row)"
+                  (change)="$event ? selection.toggle(row.value) : null"
+                  [checked]="selection.isSelected(row.value)"
+                  [aria-label]="checkboxLabel(row.value)"
                 >
                   <!-- {{ checkboxLabel(row) }} -->
                 </mat-checkbox>
