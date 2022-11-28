@@ -11,7 +11,7 @@
 }
 
 .mat-column-expDate mat-form-field {
-  width: 160px;
+  width: 130px;
 }
 
 .mat-column-qty mat-form-field {
@@ -88,4 +88,10 @@ display: none;
 .mat-mdc-dialog-title{
   margin-bottom: 0px;
   padding-top: 0px;
+}
+
+::ng-deep .mat-column-expDate .mat-datepicker-toggle .mat-mdc-icon-button{
+  padding: 0px;
+  width:24px;
+  height: 24px;
 }
