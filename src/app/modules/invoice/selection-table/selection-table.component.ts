@@ -45,12 +45,14 @@ export class SelectionTableComponent {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      console.log(this.selection.selected);
       return;
     } else {
       // console.log(this.dataSource.data);
-      console.log(typeof(this.dataSource.data));
+      // console.log(typeof(this.dataSource.data));
       // console.log(...this.dataSource.data);
       this.selection.select(...this.dataSource.data);
+      console.log(this.selection.selected);
     }
 
   }

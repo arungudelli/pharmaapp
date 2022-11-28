@@ -165,12 +165,12 @@ export class EditInvoiceStaticComponent implements OnInit {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      console.log(this.selection.selected);
       return;
     }
-    // console.log(...this.staticInvoiceDatasource.data.map(item => item.value));
-    // const row = Object(this.staticInvoiceDatasource.data).value;
-    // const row = this.staticInvoiceDatasource.data.map(item => Object(item).value);
-    let row = this.staticInvoiceDatasource.data.map(item => item.value);
+
+    let row = this.staticInvoiceDatasource.data.map(item => Object(item).value);
+    // let row = this.staticInvoiceDatasource.data.map(item => item.value);
 
     /*
     row.forEach(item => delete item.action)
@@ -179,20 +179,17 @@ export class EditInvoiceStaticComponent implements OnInit {
     */
 
     // console.log(row);
-    console.log(typeof(row));
-    // console.log(...row);
     this.selection.select(...row);
-    // this.selection.select(this.staticInvoiceDatasource.data.map(item => item.value));
+    console.log(this.selection.selected);
   }
 
   /* The label for the checkbox on the passed row */
   checkboxLabel(row?: StaticInvoiceItems): string {
-    const updatedRow = Object(row).value;
+    let updatedRow = Object(row).value;
     if(!updatedRow) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     // console.log(updatedRow);
-    // return `${this.selection.isSelected(updatedRow) ? 'deselect' : 'select'} row ${updatedRow.id + 1}`;
     return `${this.selection.isSelected(updatedRow) ? 'deselect' : 'select'} row ${updatedRow.id}`;
   }  
   
