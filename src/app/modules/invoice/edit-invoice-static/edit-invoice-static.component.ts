@@ -257,6 +257,22 @@ export class EditInvoiceStaticComponent implements OnInit {
     this.staticInvoiceDatasource = new MatTableDataSource(control.controls);
   }
 
+  removeRows() {
+    // this.staticInvoiceColumns.slice(this.selection.selected)
+    // console.log('to delete: ', this.selection.selected);
+    // console.log('to delete ids: ', this.selection.selected.map(item => item.id));
+    // console.log('to delete ids: ', this.selection.selected.findIndex(item => item.id));
+    // console.log('to delete from: ', this.staticInvoiceDatasource.data.map(item => item.value));
+    // console.log(this.staticInvoiceDatasource.data.map(item => item.value).slice(this.selection.selected.map(item => item.id)[0]));
+    // console.log(this.staticInvoiceDatasource.data.map(item => item.value).findIndex(element => element.id === this.selection.selected.map(item => item.id)[0]));
+    const toDelete = this.selection.selected.map(item => item.id);
+    console.log(toDelete);
+    console.log(toDelete.forEach(x => this.staticInvoiceDatasource.data.map(item => item.value).splice(x)));
+    
+    
+    // indexList. this.staticInvoiceDatasource.data.map(item => item.value).splice(element =>  );
+  }
+
   saveInvoice() {
     console.log("saved form: ", this.editInvoiceForm.get('invoiceRows')?.value);
     console.log("accounts form: ", this.editInvoiceAccountsForm.value);
