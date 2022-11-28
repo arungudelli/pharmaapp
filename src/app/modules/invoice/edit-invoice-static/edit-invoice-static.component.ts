@@ -66,6 +66,7 @@ export class EditInvoiceStaticComponent implements OnInit {
   
   filteredDistributorOptions?: Observable<string[]>;
   
+  // /*
   ELEMENT_DATA : StaticInvoiceItems[] = [
     { id: 1, name: "T Lopez Inj", pack: "2ml", batchNo: "KLL01030", expDate: new Date("2022-11-23"), qty: 40, freeItems: 0, mrp: 17.45, rate: 12.46, amount: 498.40, gst: 12, hsnCode: "30049089" },
     { id: 2, name: "Dolo 650", pack: "1strip", batchNo: "HDD02030", expDate: new Date("2025-11-23"), qty: 23, freeItems: 0, mrp: 18.35, rate: 10.23, amount: 464.48, gst: 12, hsnCode: "30044669" },
@@ -78,6 +79,7 @@ export class EditInvoiceStaticComponent implements OnInit {
     { id: 9, name: "Paracetamol 30mg", pack: "1strip", batchNo: "OLI21883", expDate: new Date("2023-11-23"), qty: 30, freeItems: 2, mrp: 30.35, rate: 25.48, amount: 652.38, gst: 12, hsnCode: "30549089" },
     { id: 10, name: "Dysteria 2mg", pack: "2ml", batchNo: "UYI48761", expDate: new Date("2025-11-23"), qty: 25, freeItems: 0, mrp: 15.25, rate: 10.98, amount: 255.56, gst: 12, hsnCode: "30049529" },
   ];
+  // */
     
   // ELEMENT_DATA : StaticInvoiceItems[] = [];
   
@@ -144,7 +146,7 @@ export class EditInvoiceStaticComponent implements OnInit {
   
   selection =  new SelectionModel<StaticInvoiceItems>(true, []);
 
-  staticinvoiceColumns: string[] = this.columnSchema.map(col => col.key).concat('action');
+  staticInvoiceColumns: string[] = this.columnSchema.map(col => col.key).concat('action');
   
   constructor(public dialog: MatDialog, private distributorService: DistributorService) { }
   
@@ -164,18 +166,26 @@ export class EditInvoiceStaticComponent implements OnInit {
     if(this.isAllSelected()) {
       this.selection.clear();
       return;
-    } else {
+    } 
+    /*else {
+      console.log(this.staticInvoiceDatasource.data.map(item => item.value));
+      console.log(typeof(this.staticInvoiceDatasource.data.map(item => item.value)));
       this.selection.select(... this.staticInvoiceDatasource.data.map(item => item.value));
     }
+    */
+    this.selection.select(... this.staticInvoiceDatasource.data.map(item => item.value));
   }
 
   /* The label for the checkbox on the passed row */
   checkboxLabel(row?: StaticInvoiceItems): string {
     if(!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    } else {
+    }
+    /* else {
       return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
     }
+    */
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }  
   
   getDistributorsList() {
