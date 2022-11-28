@@ -163,29 +163,37 @@ export class EditInvoiceStaticComponent implements OnInit {
 
   /* Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
-    if(this.isAllSelected()) {
+    if (this.isAllSelected()) {
       this.selection.clear();
       return;
-    } 
-    /*else {
-      console.log(this.staticInvoiceDatasource.data.map(item => item.value));
-      console.log(typeof(this.staticInvoiceDatasource.data.map(item => item.value)));
-      this.selection.select(... this.staticInvoiceDatasource.data.map(item => item.value));
     }
+    // console.log(...this.staticInvoiceDatasource.data.map(item => item.value));
+    // const row = Object(this.staticInvoiceDatasource.data).value;
+    // const row = this.staticInvoiceDatasource.data.map(item => Object(item).value);
+    let row = this.staticInvoiceDatasource.data.map(item => item.value);
+
+    /*
+    row.forEach(item => delete item.action)
+    row.forEach(item => delete item.isEditable)
+    row.forEach(item => delete item.isNewRow)
     */
-    this.selection.select(... this.staticInvoiceDatasource.data.map(item => item.value));
+
+    // console.log(row);
+    console.log(typeof(row));
+    // console.log(...row);
+    this.selection.select(...row);
+    // this.selection.select(this.staticInvoiceDatasource.data.map(item => item.value));
   }
 
   /* The label for the checkbox on the passed row */
   checkboxLabel(row?: StaticInvoiceItems): string {
-    if(!row) {
+    const updatedRow = Object(row).value;
+    if(!updatedRow) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    /* else {
-      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-    }
-    */
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    // console.log(updatedRow);
+    // return `${this.selection.isSelected(updatedRow) ? 'deselect' : 'select'} row ${updatedRow.id + 1}`;
+    return `${this.selection.isSelected(updatedRow) ? 'deselect' : 'select'} row ${updatedRow.id}`;
   }  
   
   getDistributorsList() {

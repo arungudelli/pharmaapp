@@ -33,34 +33,35 @@ export class SelectionTableComponent {
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
 
-  /** Whether the number of selected elements matches the total number of rows. */
+  /* Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
-    console.log(numSelected);
-
-
+    // console.log(numSelected);
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  /* Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
       return;
     } else {
+      // console.log(this.dataSource.data);
       console.log(typeof(this.dataSource.data));
-      console.log(this.dataSource.data);
+      // console.log(...this.dataSource.data);
       this.selection.select(...this.dataSource.data);
     }
 
   }
 
-  /** The label for the checkbox on the passed row */
+  /* The label for the checkbox on the passed row */
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     } else {
+      // console.log(row, typeof(row));
+      // console.log(row);
       return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
     }
   }
