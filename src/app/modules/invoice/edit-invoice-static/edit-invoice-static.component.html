@@ -100,7 +100,6 @@
                   [indeterminate]="selection.hasValue() && !isAllSelected()"
                   [aria-label]="checkboxLabel()"
                 >
-                  {{ checkboxLabel() }}
                 </mat-checkbox>
               </th>
               <td mat-cell *matCellDef="let row">
@@ -110,7 +109,6 @@
                   [checked]="selection.isSelected(row.value)"
                   [aria-label]="checkboxLabel(row.value)"
                 >
-                  {{ checkboxLabel(row) }}
                 </mat-checkbox>
               </td>
             </ng-container>
