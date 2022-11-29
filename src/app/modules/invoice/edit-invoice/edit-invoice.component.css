@@ -161,6 +161,10 @@
   display: none;
 }
 
+::ng-deep .mat-column-mfgDate .mat-mdc-text-field-wrapper {
+  padding-left: 5px;
+}
+
 ::ng-deep .mat-column-expDate .mat-mdc-text-field-wrapper {
   padding-left: 5px;
 }
@@ -168,6 +172,12 @@
 .mat-mdc-dialog-title {
   margin-bottom: 0px;
   padding-top: 0px;
+}
+
+::ng-deep .mat-column-mfgDate .mat-datepicker-toggle .mat-mdc-icon-button {
+  padding: 0px;
+  width: 24px;
+  height: 24px;
 }
 
 ::ng-deep .mat-column-expDate .mat-datepicker-toggle .mat-mdc-icon-button {
