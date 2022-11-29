@@ -82,8 +82,8 @@ export class InvoiceListComponent {
   
   openInvoiceDialog() {
     this.dialog.open(
-      // EditInvoiceComponent, 
-      EditInvoiceStaticComponent,
+      EditInvoiceComponent, 
+      // EditInvoiceStaticComponent,
       {
         maxWidth: '100vw', 
         maxHeight: '100vh', 
@@ -107,8 +107,8 @@ export class InvoiceListComponent {
 
   editSelectedInvoice(invoice: Invoice[]) {
     this.dialog.open(
-      EditInvoiceStaticComponent, 
-      // EditInvoiceComponent,
+      // EditInvoiceStaticComponent, 
+      EditInvoiceComponent,
       {data: {invoice}}
     );
   }
