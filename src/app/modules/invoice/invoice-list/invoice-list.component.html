@@ -15,9 +15,27 @@
     <!-- matSort -->
     <!-- Columns -->
     <ng-container [matColumnDef]="col.key" *ngFor="let col of columnSchema">
-      <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        <div *ngIf="col.type !== 'object'">
+          {{ col.label }}
+        </div>
+        <div *ngIf="col.type === 'object'">
+          {{ col.label }}
+        </div>
+      </th>
       <td mat-cel *matCellDef="let row">
-        {{ row[col.key] }}
+        <div *ngIf="col.type !== 'object'">
+          {{ row[col.key] }}
+        </div>
+        <div *ngIf="col.type === 'object'">
+          <!-- {{ row[col.object][0][col.key] }} -->
+          {{ row[col.object][0][col.key] }}
+        </div>
+        <!-- 
+        <div *ngIf="col.type === 'object'">
+          {{ row[col.object][0][col.key] | date }}
+        </div>
+         -->
       </td>
     </ng-container>
 
