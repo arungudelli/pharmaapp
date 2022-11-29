@@ -19,7 +19,50 @@ export class InvoiceListComponent {
 
   selectedInvoice: Invoice = {} as Invoice;
 
-  invoiceColumns: string[] = ['id', 'items', 'amount', 'totalDiscount', 'actualAmount'];
+  columnSchema = [
+    {key: 'select', type: '', label: '', object:''},
+    {key: 'id', type: 'number', label: '#', object:''},
+    {key: 'invoiceNumber', type: 'number', label: 'invoiceNumber', object:''},
+    {key: 'invoiceDate', type: 'text', label: 'invoiceDate', object:''},
+    // {key: 'distributor', type: 'object', label: 'Distributor'},
+    // {key: 'id', type: 'number', label: 'id', object:'distributor'},
+    // {key: 'name', type: 'text', label: 'name', object:'distributor'},
+    // {key: 'email', type: 'text', label: 'email', object:'distributor'},
+    // {key: 'phoneNumber', type: 'number', label: 'phoneNumber', object:'distributor'},
+    // {key: 'gstin ', type: 'text', label: 'gstin', object:'distributor'},
+    // {key: 'pan', type: 'text', label: 'pan', object:'distributor'},
+    // {key: 'dlno', type: 'text', label: 'dlno', object:'distributor'},
+    // {key: 'address', type: 'text', label: 'address', object:'distributor'},
+    // {key: 'city', type: 'text', label: 'city', object:'distributor'},
+    // {key: 'state', type: 'text', label: 'state', object:'distributor'},
+    // {key: 'pinCode', type: 'text', label: 'pinCode', object:'distributor'},
+    // {key: 'id', type: 'number', label: 'id', object: 'invoiceItems'},
+    // {key: 'id', type: 'number', label: 'id', object:'item'},
+    // {key: 'name', type: 'text', label: 'name', object:'item'},
+    // {key: 'description', type: 'text', label: 'description', object:'item'},
+    // {key: 'id', type: 'number', label: 'id', object:'hsn'},
+    // {key: 'hsnCode', type: 'text', label: 'hsnCode', object:'hsn'},
+    // {key: 'description', type: 'text', label: 'description', object:'hsn'},
+    // {key: 'gstRate', type: 'number', label: 'gstRate', object:'hsn'},
+    // {key: 'id', type: 'number', label: 'id', object:'manfacturer'},
+    // {key: 'name', type: 'text', label: 'name', object:'manfacturer'},
+    // {key: 'pack', type: '', label: 'pack', object:'invoiceItems'},
+    // {key: 'batchNo', type: 'text', label: 'batchNo', object:'invoiceItems'},
+    // {key: 'mfgDate', type: 'text', label: 'mfgDate', object:'invoiceItems'},
+    // {key: 'expDate', type: 'text', label: 'expDate', object:'invoiceItems'},
+    // {key: 'qty', type: 'number', label: 'qty', object:'invoiceItems'},
+    // {key: 'freeItems', type: 'number', label: 'freeItems', object:'invoiceItems'},
+    // {key: 'discount', type: 'number', label: 'discount', object:'invoiceItems'},
+    // {key: 'mrp', type: 'number', label: 'mrp', object:'invoiceItems'},
+    // {key: 'rate', type: 'number', label: 'rate', object:'invoiceItems'},
+    {key: 'amount', type: 'number', label: 'Amount', object:''},
+    {key: 'totalDiscount', type: 'number', label: 'Total Discount', object:''},
+    {key: 'actualAmount', type: 'number', label: 'Actual Amount', object:''}
+  ];
+
+  invoiceColumns: string[] = this.columnSchema.map(col => col.key);
+
+  // invoiceColumns: string[] = ['id', 'items', 'amount', 'totalDiscount', 'actualAmount'];
 
   invoiceDatasource = new MatTableDataSource<Invoice>();
 
@@ -29,7 +72,7 @@ export class InvoiceListComponent {
   constructor(public dialog: MatDialog, public invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    // this.getAllInvoices();
+    this.getAllInvoices();
   }
 
   ngAfterViewInit(): void {
@@ -38,16 +81,24 @@ export class InvoiceListComponent {
   }
   
   openInvoiceDialog() {
-    // this.dialog.open(EditInvoiceComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
-    // this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '95%', height: '95%', panelClass: 'full-screen-modal'});
-    this.dialog.open(EditInvoiceStaticComponent, {maxWidth: '100vw', maxHeight: '100vh', width: '98%', height: '98%', panelClass: 'fixActionRow'
-    ,autoFocus: false
-  });
+    this.dialog.open(
+      EditInvoiceComponent, 
+      // EditInvoiceStaticComponent,
+      {
+        maxWidth: '100vw', 
+        maxHeight: '100vh', 
+        width: '98%', 
+        height: '98%', 
+        panelClass: 'fixActionRow',
+        autoFocus: false
+      }
+    );
   }
 
   getAllInvoices() {
     this.invoiceService.getInvoices().subscribe(
       res => {
+        // console.log('get invoices: ', res);
         this.invoice = res;
         this.invoiceDatasource.data = res;
       }
@@ -55,7 +106,10 @@ export class InvoiceListComponent {
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
-    // this.dialog.open(EditInvoiceComponent, {data: {invoice}});
-    this.dialog.open(EditInvoiceStaticComponent, {data: {invoice}});
+    this.dialog.open(
+      // EditInvoiceStaticComponent, 
+      EditInvoiceComponent,
+      {data: {invoice}}
+    );
   }
 }
