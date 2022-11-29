@@ -246,7 +246,46 @@ export class EditInvoiceComponent {
 
   saveInvoice() {
     console.log("saved form: ", this.editInvoiceForm.get('invoiceRows')?.value);
+    /*
+    saved form
+    invoiceItems
+    [
+    {
+        "id": null,
+        "name": "1",
+        "pack": "1",
+        "batchNo": "1",
+        "mfgDate": "2022-11-28T18:30:00.000Z",
+        "expDate": "2022-11-28T18:30:00.000Z",
+        "qty": "1",
+        "freeItems": "1",
+        "mrp": "1",
+        "rate": "1",
+        "amount": "1",
+        "gst": "1",
+        "hsnCode": "1",
+        "action": "newRecord"
+    }
+    ]
+    */
+
     console.log("accounts form: ", this.editInvoiceAccountsForm.value);
+    /*
+    accounts form
+    {
+    "distributor": distributor,
+    "invoiceNo": "",
+    "invoiceDate": "",
+    "amount": "1",
+    "totalDiscount": "1",
+    "actualAmount": "1"
+    }
+    */
+
+    /*
+    to add
+    items
+    */
   }
    
 }
