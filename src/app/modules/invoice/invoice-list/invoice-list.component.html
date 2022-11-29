@@ -27,15 +27,12 @@
         <div *ngIf="col.type !== 'object'">
           {{ row[col.key] }}
         </div>
-        <div *ngIf="col.type === 'object'">
-          <!-- {{ row[col.object][0][col.key] }} -->
+        <div *ngIf="col.type === 'object' && col.subtype !== 'date'">
           {{ row[col.object][0][col.key] }}
         </div>
-        <!-- 
-        <div *ngIf="col.type === 'object'">
+        <div *ngIf="col.type === 'object' && col.subtype === 'date'">
           {{ row[col.object][0][col.key] | date }}
         </div>
-         -->
       </td>
     </ng-container>
 
