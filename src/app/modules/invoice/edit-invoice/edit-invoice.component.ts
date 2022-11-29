@@ -57,6 +57,8 @@ export class EditInvoiceComponent {
   
   items: Item[] = [];
 
+  filteredItemOptions?: Observable<string[]>;
+
   filteredDistributorOptions?: Observable<string[]>;
 
   ELEMENT_DATA : StaticInvoiceItems[] = [];
@@ -91,8 +93,29 @@ export class EditInvoiceComponent {
       mrp: new FormControl(val.mrp), 
       rate: new FormControl(val.rate), 
       amount: new FormControl(val.amount), 
+
+      /*
+      items: new FormGroup({
+        id: new FormControl(),
+        name: new FormControl(),
+        description: new FormControl(),
+        hsn: new FormGroup({
+          id: new FormControl(),
+          hsnCode: new FormControl(),
+          description: new FormControl(),
+          gstRate: new FormControl()
+        }),
+        manfacturer: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl()
+        })
+      }),
+      */
+
+      // /*
       gst: new FormControl(val.gst), 
       hsnCode: new FormControl(val.hsnCode),
+      // */
 
       action: new FormControl('existingRecord'),
       isEditable: new FormControl(true),
@@ -101,6 +124,23 @@ export class EditInvoiceComponent {
   });
 
   editInvoiceAccountsForm = new FormGroup({
+    // /*
+    items: new FormGroup({
+      id: new FormControl(),
+      name: new FormControl(),
+      description: new FormControl(),
+      hsn: new FormGroup({
+        id: new FormControl(),
+        hsnCode: new FormControl(),
+        description: new FormControl(),
+        gstRate: new FormControl()
+      }),
+      manfacturer: new FormGroup({
+        id: new FormControl(),
+        name: new FormControl()
+      })
+    }),
+    // */
     distributor: new FormGroup({
       id: new FormControl(),
       name: new FormControl(),
@@ -130,6 +170,7 @@ export class EditInvoiceComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.editInvoiceAccountsForm.controls.items.setValue({id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}});
     this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',email:'',phoneNumber:0,gstin:'',pan:'',dlno:'',address:'',city:'',state:'',pinCode:''});
 
     this.getDistributorsList();
@@ -151,8 +192,45 @@ export class EditInvoiceComponent {
       res => {
         // console.log('get invoices: ', res);
         this.items = res;
+        this.filterSearchItems(res);
       } 
     )
+  }
+
+  filterSearchItems(res: Item[]) {
+    // this.filteredItemOptions = this.editInvoiceAccountsForm.controls.items.valueChanges.pipe(
+      // this.filteredItemOptions = this.editInvoiceForm.controls.invoiceRows.get('name')?.valueChanges.pipe(
+      // this.filteredItemOptions = this.editInvoiceForm.get('invoiceRows')?.get('name')?.valueChanges.pipe(
+      this.filteredItemOptions = this.editInvoiceForm.get('invoiceRows.name')?.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        console.log(term, res);
+        
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+      },)
+    )
+  }
+
+  onSelectItem(option: string) {
+    const item = this.items.filter(item => item.name === option)[0];
+
+    /*
+    const id = this.distributors.filter(item => item.name === option)[0].id;
+    const name = this.distributors.filter(item => item.name === option)[0].name;
+    const email = this.distributors.filter(item => item.name === option)[0].email;
+    const phoneNumber = this.distributors.filter(item => item.name === option)[0].phoneNumber;
+    const gstin  = this.distributors.filter(item => item.name === option)[0].gstin;
+    const address = this.distributors.filter(item => item.name === option)[0].address;
+    const city = this.distributors.filter(item => item.name === option)[0].city;
+    const state = this.distributors.filter(item => item.name === option)[0].state;
+    const pinCode = this.distributors.filter(item => item.name === option)[0].pinCode;
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id, name, email, phoneNumber, gstin, address, city, state, pinCode,pan:'',dlno:''});
+    */
+    console.log('selected item: ', item);
+    
+    this.editInvoiceAccountsForm.controls.items.setValue(item);
   }
 
   filterSearchDistributors(res: Distributor[]) {
