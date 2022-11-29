@@ -259,10 +259,9 @@ export class EditInvoiceStaticComponent implements OnInit {
 
   removeRows() {
     this.selection.selected.forEach(item => {
-      let index: number = this.staticInvoiceDatasource.data.map(e=>e.value).findIndex(d => d === item);
-      console.log(index);
-      this.staticInvoiceDatasource.data.map(e=>e.value).splice(index, 1);
-      this.staticInvoiceDatasource = new MatTableDataSource(this.staticInvoiceDatasource.data.map(e=>e.value));
+      let index: number = this.staticInvoiceDatasource.data.findIndex(d => d.value === item);
+      this.staticInvoiceDatasource.data.splice(index, 1);
+      this.staticInvoiceDatasource = new MatTableDataSource(this.staticInvoiceDatasource.data);
     });
     this.selection =  new SelectionModel<StaticInvoiceItems>(true, []);
   }
