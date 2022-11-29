@@ -20,44 +20,43 @@ export class InvoiceListComponent {
   selectedInvoice: Invoice = {} as Invoice;
 
   columnSchema = [
-    {key: 'select', type: '', label: '', object:'', subtype:''},
-    {key: 'id', type: 'number', label: '#', object:'', subtype:''},
-    {key: 'invoiceNumber', type: 'number', label: 'invoiceNumber', object:'', subtype:''},
-    {key: 'invoiceDate', type: 'text', label: 'invoiceDate', object:'', subtype:''},
-    // {key: 'distributor', type: 'object', label: 'Distributor Name', object: 'distributor.name', subtype:''},
-    // {key: 'id', type: 'object', label: 'id', object:'distributor', subtype:''},
-    // {key: 'name', type: 'object', label: 'name', object:'distributor', subtype:''},
-    // {key: 'email', type: 'object', label: 'email', object:'distributor', subtype:''},
-    // {key: 'phoneNumber', type: 'object', label: 'phoneNumber', object:'distributor', subtype:''},
-    // {key: 'gstin ', type: 'object', label: 'gstin', object:'distributor', subtype:''},
-    // {key: 'pan', type: 'object', label: 'pan', object:'distributor', subtype:''},
-    // {key: 'dlno', type: 'object', label: 'dlno', object:'distributor', subtype:''},
-    // {key: 'address', type: 'object', label: 'address', object:'distributor', subtype:''},
-    // {key: 'city', type: 'object', label: 'city', object:'distributor', subtype:''},
-    // {key: 'state', type: 'object', label: 'state', object:'distributor', subtype:''},
-    // {key: 'pinCode', type: 'object', label: 'pinCode', object:'distributor', subtype:''},
-    // {key: 'id', type: 'object', label: 'id', object: 'invoiceItems', subtype:''},
-    // {key: 'id', type: 'object', label: 'id', object:'item', subtype:''},
-    // {key: 'name', type: 'object', label: 'name', object:'item', subtype:''},
-    // {key: 'description', type: 'object', label: 'description', object:'item', subtype:''},
-    // {key: 'id', type: 'object', label: 'id', object:'hsn', subtype:''},
-    // {key: 'hsnCode', type: 'object', label: 'hsnCode', object:'hsn', subtype:''},
-    // {key: 'description', type: 'object', label: 'description', object:'hsn', subtype:''},
-    // {key: 'gstRate', type: 'object', label: 'gstRate', object:'hsn', subtype:''},
-    // {key: 'id', type: 'object', label: 'id', object:'manfacturer', subtype:''},
-    // {key: 'name', type: 'object', label: 'name', object:'manfacturer', subtype:''},
-    // {key: 'pack', type: 'object', label: 'pack', object:'invoiceItems', subtype:''},
-    // {key: 'batchNo', type: 'object', label: 'batchNo', object:'invoiceItems', subtype:''},
-    {key: 'mfgDate', type: 'object', label: 'Mfg. Date', object:'invoiceItems', subtype:'date'},
-    // {key: 'expDate', type: 'object', label: 'expDate', object:'invoiceItems', subtype:''},
-    // {key: 'qty', type: 'object', label: 'qty', object:'invoiceItems', subtype:''},
-    // {key: 'freeItems', type: 'object', label: 'freeItems', object:'invoiceItems', subtype:''},
-    // {key: 'discount', type: 'object', label: 'discount', object:'invoiceItems', subtype:''},
-    // {key: 'mrp', type: 'object', label: 'mrp', object:'invoiceItems', subtype:''},
-    // {key: 'rate', type: 'object', label: 'rate', object:'invoiceItems', subtype:''},
-    {key: 'amount', type: 'number', label: 'Amount', object:'', subtype:''},
-    {key: 'totalDiscount', type: 'number', label: 'Total Discount', object:'', subtype:''},
-    {key: 'actualAmount', type: 'number', label: 'Actual Amount', object:'', subtype: ''}
+    {key: 'select', type: '', label: '', object:'', isObject: false, formGroupName: ''},
+    {key: 'id', type: 'number', label: '#', object:'', isObject: false, formGroupName: ''},
+    {key: 'invoiceNumber', type: 'number', label: 'invoiceNumber', object:'', isObject: false, formGroupName: ''},
+    {key: 'invoiceDate', type: 'text', label: 'invoiceDate', object:'', isObject: false, formGroupName: ''},
+    // {key: 'id', type: 'number', label: 'id', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'name', type: 'text', label: 'Distributor Name', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'email', type: 'text', label: 'email', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'phoneNumber', type: 'number', label: 'phoneNumber', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'gstin ', type: 'text', label: 'gstin', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'pan', type: 'text', label: 'pan', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'dlno', type: 'text', label: 'dlno', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'address', type: 'text', label: 'address', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'city', type: 'text', label: 'city', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'state', type: 'text', label: 'state', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'pinCode', type: 'text', label: 'pinCode', object:'distributor', isObject: true, formGroupName: ''},
+    // {key: 'id', type: 'number', label: 'id', object: 'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'id', type: 'number', label: 'id', object:'item', isObject:'', formGroupName: ''},
+    // {key: 'name', type: 'text', label: 'name', object:'item', isObject:'', formGroupName: ''},
+    // {key: 'description', type: 'text', label: 'description', object:'item', isObject:'', formGroupName: ''},
+    // {key: 'id', type: 'number', label: 'id', object:'hsn', isObject:'', formGroupName: ''},
+    // {key: 'hsnCode', type: 'text', label: 'hsnCode', object:'hsn', isObject:'', formGroupName: ''},
+    // {key: 'description', type: 'text', label: 'description', object:'hsn', isObject:'', formGroupName: ''},
+    // {key: 'gstRate', type: 'number', label: 'gstRate', object:'hsn', isObject:'', formGroupName: ''},
+    // {key: 'id', type: 'number', label: 'id', object:'manfacturer', isObject:'', formGroupName: ''},
+    // {key: 'name', type: 'text', label: 'name', object:'manfacturer', isObject:'', formGroupName: ''},
+    // {key: 'pack', type: 'text', label: 'pack', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'batchNo', type: 'text', label: 'batchNo', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'mfgDate', type: 'date', label: 'Mfg. Date', object:'invoiceItems', isObject: true, formGroupName: ''},
+    // {key: 'expDate', type: 'date', label: 'expDate', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'qty', type: 'number', label: 'qty', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'freeItems', type: 'number', label: 'freeItems', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'discount', type: 'number', label: 'discount', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'mrp', type: 'number', label: 'mrp', object:'invoiceItems', isObject:'', formGroupName: ''},
+    // {key: 'rate', type: 'number', label: 'rate', object:'invoiceItems', isObject:'', formGroupName: ''},
+    {key: 'amount', type: 'number', label: 'Amount', object:'', isObject: false, formGroupName: ''},
+    {key: 'totalDiscount', type: 'number', label: 'Total Discount', object:'', isObject: false, formGroupName: ''},
+    {key: 'actualAmount', type: 'number', label: 'Actual Amount', object:'', isObject: false, formGroupName: ''}
   ];
 
   invoiceColumns: string[] = this.columnSchema.map(col => col.key);
@@ -82,8 +81,8 @@ export class InvoiceListComponent {
   
   openInvoiceDialog() {
     this.dialog.open(
-      EditInvoiceComponent, 
-      // EditInvoiceStaticComponent,
+      // EditInvoiceComponent, 
+      EditInvoiceStaticComponent,
       {
         maxWidth: '100vw', 
         maxHeight: '100vh', 
@@ -107,8 +106,8 @@ export class InvoiceListComponent {
 
   editSelectedInvoice(invoice: Invoice[]) {
     this.dialog.open(
-      // EditInvoiceStaticComponent, 
-      EditInvoiceComponent,
+      EditInvoiceStaticComponent, 
+      // EditInvoiceComponent,
       {data: {invoice}}
     );
   }
