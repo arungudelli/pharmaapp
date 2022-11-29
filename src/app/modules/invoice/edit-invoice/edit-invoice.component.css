@@ -1,41 +1,89 @@
-.mat-column-id mat-form-field {
+.mat-column-select {
   width: 40px;
+}
+
+.mat-column-pack {
+  width: 85px;
 }
 
 .mat-column-pack mat-form-field {
   width: 80px;
 }
 
+.mat-column-batchNo {
+  width: 125px;
+}
+
 .mat-column-batchNo mat-form-field {
   width: 120px;
+}
+
+.mat-column-mfgDate {
+  width: 135px;
+}
+
+.mat-column-mfgDate mat-form-field {
+  width: 130px;
+}
+
+.mat-column-expDate {
+  width: 135px;
 }
 
 .mat-column-expDate mat-form-field {
   width: 130px;
 }
 
+.mat-column-qty {
+  width: 75px;
+}
+
 .mat-column-qty mat-form-field {
   width: 70px;
+}
+
+.mat-column-freeItems {
+  width: 65px;
 }
 
 .mat-column-freeItems mat-form-field {
   width: 60px;
 }
 
+.mat-column-mrp {
+  width: 105px;
+}
+
 .mat-column-mrp mat-form-field {
   width: 100px;
+}
+
+.mat-column-rate {
+  width: 105px;
 }
 
 .mat-column-rate mat-form-field {
   width: 100px;
 }
 
+.mat-column-amount {
+  width: 105px;
+}
+
 .mat-column-amount mat-form-field {
   width: 100px;
 }
 
+.mat-column-gst {
+  width: 75px;
+}
+
 .mat-column-gst mat-form-field {
   width: 70px;
+}
+
+.mat-column-hsnCode {
+  width: 125px;
 }
 
 .mat-column-hsnCode mat-form-field {
@@ -65,6 +113,38 @@
 .mdc-data-table__cell,
 .mdc-data-table__header-cell {
   padding: 0 5px 0 5px;
+}
+
+::ng-deep .mdc-text-field {
+  padding: 0 5px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-infix {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  min-height: 30px;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+::ng-deep .mat-column-expDate .mat-mdc-text-field-wrapper {
+  padding-left: 5px;
+}
+
+::ng-deep .mat-column-expDate .mat-datepicker-toggle .mat-mdc-icon-button {
+  padding: 0px;
+  width: 24px;
+  height: 24px;
+}
+
+::ng-deep .mat-mdc-table .mdc-data-table__row {
+  height: 41px;
+}
+
+::ng-deep .mat-mdc-table .mdc-data-table__header-row {
+  height: 41px;
 }
 
 .mdc-text-field {

@@ -114,8 +114,8 @@ export class EditInvoiceComponent {
       state: new FormControl(),
       pinCode: new FormControl()
     }),
-    billNo: new FormControl(''),
-    billDate: new FormControl(''),
+    invoiceNo: new FormControl(''),
+    invoiceDate: new FormControl(''),
     amount: new FormControl(0),
     totalDiscount: new FormControl(0),
     actualAmount: new FormControl(0)

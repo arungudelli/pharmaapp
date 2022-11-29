@@ -75,7 +75,7 @@
                       ? 'fill'
                       : 'outline'
                   "
-                  *ngIf="col.key !== 'expDate'"
+                  *ngIf="col.type !== 'date'"
                 >
                   <input
                     matInput
@@ -87,7 +87,32 @@
                   />
                 </mat-form-field>
 
-                <!-- for expDate input -->
+                <!-- for date input -->
+                <mat-form-field
+                  [appearance]="
+                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                      ? 'fill'
+                      : 'outline'
+                  "
+                  *ngIf="col.type === 'date'"
+                >
+                  <input
+                    [matDatepicker]="datePicker"
+                    matInput
+                    [type]="col.type"
+                    formControlName="{{ col.key }}"
+                    [readonly]="
+                      editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                    "
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="datePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #datePicker></mat-datepicker>
+
+                  <!-- for expDate input -->
+                  <!--
                 <mat-form-field
                   [appearance]="
                     editInvoiceForm.get('invoiceRows')!.value[i].isEditable
@@ -109,7 +134,8 @@
                     matSuffix
                     [for]="expDatePicker"
                   ></mat-datepicker-toggle>
-                  <mat-datepicker #expDatePicker></mat-datepicker>
+                  <mat-datepicker #expDatePicker></mat-datepicker>    
+                -->
                 </mat-form-field>
               </td>
             </div>
