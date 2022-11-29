@@ -4,7 +4,6 @@ import { Item } from "./item";
 export interface InvoiceItems {
     id: number;
     item: Item;
-    distributor: Distributor;
     pack: string;
     batchNo: string;
     mfgDate: Date;

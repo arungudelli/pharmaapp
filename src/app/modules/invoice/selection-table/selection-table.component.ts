@@ -2,14 +2,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface PeriodicElement {
+export interface Element {
   name: string;
   position: number;
   weight: number;
   symbol: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
+const ELEMENT_DATA: Element[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
   {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
@@ -30,35 +30,38 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 export class SelectionTableComponent {
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  data = Object.assign( ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Element>(this.data);
+  selection = new SelectionModel<Element>(true, []);
 
   /* Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
-    // console.log(numSelected);
     return numSelected === numRows;
   }
 
-  /* Selects all rows if they are not all selected; otherwise clear selection. */
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      console.log(this.selection.selected);
-      return;
-    } else {
-      // console.log(this.dataSource.data);
-      // console.log(typeof(this.dataSource.data));
-      // console.log(...this.dataSource.data);
-      this.selection.select(...this.dataSource.data);
-      console.log(this.selection.selected);
-    }
+  removeSelectedRows() {
+    this.selection.selected.forEach(item => {
+      let index: number = this.data.findIndex((d: Element) => d === item);
+      console.log(index);
+      this.data.splice(index,1)
+      // console.log(this.data.splice(index,1));
+      this.dataSource = new MatTableDataSource<Element>(this.data);
+      console.log(this.dataSource.data);
+    });
+    this.selection = new SelectionModel<Element>(true, []);
+  }
 
+  /* Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /* The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: Element): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     } else {
