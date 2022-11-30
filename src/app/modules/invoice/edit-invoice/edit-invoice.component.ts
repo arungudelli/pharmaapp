@@ -83,7 +83,7 @@ export class EditInvoiceComponent {
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
       id: new FormControl(val.id), 
-      name: new FormControl(val.name), 
+      // name: new FormControl(val.name), 
       pack: new FormControl(val.pack), 
       batchNo: new FormControl(val.batchNo), 
       mfgDate: new FormControl(val.mfgDate), 
@@ -96,12 +96,12 @@ export class EditInvoiceComponent {
 
       /*
       items: new FormGroup({
-        id: new FormControl(),
-        name: new FormControl(),
-        description: new FormControl(),
+        id: new FormControl(val.id),
+        name: new FormControl(val.name),
+        description: new FormControl(val),
         hsn: new FormGroup({
           id: new FormControl(),
-          hsnCode: new FormControl(),
+          hsnCode: new FormControl()),
           description: new FormControl(),
           gstRate: new FormControl()
         }),
@@ -124,7 +124,7 @@ export class EditInvoiceComponent {
   });
 
   editInvoiceAccountsForm = new FormGroup({
-    // /*
+    /*
     items: new FormGroup({
       id: new FormControl(),
       name: new FormControl(),
@@ -140,7 +140,7 @@ export class EditInvoiceComponent {
         name: new FormControl()
       })
     }),
-    // */
+    */
     distributor: new FormGroup({
       id: new FormControl(),
       name: new FormControl(),
@@ -170,7 +170,7 @@ export class EditInvoiceComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.editInvoiceAccountsForm.controls.items.setValue({id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}});
+    // this.editInvoiceAccountsForm.controls.items.setValue({id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}});
     this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',email:'',phoneNumber:0,gstin:'',pan:'',dlno:'',address:'',city:'',state:'',pinCode:''});
 
     this.getDistributorsList();
@@ -199,9 +199,9 @@ export class EditInvoiceComponent {
 
   filterSearchItems(res: Item[]) {
     // this.filteredItemOptions = this.editInvoiceAccountsForm.controls.items.valueChanges.pipe(
-      // this.filteredItemOptions = this.editInvoiceForm.controls.invoiceRows.get('name')?.valueChanges.pipe(
+      this.filteredItemOptions = (this.editInvoiceForm.get('invoiceRows') as FormArray).get('items.name')?.valueChanges.pipe(
       // this.filteredItemOptions = this.editInvoiceForm.get('invoiceRows')?.get('name')?.valueChanges.pipe(
-      this.filteredItemOptions = this.editInvoiceForm.get('invoiceRows.name')?.valueChanges.pipe(
+      // this.filteredItemOptions = this.editInvoiceForm.get('invoiceRows.name')?.valueChanges.pipe(
       startWith(''),
       map(term => {
         console.log(term, res);
@@ -230,7 +230,8 @@ export class EditInvoiceComponent {
     */
     console.log('selected item: ', item);
     
-    this.editInvoiceAccountsForm.controls.items.setValue(item);
+    // this.editInvoiceAccountsForm.controls.items.setValue(item);
+    // this.editInvoiceForm.controls.invoiceRows.get('items.name')?.setValue(item);
   }
 
   filterSearchDistributors(res: Distributor[]) {
