@@ -7,7 +7,7 @@ export interface Invoice {
     invoiceNumber: string;
     invoiceDate: Date;
     distributor: Distributor;
-    invoiceItems: InvoiceItems;
+    invoiceItems: InvoiceItems[];
     amount: number;
     totalDiscount: number;
     actualAmount: number;
