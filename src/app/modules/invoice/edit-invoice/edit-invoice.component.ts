@@ -335,7 +335,7 @@ export class EditInvoiceComponent {
     // this.editInvoiceForm.get('invoiceRows')?.value.map(x =>this.editInvoiceAccountsForm.controls.invoiceItems.setValue(x));
     // console.log('invoice save object: ', this.editInvoiceAccountsForm.value);
     
-    // this.invoiceService.saveInvoice(finalObject);
+    this.invoiceService.saveInvoice(finalObject as Invoice);
   }
    
 } 
