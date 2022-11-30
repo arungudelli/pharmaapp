@@ -87,7 +87,7 @@ export class EditInvoiceComponent {
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
       id: new FormControl(val.id), 
-      /*
+      // /*
       item: new FormGroup({
         id: new FormControl(val.item.id),
         name: new FormControl(val.item.name),
@@ -103,7 +103,7 @@ export class EditInvoiceComponent {
           name: new FormControl(val.item.manfacturer.name),
         })
       }),
-      */
+      // */
       pack: new FormControl(val.pack), 
       batchNo: new FormControl(val.batchNo), 
       mfgDate: new FormControl(val.mfgDate), 
@@ -178,9 +178,15 @@ export class EditInvoiceComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.editInvoiceAccountsForm.controls.id.setValue(0);
+    this.editInvoiceAccountsForm.controls.invoiceNumber.setValue('');
+    this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
     this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,amount:0});
-    // this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',email:'',phoneNumber:0,gstin:'',pan:'',dlno:'',address:'',city:'',state:'',pinCode:''});
-
+    this.editInvoiceAccountsForm.controls.amount.setValue(0);
+    this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
+    this.editInvoiceAccountsForm.controls.actualAmount.setValue(0);
+    
     this.getItemsList();
     // this.getDistributorsList();
   }
