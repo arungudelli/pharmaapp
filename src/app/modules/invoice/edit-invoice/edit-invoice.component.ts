@@ -80,7 +80,7 @@ export class EditInvoiceComponent {
     { key: 'freeItems', type: 'number', label: 'Free' }, 
     { key: 'mrp', type: 'number', label: 'MRP' }, 
     { key: 'rate', type: 'number', label: 'Rate' }, 
-    { key: 'amount', type: 'number', label: 'Amount' }, 
+    { key: 'discount', type: 'number', label: 'Discount' }, 
     { key: 'gstRate', type: 'number', label: 'GST %' }, 
     { key: 'hsnCode', type: 'text', label: 'HSN Code' },
   ];
@@ -97,7 +97,7 @@ export class EditInvoiceComponent {
       freeItems: new FormControl(val.freeItems), 
       mrp: new FormControl(val.mrp), 
       rate: new FormControl(val.rate), 
-      amount: new FormControl(val.amount), 
+      discount: new FormControl(val.discount), 
       gstRate: new FormControl(val.gstRate),
       hsnCode: new FormControl(val.hsnCode),
 
@@ -134,7 +134,7 @@ export class EditInvoiceComponent {
       freeItems: new FormControl(), 
       mrp: new FormControl(), 
       rate: new FormControl(), 
-      amount: new FormControl(), 
+      discount: new FormControl(), 
     }),
     distributor: new FormGroup({
       id: new FormControl(),
@@ -170,7 +170,7 @@ export class EditInvoiceComponent {
     this.editInvoiceAccountsForm.controls.invoiceNumber.setValue('');
     this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
     this.editInvoiceAccountsForm.controls.distributor.setValue({id:1,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
-    this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,amount:0});
+    this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,discount:0});
     this.editInvoiceAccountsForm.controls.amount.setValue(0);
     this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
     this.editInvoiceAccountsForm.controls.actualAmount.setValue(0);
@@ -183,8 +183,10 @@ export class EditInvoiceComponent {
     this.distributorService.getDistributors().subscribe(
       res => {
         // console.log('get distributors: ', res);
+        // console.log('get first distributor: ', res[0]);
         this.distributors = res;
-        this.filterSearchDistributors(res);
+        // this.filterSearchDistributors(res);
+        this.editInvoiceAccountsForm.controls.distributor.setValue(res[0])
       }
     )
   }
@@ -286,7 +288,7 @@ export class EditInvoiceComponent {
       freeItems: new FormControl(), 
       mrp: new FormControl(), 
       rate: new FormControl(), 
-      amount: new FormControl(), 
+      discount: new FormControl(), 
       gstRate: new FormControl(),
       hsnCode: new FormControl(),
 
@@ -315,11 +317,26 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
+
+    console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
     
     let invoiceRow: any[] = [];
 
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
-      invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
+      // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
+      invoiceRow.push({
+        id: this.editInvoiceForm.controls.invoiceRows.value[i].id,
+        item: this.selectedItems[i],
+        pack: this.editInvoiceForm.controls.invoiceRows.value[i].pack,
+        batchNo: this.editInvoiceForm.controls.invoiceRows.value[i].batchNo,
+        mfgDate: this.editInvoiceForm.controls.invoiceRows.value[i].mfgDate,
+        expDate: this.editInvoiceForm.controls.invoiceRows.value[i].expDate,
+        qty: this.editInvoiceForm.controls.invoiceRows.value[i].qty as number,
+        freeItems: this.editInvoiceForm.controls.invoiceRows.value[i].freeItems as number,
+        discount: this.editInvoiceForm.controls.invoiceRows.value[i].discount as number,
+        mrp: this.editInvoiceForm.controls.invoiceRows.value[i].mrp as number,
+        rate: this.editInvoiceForm.controls.invoiceRows.value[i].rate as number,
+      })
     }
 
     const finalObject = {
@@ -327,7 +344,7 @@ export class EditInvoiceComponent {
       invoiceNumber: this.editInvoiceAccountsForm.value.invoiceNumber,
       invoiceDate: this.editInvoiceAccountsForm.value.invoiceDate,
       distributor: this.editInvoiceAccountsForm.value.distributor,
-      invoiceItems: invoiceRow as unknown as InvoiceItems[],
+      invoiceItems: invoiceRow as InvoiceItems[],
       amount: this.editInvoiceAccountsForm.value.amount,
       totalDiscount: this.editInvoiceAccountsForm.value.totalDiscount,
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount

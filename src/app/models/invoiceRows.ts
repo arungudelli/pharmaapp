@@ -9,7 +9,7 @@ export interface InvoiceRows {
     freeItems: number, 
     mrp: number, 
     rate: number, 
-    amount: number, 
+    discount: number, 
     gstRate: number,
     hsnCode: string,
 }

@@ -145,14 +145,14 @@
                 *matCellDef="let element; let i = index"
                 [formGroup]="element"
               >
-                <!-- for all inputs except expDate & mfgDate -->
+                <!-- for all string inputs -->
                 <mat-form-field
                   [appearance]="
                     editInvoiceForm.get('invoiceRows')!.value[i].isEditable
                       ? 'fill'
                       : 'outline'
                   "
-                  *ngIf="col.type !== 'date'"
+                  *ngIf="col.type === 'text'"
                 >
                   <input
                     matInput
@@ -164,7 +164,26 @@
                   />
                 </mat-form-field>
 
-                <!-- for date input -->
+                <!-- for all number inputs -->
+                <mat-form-field
+                  [appearance]="
+                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                      ? 'fill'
+                      : 'outline'
+                  "
+                  *ngIf="col.type === 'number'"
+                >
+                  <input
+                    matInput
+                    [type]="col.type"
+                    formControlName="{{ col.key }}"
+                    [readonly]="
+                      editInvoiceForm.get('invoiceRows')!.value[i].isEditable
+                    "
+                  />
+                </mat-form-field>
+
+                <!-- for all date inputs -->
                 <ng-container *ngIf="col.type === 'date'">
                   <mat-form-field
                     [appearance]="
