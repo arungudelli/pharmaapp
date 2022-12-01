@@ -87,7 +87,7 @@ export class EditInvoiceComponent {
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
       id: new FormControl(val.id), 
-      // /*
+      /*
       item: new FormGroup({
         id: new FormControl(val.item.id),
         name: new FormControl(val.item.name),
@@ -103,7 +103,7 @@ export class EditInvoiceComponent {
           name: new FormControl(val.item.manfacturer.name),
         })
       }),
-      // */
+      */
       pack: new FormControl(val.pack), 
       batchNo: new FormControl(val.batchNo), 
       mfgDate: new FormControl(val.mfgDate), 
@@ -324,6 +324,7 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
+    debugger;
     const finalObject = {
       id: this.editInvoiceAccountsForm.value.id,
       invoiceNumber: this.editInvoiceAccountsForm.value.invoiceNumber,
