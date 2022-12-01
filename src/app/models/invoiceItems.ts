@@ -1,4 +1,3 @@
-import { Distributor } from "./distributor";
 import { Item } from "./item";
 
 export interface InvoiceItems {
