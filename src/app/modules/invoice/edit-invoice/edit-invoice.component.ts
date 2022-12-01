@@ -318,6 +318,15 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
+
+    debugger;
+
+    console.log(this.editInvoiceAccountsForm.value);
+
+    let invoice = {} as Invoice;
+
+
+    
     const finalObject = {
       id: this.editInvoiceAccountsForm.value.id,
       invoiceNumber: this.editInvoiceAccountsForm.value.invoiceNumber,
