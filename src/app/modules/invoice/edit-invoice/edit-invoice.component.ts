@@ -64,7 +64,7 @@ export class EditInvoiceComponent {
 
   ELEMENT_DATA: InvoiceRows[] = [];
 
-  indexNumber: number = 0;
+  // indexNumber: number = 0;
 
   selectedItems: Item[] = [];
 
@@ -311,7 +311,7 @@ export class EditInvoiceComponent {
     control.push(this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
     // console.log('length: ', control.length);
-    this.indexNumber = control.length;
+    // this.indexNumber = control.length;
   }
 
   removeRows() {
