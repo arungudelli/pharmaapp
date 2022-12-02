@@ -1,17 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
-
 import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceItems } from 'src/app/models/invoiceItems';
+import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { Item } from 'src/app/models/item';
 import { PickDateAdapter } from 'src/app/models/pickDateAdapter';
-import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
@@ -43,17 +42,16 @@ const datePickerFormat = {
 }
 
 @Component({
-  selector: 'app-edit-invoice',
-  templateUrl: './edit-invoice.component.html',
-  styleUrls: ['./edit-invoice.component.css'],
+  selector: 'app-edit-invoice-loop',
+  templateUrl: './edit-invoice-loop.component.html',
+  styleUrls: ['./edit-invoice-loop.component.css'],
   providers: [
     { provide: DateAdapter, useClass: PickDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: datePickerFormat }
   ]
 })
 
-export class EditInvoiceComponent {
-
+export class EditInvoiceLoopComponent {
   distributors: Distributor[] = [];
   
   items: Item[] = [];
@@ -68,7 +66,6 @@ export class EditInvoiceComponent {
 
   selectedItems: Item[] = [];
 
-  /*
   columnSchema = [
     { key: 'select', type: '', label: '' }, 
     { key: 'id', type: 'text', label: '#' }, 
@@ -85,7 +82,6 @@ export class EditInvoiceComponent {
     { key: 'gstRate', type: 'number', label: 'GST %' }, 
     { key: 'hsnCode', type: 'text', label: 'HSN Code' },
   ];
-  */
 
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
@@ -162,8 +158,7 @@ export class EditInvoiceComponent {
   
   selection = new SelectionModel<InvoiceRows>(true, []);
 
-  // invoiceColumns: string[] = this.columnSchema.map(col => col.key);
-  invoiceColumns: string[] = ['select','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
+  invoiceColumns: string[] = this.columnSchema.map(col => col.key);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
@@ -264,6 +259,7 @@ export class EditInvoiceComponent {
       this.selection.clear();
       return;
     }
+
     this.selection.select(...this.invoiceDatasource.data.map(item => Object(item).value));
   }
 
@@ -356,5 +352,5 @@ export class EditInvoiceComponent {
 
     this.invoiceService.saveInvoice(finalObject);
   }
-   
-} 
+  
+}
