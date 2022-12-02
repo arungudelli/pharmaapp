@@ -67,7 +67,7 @@
                 <mat-autocomplete
                   autoActiveFirstOption
                   #autoItem="matAutocomplete"
-                  (optionSelected)="onSelectItem($event.option.value)"
+                  (optionSelected)="onSelectItem($event.option.value, i)"
                 >
                   <mat-option
                     *ngFor="let option of filteredItemOptions | async"

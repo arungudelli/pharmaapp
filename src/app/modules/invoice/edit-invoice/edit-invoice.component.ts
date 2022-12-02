@@ -216,7 +216,7 @@ export class EditInvoiceComponent {
     
   }
 
-  onSelectItem(option: string) {
+  onSelectItem(option: string, index: number) {
     const item = this.items.filter(item => item.name === option)[0];
     const productName = this.items.filter(item => item.name === option)[0].name;
     const gstRate = this.items.filter(item => item.name === option)[0].hsn.gstRate;
@@ -231,13 +231,18 @@ export class EditInvoiceComponent {
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.id.setValue(this.indexNumber);
     */
 
-    // /*
+    /*
     console.log('index: ', this.indexNumber);
     this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.productName.setValue(productName);
     this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.gstRate.setValue(gstRate);
     this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.hsnCode.setValue(hsnCode);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
+    */
+    
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
     // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
-    // */
   }
 
   filterSearchDistributors(res: Distributor[]) {
