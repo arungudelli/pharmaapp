@@ -36,6 +36,15 @@
         <div *ngIf="col.isObject === true && col.type === 'date'">
           {{ row[col.object][col.key] | date }}
         </div>
+        <div *ngIf="col.key === 'action'">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="editSelectedInvoice(row)"
+          >
+            Edit Invoice
+          </button>
+        </div>
       </td>
     </ng-container>
 

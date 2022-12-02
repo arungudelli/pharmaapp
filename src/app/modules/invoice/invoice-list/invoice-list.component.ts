@@ -57,7 +57,7 @@ export class InvoiceListComponent {
     {key: 'amount', type: 'number', label: 'Amount', object:'', isObject: false, formGroupName: ''},
     {key: 'totalDiscount', type: 'number', label: 'Total Discount', object:'', isObject: false, formGroupName: ''},
     {key: 'actualAmount', type: 'number', label: 'Actual Amount', object:'', isObject: false, formGroupName: ''},
-    {key: 'Action', type: '', label: '', object: '', isObject: false, formGroup: ''}
+    {key: 'action', type: '', label: 'Action', object: '', isObject: false, formGroup: ''}
   ];
 
   invoiceColumns: string[] = this.columnSchema.map(col => col.key);
