@@ -179,6 +179,9 @@ export class EditInvoiceComponent {
     
     this.getItemsList();
     this.getDistributorsList();
+
+    this.editInvoice();
+    // console.log('dialog invoiceItems data: ', this.data.invoice.invoiceItems.map(x=>x.item));
   }
 
   getDistributorsList() {
@@ -332,7 +335,6 @@ export class EditInvoiceComponent {
 
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
       // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
-
       invoiceRow.push({
         id: 0,
         item: this.selectedItems[i],
@@ -359,7 +361,7 @@ export class EditInvoiceComponent {
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount
     } as Invoice
 
-    console.log('final object: ', finalObject);
+    // console.log('final object: ', finalObject);
 
     this.invoiceService.saveInvoice(finalObject);
   }
@@ -382,40 +384,35 @@ export class EditInvoiceComponent {
     })
     */
 
-    this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
-      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
-      pack: this.data.invoice.invoiceItems.at(0)?.pack,
-      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
-      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
-      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
-      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
-      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
-      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
-      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
-      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
-      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
-      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
-    }))
-    
+    this.data.invoice.invoiceItems.map(y=>{
+      // console.log(y.item.name,y.pack);
+      this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
+        productName: y.item.name,
+        pack: y.pack,
+        batchNo: y.batchNo, 
+        mfgDate: y.mfgDate, 
+        expDate: y.expDate, 
+        qty: y.qty, 
+        freeItems: y.freeItems, 
+        mrp: y.mrp, 
+        rate: y.rate, 
+        discount: y.discount, 
+        gstRate: y.item.hsn.gstRate,
+        hsnCode: y.item.hsn.hsnCode,
+      }))
+    })
+
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 
       invoiceNumber: this.data.invoice.invoiceNumber,
       invoiceDate: this.data.invoice.invoiceDate,
-      // invoiceItems: this.data.invoice.invoiceItems,
-      invoiceItems: {
-        item: {
-          id: this.data.invoice.invoiceItems.at(0)?.item.id,
-          name: this.data.invoice.invoiceItems.at(0)?.item.name,
-          description: this.data.invoice.invoiceItems.at(0)?.item.description,
-          hsn: this.data.invoice.invoiceItems.at(0)?.item.hsn,
-          manfacturer: this.data.invoice.invoiceItems.at(0)?.item.manfacturer,
-        }
-      },
-      distributor: this.data.invoice.distributor, 
-      amount: this.data.invoice.amount,
-      totalDiscount: this.data.invoice.totalDiscount,
-      actualAmount: this.data.invoice.actualAmount,
+        distributor: this.data.invoice.distributor, 
+        // invoiceItems: this.data.invoice.invoiceItems,
+        amount: this.data.invoice.amount,
+        totalDiscount: this.data.invoice.totalDiscount,
+        actualAmount: this.data.invoice.actualAmount,
     })
+
   }
-   
+
 } 
