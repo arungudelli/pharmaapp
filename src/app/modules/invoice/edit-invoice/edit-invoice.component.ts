@@ -224,17 +224,20 @@ export class EditInvoiceComponent {
 
     this.selectedItems.push(item);
 
+    /*
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.productName.setValue(productName);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.gstRate.setValue(gstRate);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.hsnCode.setValue(hsnCode);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.id.setValue(this.indexNumber);
-
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.hsnCode.setValue(hsnCode);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
     */
+
+    // /*
+    console.log('index: ', this.indexNumber);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.productName.setValue(productName);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.gstRate.setValue(gstRate);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.hsnCode.setValue(hsnCode);
+    // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
+    // */
   }
 
   filterSearchDistributors(res: Distributor[]) {
@@ -299,11 +302,11 @@ export class EditInvoiceComponent {
   addNewRow() {
     const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
     /* Add new blank row below the last filled row */
-    control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
+    // control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
+    control.push(this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
     // console.log('length: ', control.length);
     this.indexNumber = control.length;
-    
   }
 
   removeRows() {
