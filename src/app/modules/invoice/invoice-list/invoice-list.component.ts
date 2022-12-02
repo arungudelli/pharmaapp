@@ -109,7 +109,15 @@ export class InvoiceListComponent {
     this.dialog.open(
       // EditInvoiceStaticComponent, 
       EditInvoiceComponent,
-      {data: {invoice}}
+      {
+        maxWidth: '100vw', 
+        maxHeight: '100vh', 
+        width: '98%', 
+        height: '98%', 
+        panelClass: 'fixActionRow',
+        autoFocus: false,
+        data: {invoice}
+      }
     );
   }
 }
