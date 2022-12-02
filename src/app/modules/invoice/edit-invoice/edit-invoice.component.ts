@@ -268,7 +268,6 @@ export class EditInvoiceComponent {
   }
 
   /* The label for the checkbox on the passed row */
-  // checkboxLabel(row?: InvoiceItems): string {
   checkboxLabel(row?: InvoiceRows): string {
     if(!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -355,6 +354,43 @@ export class EditInvoiceComponent {
     console.log('final object: ', finalObject);
 
     this.invoiceService.saveInvoice(finalObject);
+  }
+
+  editInvoice() {
+    this.editInvoiceForm.controls.invoiceRows.at(0).patchValue({
+      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
+      pack: this.data.invoice.invoiceItems.at(0)?.pack,
+      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
+      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
+      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
+      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
+      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
+      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
+      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
+      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
+      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
+      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
+    })
+    
+    this.editInvoiceAccountsForm.patchValue({
+      id: this.data.invoice.id, 
+      invoiceNumber: this.data.invoice.invoiceNumber,
+      invoiceDate: this.data.invoice.invoiceDate,
+      // invoiceItems: this.data.invoice.invoiceItems,
+      invoiceItems: {
+        item: {
+          id: this.data.invoice.invoiceItems.at(0)?.item.id,
+          name: this.data.invoice.invoiceItems.at(0)?.item.name,
+          description: this.data.invoice.invoiceItems.at(0)?.item.description,
+          hsn: this.data.invoice.invoiceItems.at(0)?.item.hsn,
+          manfacturer: this.data.invoice.invoiceItems.at(0)?.item.manfacturer,
+        }
+      },
+      distributor: this.data.invoice.distributor, 
+      amount: this.data.invoice.amount,
+      totalDiscount: this.data.invoice.totalDiscount,
+      actualAmount: this.data.invoice.actualAmount,
+    })
   }
    
 } 
