@@ -357,6 +357,7 @@ export class EditInvoiceComponent {
   }
 
   editInvoice() {
+    /*
     this.editInvoiceForm.controls.invoiceRows.at(0).patchValue({
       productName: this.data.invoice.invoiceItems.at(0)?.item.name,
       pack: this.data.invoice.invoiceItems.at(0)?.pack,
@@ -371,6 +372,22 @@ export class EditInvoiceComponent {
       gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
       hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
     })
+    */
+
+    this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
+      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
+      pack: this.data.invoice.invoiceItems.at(0)?.pack,
+      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
+      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
+      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
+      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
+      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
+      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
+      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
+      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
+      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
+      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
+    }))
     
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 

@@ -3,15 +3,17 @@
 <mat-dialog-content class="mat-typography" style="height: calc(100% - 130px)">
   <div class="dist-form"></div>
 
-  <!-- Add New Blank Row -->
-  <button mat-raised-button color="primary" (click)="addNewRow()">
-    Add Row
-  </button>
+  <div class="button-group">
+    <!-- Add New Blank Row -->
+    <button mat-raised-button color="primary" (click)="addNewRow()">
+      Add Row
+    </button>
 
-  <!-- Delete Selected Rows -->
-  <button mat-raised-button color="warn" (click)="removeRows()">
-    Delete Rows
-  </button>
+    <!-- Delete Selected Rows -->
+    <button mat-raised-button color="warn" (click)="removeRows()">
+      Delete Rows
+    </button>
+  </div>
 
   <br />
 
@@ -120,9 +122,6 @@
                   matInput
                   type="date"
                   formControlName="mfgDate"
-                  [readonly]="
-                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-                  "
                 />
                 <mat-datepicker-toggle
                   matSuffix
