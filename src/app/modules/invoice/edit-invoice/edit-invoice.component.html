@@ -321,56 +321,18 @@
     </form>
   </div>
   <br />
-
-  <!--
-  <form [formGroup]="editInvoiceAccountsForm">
-    <div class="leftColumns">
-      <mat-form-field appearance="outline">
-        <mat-label>Amount</mat-label>
-        <input
-          type="number"
-          placeholder="amount"
-          matInput
-          formControlName="amount"
-        />
-      </mat-form-field>
-    </div>
-
-    <div class="rightColumns">
-      <mat-form-field appearance="outline">
-        <mat-label>Total Discount</mat-label>
-        <input
-          type="number"
-          placeholder="Total Discount"
-          matInput
-          formControlName="totalDiscount"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Actual Amount</mat-label>
-        <input
-          type="number"
-          placeholder="Actual Amount"
-          matInput
-          formControlName="actualAmount"
-        />
-      </mat-form-field>
-    </div>
-  </form>
 </mat-dialog-content>
--->
 
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button
-      color="primary"
-      mat-raised-button
-      type="submit"
-      [mat-dialog-close]="true"
-      (click)="saveInvoice()"
-    >
-      Save
-    </button>
-  </mat-dialog-actions>
-</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    color="primary"
+    mat-raised-button
+    type="submit"
+    [mat-dialog-close]="true"
+    (click)="saveInvoice()"
+  >
+    Save
+  </button>
+</mat-dialog-actions>
+<!-- </mat-dialog-content> -->

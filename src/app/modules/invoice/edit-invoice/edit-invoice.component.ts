@@ -180,8 +180,9 @@ export class EditInvoiceComponent {
     this.getItemsList();
     this.getDistributorsList();
 
-    this.editInvoice();
-    // console.log('dialog invoiceItems data: ', this.data.invoice.invoiceItems.map(x=>x.item));
+    if(this.data) {
+      this.editInvoice();
+    }
   }
 
   getDistributorsList() {
@@ -328,7 +329,6 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
-
     console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
     
     let invoiceRow: any[] = [];
@@ -363,7 +363,9 @@ export class EditInvoiceComponent {
 
     // console.log('final object: ', finalObject);
 
-    this.invoiceService.saveInvoice(finalObject);
+    if(!this.data) {
+      this.invoiceService.saveInvoice(finalObject);
+    }
   }
 
   editInvoice() {
@@ -406,6 +408,7 @@ export class EditInvoiceComponent {
     
     // console.log('invoiceItems: ', this.data.invoice.invoiceItems);
 
+    /*
     const invoiceRow: any[] = [];
 
     for (var i=0; i<this.data.invoice.invoiceItems.length; i++){
@@ -427,6 +430,7 @@ export class EditInvoiceComponent {
     };
 
     console.log('invoice rows created: ', invoiceRow);
+    */
     
     // this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
 
