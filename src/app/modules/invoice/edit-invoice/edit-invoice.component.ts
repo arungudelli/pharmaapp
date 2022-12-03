@@ -82,9 +82,9 @@ export class EditInvoiceComponent {
       gstRate: new FormControl(val.gstRate),
       hsnCode: new FormControl(val.hsnCode),
 
-      // action: new FormControl('existingRecord'),
-      // isEditable: new FormControl(true),
-      // isNewRow: new FormControl(false)
+      action: new FormControl('existingRecord'),
+      isEditable: new FormControl(true),
+      isNewRow: new FormControl(false)
     })))
   });
 
@@ -269,7 +269,7 @@ export class EditInvoiceComponent {
       gstRate: new FormControl(),
       hsnCode: new FormControl(),
 
-      // action: new FormControl('newRecord')
+      action: new FormControl('newRecord')
     })
   }
 
@@ -289,7 +289,7 @@ export class EditInvoiceComponent {
       gstRate: new FormControl(x.gstRate),
       hsnCode: new FormControl(x.hsnCode),
 
-      // action: new FormControl('existingRecord'),
+      action: new FormControl('existingRecord')
     })
   }
 
@@ -329,6 +329,14 @@ export class EditInvoiceComponent {
         discount: this.editInvoiceForm.controls.invoiceRows.value[i].discount as number,
         mrp: this.editInvoiceForm.controls.invoiceRows.value[i].mrp as number,
         rate: this.editInvoiceForm.controls.invoiceRows.value[i].rate as number,
+
+        action: this.editInvoiceForm.controls.invoiceRows.value[i].action,
+        isEditable: this.editInvoiceForm.controls.invoiceRows.value[i].isEditable,
+        isNewRow: this.editInvoiceForm.controls.invoiceRows.value[i].isNewRow
+
+        // action: new FormControl('existingRecord'),
+        // isEditable: new FormControl(true),
+        // isNewRow: new FormControl(false)
       })
     }
 

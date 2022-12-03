@@ -51,17 +51,24 @@
 
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <th mat-header-cell *matHeaderCellDef hidden>ID</th>
             <td
               mat-cell
               *matCellDef="let element; let i = index"
               [formGroup]="element"
+              hidden
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="id" readonly />
+                <input
+                  matInput
+                  type="text"
+                  formControlName="id"
+                  readonly
+                  hidden
+                />
               </mat-form-field>
             </td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <td mat-footer-cell *matFooterCellDef hidden></td>
           </ng-container>
 
           <!-- Product Name Column -->
