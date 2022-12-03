@@ -1,17 +1,16 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
-
 import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceItems } from 'src/app/models/invoiceItems';
+import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { Item } from 'src/app/models/item';
 import { PickDateAdapter } from 'src/app/models/pickDateAdapter';
-import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
@@ -43,17 +42,16 @@ const datePickerFormat = {
 }
 
 @Component({
-  selector: 'app-edit-invoice',
-  templateUrl: './edit-invoice.component.html',
-  styleUrls: ['./edit-invoice.component.css'],
+  selector: 'app-edit-invoice-loop',
+  templateUrl: './edit-invoice-loop.component.html',
+  styleUrls: ['./edit-invoice-loop.component.css'],
   providers: [
     { provide: DateAdapter, useClass: PickDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: datePickerFormat }
   ]
 })
 
-export class EditInvoiceComponent {
-
+export class EditInvoiceLoopComponent {
   distributors: Distributor[] = [];
   
   items: Item[] = [];
@@ -64,11 +62,10 @@ export class EditInvoiceComponent {
 
   ELEMENT_DATA: InvoiceRows[] = [];
 
-  // indexNumber: number = 0;
+  indexNumber: number = 0;
 
   selectedItems: Item[] = [];
 
-  /*
   columnSchema = [
     { key: 'select', type: '', label: '' }, 
     { key: 'id', type: 'text', label: '#' }, 
@@ -85,7 +82,6 @@ export class EditInvoiceComponent {
     { key: 'gstRate', type: 'number', label: 'GST %' }, 
     { key: 'hsnCode', type: 'text', label: 'HSN Code' },
   ];
-  */
 
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
@@ -162,8 +158,7 @@ export class EditInvoiceComponent {
   
   selection = new SelectionModel<InvoiceRows>(true, []);
 
-  // invoiceColumns: string[] = this.columnSchema.map(col => col.key);
-  invoiceColumns: string[] = ['select','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
+  invoiceColumns: string[] = this.columnSchema.map(col => col.key);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
@@ -179,10 +174,6 @@ export class EditInvoiceComponent {
     
     this.getItemsList();
     this.getDistributorsList();
-
-    if(this.data) {
-      this.editInvoice();
-    }
   }
 
   getDistributorsList() {
@@ -220,7 +211,7 @@ export class EditInvoiceComponent {
     
   }
 
-  onSelectItem(option: string, index: number) {
+  onSelectItem(option: string) {
     const item = this.items.filter(item => item.name === option)[0];
     const productName = this.items.filter(item => item.name === option)[0].name;
     const gstRate = this.items.filter(item => item.name === option)[0].hsn.gstRate;
@@ -228,25 +219,17 @@ export class EditInvoiceComponent {
 
     this.selectedItems.push(item);
 
-    /*
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.productName.setValue(productName);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.gstRate.setValue(gstRate);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.hsnCode.setValue(hsnCode);
     this.editInvoiceForm.controls.invoiceRows.at(0).controls.id.setValue(this.indexNumber);
-    */
 
     /*
-    console.log('index: ', this.indexNumber);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.hsnCode.setValue(hsnCode);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.productName.setValue(productName);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.gstRate.setValue(gstRate);
+    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber).controls.hsnCode.setValue(hsnCode);
     this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
     */
-    
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
-    // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
   }
 
   filterSearchDistributors(res: Distributor[]) {
@@ -276,10 +259,12 @@ export class EditInvoiceComponent {
       this.selection.clear();
       return;
     }
+
     this.selection.select(...this.invoiceDatasource.data.map(item => Object(item).value));
   }
 
   /* The label for the checkbox on the passed row */
+  // checkboxLabel(row?: InvoiceItems): string {
   checkboxLabel(row?: InvoiceRows): string {
     if(!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -311,11 +296,11 @@ export class EditInvoiceComponent {
   addNewRow() {
     const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
     /* Add new blank row below the last filled row */
-    // control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
-    control.push(this.initiateInvoiceForm());
+    control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
     // console.log('length: ', control.length);
-    // this.indexNumber = control.length;
+    this.indexNumber = control.length;
+    
   }
 
   removeRows() {
@@ -329,12 +314,14 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
+
     console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
     
     let invoiceRow: any[] = [];
 
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
       // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
+
       invoiceRow.push({
         id: 0,
         item: this.selectedItems[i],
@@ -361,98 +348,9 @@ export class EditInvoiceComponent {
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount
     } as Invoice
 
-    // console.log('final object: ', finalObject);
+    console.log('final object: ', finalObject);
 
-    if(!this.data) {
-      this.invoiceService.saveInvoice(finalObject);
-    }
+    this.invoiceService.saveInvoice(finalObject);
   }
-
-  editInvoice() {
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(0).patchValue({
-      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
-      pack: this.data.invoice.invoiceItems.at(0)?.pack,
-      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
-      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
-      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
-      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
-      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
-      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
-      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
-      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
-      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
-      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
-    })
-    */
-
-    /*
-    this.data.invoice.invoiceItems.map(y=>{
-      // console.log(y.item.name,y.pack);
-      this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
-        productName: y.item.name,
-        pack: y.pack,
-        batchNo: y.batchNo, 
-        mfgDate: y.mfgDate, 
-        expDate: y.expDate, 
-        qty: y.qty, 
-        freeItems: y.freeItems, 
-        mrp: y.mrp, 
-        rate: y.rate, 
-        discount: y.discount, 
-        gstRate: y.item.hsn.gstRate,
-        hsnCode: y.item.hsn.hsnCode,
-      }))
-    })
-    */
-    
-    // console.log('invoiceItems: ', this.data.invoice.invoiceItems);
-
-    /*
-    const invoiceRow: any[] = [];
-
-    for (var i=0; i<this.data.invoice.invoiceItems.length; i++){
-      invoiceRow.push({
-        id: this.data.invoice.invoiceItems[i].id,
-        productName: this.data.invoice.invoiceItems[i].item.name,
-        pack: this.data.invoice.invoiceItems[i].pack,
-        batchNo: this.data.invoice.invoiceItems[i].batchNo,
-        mfgDate: this.data.invoice.invoiceItems[i].mfgDate,
-        expDate: this.data.invoice.invoiceItems[i].expDate,
-        qty: this.data.invoice.invoiceItems[i].qty,
-        freeItems: this.data.invoice.invoiceItems[i].freeItems,
-        mrp: this.data.invoice.invoiceItems[i].mrp,
-        rate: this.data.invoice.invoiceItems[i].rate,
-        discount: this.data.invoice.invoiceItems[i].discount,
-        gstRate: this.data.invoice.invoiceItems[i].item.hsn.gstRate,
-        hsnCode: this.data.invoice.invoiceItems[i].item.hsn.hsnCode,
-      })
-    };
-
-    console.log('invoice rows created: ', invoiceRow);
-    */
-    
-    // this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
-
-    /*
-    invoiceRow.map(x => 
-      this.editInvoiceForm.controls.invoiceRows.patchValue([
-        { id: x.id },
-        { productName: x.productName },
-      ])
-    )
-    */
-
-    this.editInvoiceAccountsForm.patchValue({
-      id: this.data.invoice.id, 
-      invoiceNumber: this.data.invoice.invoiceNumber,
-      invoiceDate: this.data.invoice.invoiceDate,
-        distributor: this.data.invoice.distributor, 
-        // invoiceItems: this.data.invoice.invoiceItems,
-        amount: this.data.invoice.amount,
-        totalDiscount: this.data.invoice.totalDiscount,
-        actualAmount: this.data.invoice.actualAmount,
-    })
-  }
-
-} 
+  
+}

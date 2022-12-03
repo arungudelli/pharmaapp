@@ -1,4 +1,3 @@
-import { Distributor } from "./distributor";
 import { Item } from "./item";
 
 export interface InvoiceItems {
@@ -10,7 +9,7 @@ export interface InvoiceItems {
     expDate: Date;
     qty: number;
     freeItems: number;
+    discount: number;
     mrp: number;
     rate: number;
-    amount: number;
 }

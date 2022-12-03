@@ -1,8 +1,6 @@
-import { Item } from "./item";
-
-    export interface StaticInvoiceItems {
+export interface InvoiceRows {
     id: number, 
-    item: Item, 
+    productName: string,
     pack: string, 
     batchNo: string, 
     mfgDate: Date, 
@@ -11,5 +9,7 @@ import { Item } from "./item";
     freeItems: number, 
     mrp: number, 
     rate: number, 
-    amount: number, 
+    discount: number, 
+    gstRate: number,
+    hsnCode: string,
 }

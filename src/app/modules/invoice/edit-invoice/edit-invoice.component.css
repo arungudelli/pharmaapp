@@ -3,11 +3,11 @@
 }
 
 .mat-column-pack {
-  width: 85px;
+  width: 75px;
 }
 
 .mat-column-pack mat-form-field {
-  width: 80px;
+  width: 70px;
 }
 
 .mat-column-batchNo {
@@ -66,19 +66,19 @@
   width: 100px;
 }
 
-.mat-column-amount {
+.mat-column-discount {
   width: 105px;
 }
 
-.mat-column-amount mat-form-field {
+.mat-column-discount mat-form-field {
   width: 100px;
 }
 
-.mat-column-gst {
+.mat-column-gstRate {
   width: 75px;
 }
 
-.mat-column-gst mat-form-field {
+.mat-column-gstRate mat-form-field {
   width: 70px;
 }
 
