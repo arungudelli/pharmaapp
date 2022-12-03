@@ -106,18 +106,10 @@ export class InvoiceListComponent {
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
-    console.log('selected invoice object: ', invoice);
-    // Object.entries(invoice)[4][1];
-    // Object.entries(invoice).at(4)?.at(1)?.valueOf();
 
     const index = Object.entries(invoice).at(0)?.at(1)?.valueOf();
-    console.log('index: ', typeof(index), index);
-    
-    // const invoiceRowsTrial = Object.entries(invoice).at(4)?.at(1)?.valueOf();
-    // console.log('invoiceRowsTrial: ', typeof(invoiceRowsTrial), invoiceRowsTrial);
     
     const invoiceRow = this.invoice.find(x=>x.id === index);
-    console.log('invoiceRow: ', typeof(invoiceRow), invoiceRow);
 
     const invoiceRows: any[] = [];
 
