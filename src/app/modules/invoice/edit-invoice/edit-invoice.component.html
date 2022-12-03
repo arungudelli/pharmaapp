@@ -315,7 +315,7 @@
             *matRowDef="let row; columns: invoiceColumns"
             (click)="selection.toggle(row)"
           ></tr>
-          <tr mat-footer-row *matFooterRowDef="invoiceColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="invoiceColumns;sticky:true"></tr>
         </table>
       </ng-container>
     </form>
