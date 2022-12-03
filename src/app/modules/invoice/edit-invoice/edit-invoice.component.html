@@ -46,6 +46,7 @@
               >
               </mat-checkbox>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Product Name Column -->
@@ -78,6 +79,21 @@
                 </mat-autocomplete>
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <form [formGroup]="editInvoiceAccountsForm">
+                <div class="leftColumns">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Amount</mat-label>
+                    <input
+                      type="number"
+                      placeholder="amount"
+                      matInput
+                      formControlName="amount"
+                    />
+                  </mat-form-field>
+                </div>
+              </form>
+            </td>
           </ng-container>
 
           <!-- Pack Column -->
@@ -92,6 +108,7 @@
                 <input matInput type="text" formControlName="pack" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Batch No. Column -->
@@ -106,6 +123,7 @@
                 <input matInput type="text" formControlName="batchNo" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Manufacturing Date Column -->
@@ -130,6 +148,7 @@
                 <mat-datepicker #mfgDatePicker></mat-datepicker>
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Expiry Date Column -->
@@ -157,6 +176,19 @@
                 <mat-datepicker #expDatePicker></mat-datepicker>
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <form [formGroup]="editInvoiceAccountsForm">
+                <mat-form-field appearance="outline">
+                  <mat-label>Total Discount</mat-label>
+                  <input
+                    type="number"
+                    placeholder="Total Discount"
+                    matInput
+                    formControlName="totalDiscount"
+                  />
+                </mat-form-field>
+              </form>
+            </td>
           </ng-container>
 
           <!-- Qty Column -->
@@ -171,6 +203,7 @@
                 <input matInput type="number" formControlName="qty" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Free Items Column -->
@@ -185,6 +218,7 @@
                 <input matInput type="number" formControlName="freeItems" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- MRP Column -->
@@ -199,6 +233,7 @@
                 <input matInput type="number" formControlName="mrp" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- Rate Column -->
@@ -212,6 +247,19 @@
               <mat-form-field appearance="outline">
                 <input matInput type="number" formControlName="rate" />
               </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <form [formGroup]="editInvoiceAccountsForm">
+                <mat-form-field appearance="outline">
+                  <mat-label>Actual Amount</mat-label>
+                  <input
+                    type="number"
+                    placeholder="Actual Amount"
+                    matInput
+                    formControlName="actualAmount"
+                  />
+                </mat-form-field>
+              </form>
             </td>
           </ng-container>
 
@@ -227,6 +275,7 @@
                 <input matInput type="number" formControlName="discount" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- GST % Column -->
@@ -241,6 +290,7 @@
                 <input matInput type="number" formControlName="gstRate" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- HSN Code Column -->
@@ -255,6 +305,7 @@
                 <input matInput type="text" formControlName="hsnCode" />
               </mat-form-field>
             </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
           <!-- row headers & definitions -->
@@ -264,11 +315,14 @@
             *matRowDef="let row; columns: invoiceColumns"
             (click)="selection.toggle(row)"
           ></tr>
+          <tr mat-footer-row *matFooterRowDef="invoiceColumns"></tr>
         </table>
       </ng-container>
     </form>
   </div>
   <br />
+
+  <!--
   <form [formGroup]="editInvoiceAccountsForm">
     <div class="leftColumns">
       <mat-form-field appearance="outline">
@@ -305,16 +359,18 @@
     </div>
   </form>
 </mat-dialog-content>
+-->
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button
-    color="primary"
-    mat-raised-button
-    type="submit"
-    [mat-dialog-close]="true"
-    (click)="saveInvoice()"
-  >
-    Save
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      color="primary"
+      mat-raised-button
+      type="submit"
+      [mat-dialog-close]="true"
+      (click)="saveInvoice()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</mat-dialog-content>
