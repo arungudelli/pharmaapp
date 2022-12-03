@@ -384,6 +384,7 @@ export class EditInvoiceComponent {
     })
     */
 
+    /*
     this.data.invoice.invoiceItems.map(y=>{
       // console.log(y.item.name,y.pack);
       this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
@@ -401,6 +402,31 @@ export class EditInvoiceComponent {
         hsnCode: y.item.hsn.hsnCode,
       }))
     })
+    */
+    
+    console.log('invoiceItems: ', this.data.invoice.invoiceItems);
+
+    const invoiceRow: any[] = [];
+
+    for (var i=0; i<this.data.invoice.invoiceItems.length; i++){
+      invoiceRow.push({
+        id: this.data.invoice.invoiceItems[i].id,
+        productName: this.data.invoice.invoiceItems[i].item.name,
+        pack: this.data.invoice.invoiceItems[i].pack,
+        batchNo: this.data.invoice.invoiceItems[i].batchNo,
+        mfgDate: this.data.invoice.invoiceItems[i].mfgDate,
+        expDate: this.data.invoice.invoiceItems[i].expDate,
+        qty: this.data.invoice.invoiceItems[i].qty,
+        freeItems: this.data.invoice.invoiceItems[i].freeItems,
+        mrp: this.data.invoice.invoiceItems[i].mrp,
+        rate: this.data.invoice.invoiceItems[i].rate,
+        discount: this.data.invoice.invoiceItems[i].discount,
+        gstRate: this.data.invoice.invoiceItems[i].item.hsn.gstRate,
+        hsnCode: this.data.invoice.invoiceItems[i].item.hsn.hsnCode,
+      })
+    };
+    
+    this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
 
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 
@@ -412,7 +438,6 @@ export class EditInvoiceComponent {
         totalDiscount: this.data.invoice.totalDiscount,
         actualAmount: this.data.invoice.actualAmount,
     })
-
   }
 
 } 
