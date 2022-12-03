@@ -64,28 +64,7 @@ export class EditInvoiceComponent {
 
   ELEMENT_DATA: InvoiceRows[] = [];
 
-  // indexNumber: number = 0;
-
   selectedItems: Item[] = [];
-
-  /*
-  columnSchema = [
-    { key: 'select', type: '', label: '' }, 
-    { key: 'id', type: 'text', label: '#' }, 
-    { key: 'productName', type: 'text', label: 'Product Name' }, 
-    { key: 'pack', type: 'text', label: 'Pack' }, 
-    { key: 'batchNo', type: 'text', label: 'Batch No.' }, 
-    { key: 'mfgDate', type: 'date', label: 'Manufacturing Date' }, 
-    { key: 'expDate', type: 'date', label: 'Expiry Date' }, 
-    { key: 'qty', type: 'number', label: 'Qty' }, 
-    { key: 'freeItems', type: 'number', label: 'Free' }, 
-    { key: 'mrp', type: 'number', label: 'MRP' }, 
-    { key: 'rate', type: 'number', label: 'Rate' }, 
-    { key: 'discount', type: 'number', label: 'Discount' }, 
-    { key: 'gstRate', type: 'number', label: 'GST %' }, 
-    { key: 'hsnCode', type: 'text', label: 'HSN Code' },
-  ];
-  */
 
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
@@ -103,9 +82,9 @@ export class EditInvoiceComponent {
       gstRate: new FormControl(val.gstRate),
       hsnCode: new FormControl(val.hsnCode),
 
-      action: new FormControl('existingRecord'),
-      isEditable: new FormControl(true),
-      isNewRow: new FormControl(false)
+      // action: new FormControl('existingRecord'),
+      // isEditable: new FormControl(true),
+      // isNewRow: new FormControl(false)
     })))
   });
 
@@ -162,10 +141,9 @@ export class EditInvoiceComponent {
   
   selection = new SelectionModel<InvoiceRows>(true, []);
 
-  // invoiceColumns: string[] = this.columnSchema.map(col => col.key);
-  invoiceColumns: string[] = ['select','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
+  invoiceColumns: string[] = ['select','id','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice, invoiceRows: InvoiceRows[]}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.editInvoiceAccountsForm.controls.id.setValue(0);
@@ -228,20 +206,7 @@ export class EditInvoiceComponent {
 
     this.selectedItems.push(item);
 
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.hsnCode.setValue(hsnCode);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.id.setValue(this.indexNumber);
-    */
-
-    /*
-    console.log('index: ', this.indexNumber);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.hsnCode.setValue(hsnCode);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
-    */
+    // console.log('index: ', index);
     
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
@@ -304,7 +269,27 @@ export class EditInvoiceComponent {
       gstRate: new FormControl(),
       hsnCode: new FormControl(),
 
-      action: new FormControl('newRecord')
+      // action: new FormControl('newRecord')
+    })
+  }
+
+  patchInvoiceRows(x: InvoiceRows): FormGroup {
+    return new FormGroup({
+      id: new FormControl(x.id),
+      productName: new FormControl(x.productName),
+      pack: new FormControl(x.pack), 
+      batchNo: new FormControl(x.batchNo), 
+      mfgDate: new FormControl(x.mfgDate), 
+      expDate: new FormControl(x.expDate), 
+      qty: new FormControl(x.qty), 
+      freeItems: new FormControl(x.freeItems), 
+      mrp: new FormControl(x.mrp), 
+      rate: new FormControl(x.rate), 
+      discount: new FormControl(x.discount), 
+      gstRate: new FormControl(x.gstRate),
+      hsnCode: new FormControl(x.hsnCode),
+
+      // action: new FormControl('existingRecord'),
     })
   }
 
@@ -314,8 +299,6 @@ export class EditInvoiceComponent {
     // control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
     control.push(this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
-    // console.log('length: ', control.length);
-    // this.indexNumber = control.length;
   }
 
   removeRows() {
@@ -324,7 +307,6 @@ export class EditInvoiceComponent {
       this.invoiceDatasource.data.splice(index, 1);
       this.invoiceDatasource = new MatTableDataSource(this.invoiceDatasource.data);
     });
-    // this.selection =  new SelectionModel<InvoiceItems>(true, []);
     this.selection =  new SelectionModel<InvoiceRows>(true, []);
   }
 
@@ -361,98 +343,31 @@ export class EditInvoiceComponent {
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount
     } as Invoice
 
-    // console.log('final object: ', finalObject);
-
     if(!this.data) {
       this.invoiceService.saveInvoice(finalObject);
     }
   }
 
   editInvoice() {
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(0).patchValue({
-      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
-      pack: this.data.invoice.invoiceItems.at(0)?.pack,
-      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
-      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
-      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
-      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
-      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
-      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
-      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
-      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
-      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
-      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
-    })
-    */
-
-    /*
-    this.data.invoice.invoiceItems.map(y=>{
-      // console.log(y.item.name,y.pack);
-      this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
-        productName: y.item.name,
-        pack: y.pack,
-        batchNo: y.batchNo, 
-        mfgDate: y.mfgDate, 
-        expDate: y.expDate, 
-        qty: y.qty, 
-        freeItems: y.freeItems, 
-        mrp: y.mrp, 
-        rate: y.rate, 
-        discount: y.discount, 
-        gstRate: y.item.hsn.gstRate,
-        hsnCode: y.item.hsn.hsnCode,
-      }))
-    })
-    */
-    
-    // console.log('invoiceItems: ', this.data.invoice.invoiceItems);
-
-    /*
-    const invoiceRow: any[] = [];
-
-    for (var i=0; i<this.data.invoice.invoiceItems.length; i++){
-      invoiceRow.push({
-        id: this.data.invoice.invoiceItems[i].id,
-        productName: this.data.invoice.invoiceItems[i].item.name,
-        pack: this.data.invoice.invoiceItems[i].pack,
-        batchNo: this.data.invoice.invoiceItems[i].batchNo,
-        mfgDate: this.data.invoice.invoiceItems[i].mfgDate,
-        expDate: this.data.invoice.invoiceItems[i].expDate,
-        qty: this.data.invoice.invoiceItems[i].qty,
-        freeItems: this.data.invoice.invoiceItems[i].freeItems,
-        mrp: this.data.invoice.invoiceItems[i].mrp,
-        rate: this.data.invoice.invoiceItems[i].rate,
-        discount: this.data.invoice.invoiceItems[i].discount,
-        gstRate: this.data.invoice.invoiceItems[i].item.hsn.gstRate,
-        hsnCode: this.data.invoice.invoiceItems[i].item.hsn.hsnCode,
-      })
-    };
-
-    console.log('invoice rows created: ', invoiceRow);
-    */
-    
-    // this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
-
-    /*
-    invoiceRow.map(x => 
-      this.editInvoiceForm.controls.invoiceRows.patchValue([
-        { id: x.id },
-        { productName: x.productName },
-      ])
-    )
-    */
+    this.editInvoiceForm.controls.invoiceRows.patchValue(this.data.invoiceRows);
 
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 
       invoiceNumber: this.data.invoice.invoiceNumber,
       invoiceDate: this.data.invoice.invoiceDate,
-        distributor: this.data.invoice.distributor, 
-        // invoiceItems: this.data.invoice.invoiceItems,
-        amount: this.data.invoice.amount,
-        totalDiscount: this.data.invoice.totalDiscount,
-        actualAmount: this.data.invoice.actualAmount,
+      distributor: this.data.invoice.distributor, 
+      // invoiceItems: this.data.invoice.invoiceItems,
+      amount: this.data.invoice.amount,
+      totalDiscount: this.data.invoice.totalDiscount,
+      actualAmount: this.data.invoice.actualAmount,
     })
+
+    const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
+    /* Add new blank row below the last filled row */
+    this.data.invoiceRows.map(x=>(
+      control.push(this.patchInvoiceRows(x))
+    ));
+    this.invoiceDatasource = new MatTableDataSource(control.controls);
   }
 
 } 

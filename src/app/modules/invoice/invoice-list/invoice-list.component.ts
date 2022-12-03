@@ -107,6 +107,43 @@ export class InvoiceListComponent {
 
   editSelectedInvoice(invoice: Invoice[]) {
     console.log('selected invoice object: ', invoice);
+    // Object.entries(invoice)[4][1];
+    // Object.entries(invoice).at(4)?.at(1)?.valueOf();
+
+    const index = Object.entries(invoice).at(0)?.at(1)?.valueOf();
+    console.log('index: ', typeof(index), index);
+    
+    // const invoiceRowsTrial = Object.entries(invoice).at(4)?.at(1)?.valueOf();
+    // console.log('invoiceRowsTrial: ', typeof(invoiceRowsTrial), invoiceRowsTrial);
+    
+    const invoiceRow = this.invoice.find(x=>x.id === index);
+    console.log('invoiceRow: ', typeof(invoiceRow), invoiceRow);
+
+    const invoiceRows: any[] = [];
+
+    invoiceRow?.invoiceItems.map(x=> {
+      invoiceRows.push({
+        id: x.id,
+        productName: x.item.name,
+        pack: x.pack,
+        batchNo: x.batchNo,
+        mfgDate: x.mfgDate,
+        expDate: x.expDate,
+        qty: x.qty,
+        freeItems: x.freeItems,
+        mrp: x.mrp,
+        rate: x.rate,
+        discount: x.discount,
+        gstRate: x.item.hsn.gstRate,
+        hsnCode: x.item.hsn.hsnCode,
+
+        // action: x.action,
+        // isEditable: x.isEditable,
+        // isNewRow: x.isNewRow
+      })
+    })
+   
+    console.log('invoiceRows: ', typeof(invoiceRows), invoiceRows);
     
     this.dialog.open(
       // EditInvoiceStaticComponent, 
@@ -118,7 +155,7 @@ export class InvoiceListComponent {
         height: '98%', 
         panelClass: 'fixActionRow',
         autoFocus: false,
-        data: {invoice}
+        data: { invoice , invoiceRows}
       }
     );
   }
