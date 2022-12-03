@@ -404,7 +404,7 @@ export class EditInvoiceComponent {
     })
     */
     
-    console.log('invoiceItems: ', this.data.invoice.invoiceItems);
+    // console.log('invoiceItems: ', this.data.invoice.invoiceItems);
 
     const invoiceRow: any[] = [];
 
@@ -425,8 +425,19 @@ export class EditInvoiceComponent {
         hsnCode: this.data.invoice.invoiceItems[i].item.hsn.hsnCode,
       })
     };
+
+    console.log('invoice rows created: ', invoiceRow);
     
-    this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
+    // this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
+
+    /*
+    invoiceRow.map(x => 
+      this.editInvoiceForm.controls.invoiceRows.patchValue([
+        { id: x.id },
+        { productName: x.productName },
+      ])
+    )
+    */
 
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 

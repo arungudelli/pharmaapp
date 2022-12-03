@@ -106,6 +106,8 @@ export class InvoiceListComponent {
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
+    console.log('selected invoice object: ', invoice);
+    
     this.dialog.open(
       // EditInvoiceStaticComponent, 
       EditInvoiceComponent,
