@@ -96,6 +96,7 @@ export class InvoiceListComponent {
   }
 
   getAllInvoices() {
+    /*
     this.invoiceService.getInvoices().subscribe(
       res => {
         // console.log('get invoices: ', res);
@@ -103,6 +104,14 @@ export class InvoiceListComponent {
         this.invoiceDatasource.data = res;
       }
     )
+    */
+
+    this.invoiceService.getInvoices();
+    this.invoiceService.allInvoices.subscribe(res=>{
+      // console.log('get invoices: ', res);
+      this.invoice = res;
+      this.invoiceDatasource.data = res;
+    });
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
