@@ -161,6 +161,11 @@ export class EditInvoiceComponent {
     this.getDistributorsList();
 
     if(this.data) {
+      this.data.invoice.invoiceItems.map(x=>{
+        this.selectedItems.push(x.item);
+      })
+      // console.log(this.selectedItems);
+
       this.editInvoice();
     }
   }
@@ -244,6 +249,10 @@ export class EditInvoiceComponent {
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
     // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
+
+    if(this.data) {
+      this.selectedItems.splice(index,1,item);
+    }
   }
 
   filterSearchDistributors(res: Distributor[]) {
@@ -344,9 +353,8 @@ export class EditInvoiceComponent {
 
   saveInvoice() {
     // console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
-    
-    let invoiceRow: any[] = [];
 
+    let invoiceRow: any[] = [];
     
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
       // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
@@ -390,9 +398,10 @@ export class EditInvoiceComponent {
       this.invoiceService.saveInvoice(finalObject);
     } else {
       // finalObject.invoiceItems.map(x=>{
-        // if(!x.item) {
+      //   if(!x.item) {
           // console.log('items: ', x.item);
-        // }
+
+      //   }
       // })
       this.invoiceService.updateInvoice(finalObject.id, finalObject);
     }
