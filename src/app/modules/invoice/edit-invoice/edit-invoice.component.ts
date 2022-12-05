@@ -383,6 +383,8 @@ export class EditInvoiceComponent {
 
     if(!this.data) {
       this.invoiceService.saveInvoice(finalObject);
+    } else {
+      this.invoiceService.updateInvoice(finalObject.id, finalObject);
     }
   }
 
