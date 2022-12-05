@@ -347,10 +347,11 @@ export class EditInvoiceComponent {
     
     let invoiceRow: any[] = [];
 
+    
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
       // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
       invoiceRow.push({
-        id: 0,
+        id: this.editInvoiceForm.controls.invoiceRows.value[i].id,
         item: this.selectedItems[i],
         pack: this.editInvoiceForm.controls.invoiceRows.value[i].pack,
         batchNo: this.editInvoiceForm.controls.invoiceRows.value[i].batchNo,
@@ -385,8 +386,14 @@ export class EditInvoiceComponent {
     } as Invoice
 
     if(!this.data) {
+      finalObject.invoiceItems.map(x=>{x.id = 0});
       this.invoiceService.saveInvoice(finalObject);
     } else {
+      // finalObject.invoiceItems.map(x=>{
+        // if(!x.item) {
+          // console.log('items: ', x.item);
+        // }
+      // })
       this.invoiceService.updateInvoice(finalObject.id, finalObject);
     }
   }
