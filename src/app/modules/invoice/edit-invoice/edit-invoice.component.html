@@ -59,13 +59,8 @@
               hidden
             >
               <mat-form-field appearance="outline">
-                <input
-                  matInput
-                  type="text"
-                  formControlName="id"
-                  readonly
-                  hidden
-                />
+                <!-- type="text" -->
+                <input matInput formControlName="id" readonly hidden />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef hidden></td>
@@ -80,9 +75,9 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
+                <!-- type="text" -->
                 <input
                   placeholder="Select Product Name"
-                  type="text"
                   matInput
                   formControlName="productName"
                   [matAutocomplete]="autoItem"
@@ -106,8 +101,8 @@
                 <div class="leftColumns">
                   <mat-form-field appearance="outline">
                     <mat-label>Amount</mat-label>
+                    <!-- type="number" -->
                     <input
-                      type="number"
                       placeholder="amount"
                       matInput
                       formControlName="amount"
@@ -127,7 +122,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="pack" />
+                <!-- type="text" -->
+                <input matInput formControlName="pack" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -142,7 +138,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="batchNo" />
+                <!-- type="text" -->
+                <input matInput formControlName="batchNo" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -188,9 +185,6 @@
                   type="date"
                   formControlName="expDate"
                 />
-                <!-- [readonly]="
-                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-                  " -->
                 <mat-datepicker-toggle
                   matSuffix
                   [for]="expDatePicker"
@@ -202,8 +196,8 @@
               <form [formGroup]="editInvoiceAccountsForm">
                 <mat-form-field appearance="outline">
                   <mat-label>Total Discount</mat-label>
+                  <!-- type="number" -->
                   <input
-                    type="number"
                     placeholder="Total Discount"
                     matInput
                     formControlName="totalDiscount"
@@ -222,7 +216,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="qty" />
+                <!-- type="number" -->
+                <input matInput formControlName="qty" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -237,7 +232,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="freeItems" />
+                <!-- type="number" -->
+                <input matInput formControlName="freeItems" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -252,7 +248,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="mrp" />
+                <!-- type="number" -->
+                <input matInput formControlName="mrp" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -267,15 +264,16 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="rate" />
+                <!-- type="number" -->
+                <input matInput formControlName="rate" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef>
               <form [formGroup]="editInvoiceAccountsForm">
                 <mat-form-field appearance="outline">
                   <mat-label>Actual Amount</mat-label>
+                  <!-- type="number" -->
                   <input
-                    type="number"
                     placeholder="Actual Amount"
                     matInput
                     formControlName="actualAmount"
@@ -294,7 +292,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="discount" />
+                <!-- type="number" -->
+                <input matInput formControlName="discount" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -309,7 +308,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="gstRate" />
+                <!-- type="number"  -->
+                <input matInput formControlName="gstRate" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -324,7 +324,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="hsnCode" />
+                <!-- type="text" -->
+                <input matInput formControlName="hsnCode" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
