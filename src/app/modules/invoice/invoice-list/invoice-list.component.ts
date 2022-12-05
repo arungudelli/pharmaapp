@@ -135,8 +135,6 @@ export class InvoiceListComponent {
       })
     })
    
-    console.log('invoiceRows: ', typeof(invoiceRows), invoiceRows);
-    
     this.dialog.open(
       // EditInvoiceStaticComponent, 
       EditInvoiceComponent,
