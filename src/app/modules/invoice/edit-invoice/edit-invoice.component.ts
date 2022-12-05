@@ -311,7 +311,7 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
-    console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
+    // console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
     
     let invoiceRow: any[] = [];
 
