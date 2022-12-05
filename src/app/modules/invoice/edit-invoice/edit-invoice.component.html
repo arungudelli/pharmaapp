@@ -81,6 +81,7 @@
                   matInput
                   formControlName="productName"
                   [matAutocomplete]="autoItem"
+                  (keyup.enter)="searchItems($event)"
                 />
                 <mat-autocomplete
                   autoActiveFirstOption

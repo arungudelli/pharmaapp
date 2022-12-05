@@ -155,7 +155,7 @@ export class EditInvoiceComponent {
     this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
     this.editInvoiceAccountsForm.controls.actualAmount.setValue(0);
     
-    this.getItemsList();
+    // this.getItemsList();
     this.getDistributorsList();
 
     if(this.data) {
@@ -174,7 +174,8 @@ export class EditInvoiceComponent {
       }
     )
   }
-    
+
+  /*
   getItemsList() {
     this.itemsService.getItems().subscribe(
       res => {
@@ -183,6 +184,21 @@ export class EditInvoiceComponent {
         this.filterSearchItems(res);
       } 
     )
+  }
+  */
+
+  searchItems(e: any) {
+    const searchTerm = e.target.value;
+    // console.log('search term: ', e.target.value);
+    if(searchTerm.length >= 3) {
+      this.itemsService.getItemByName(searchTerm).subscribe(
+        res => {
+          // console.log('get invoices: ', res);
+          this.items = res;
+          this.filterSearchItems(res);
+        }
+      )
+    }
   }
 
   filterSearchItems(res: Item[]) {
@@ -197,6 +213,20 @@ export class EditInvoiceComponent {
     )
     
   }
+
+  /*
+  filterSearchItems(res: Item[]) {
+    this.filteredItemOptions = this.editInvoiceAccountsForm.controls.invoiceItems.controls.item.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+        },
+      )
+    )
+  }
+  */
 
   onSelectItem(option: string, index: number) {
     const item = this.items.filter(item => item.name === option)[0];
