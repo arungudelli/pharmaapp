@@ -468,14 +468,13 @@ export class EditInvoiceComponent {
           style: 'table',
           table: {
             headerRows: 1,
-            widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-            // widths: ['*','*','*','*','*','*','*','*','*','*','*','*','*'],
+            widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
             body: [
-              ['S. No.','Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
+              ['Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
               ...this.editInvoiceForm.controls.invoiceRows?.value.map(x=>(
-                [`${x.id}`,`${x.productName}`,`${x.pack}`,`${x.batchNo}`,`${x.mfgDate}`,`${x.expDate}`,`${x.qty}`,`${x.freeItems}`,`${x.mrp}`,`${x.rate}`,`${x.discount}`,`${x.gstRate}`,`${x.hsnCode}`]
+                [`${x.productName}`,`${x.pack}`,`${x.batchNo}`,`${x.mfgDate?.toString().split('T')[0]}`,`${x.expDate?.toString().split('T')[0]}`,`${x.qty}`,`${x.freeItems}`,`${x.mrp}`,`${x.rate}`,`${x.discount}`,`${x.gstRate}`,`${x.hsnCode}`]
               )),
-              ['','Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
+              ['Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
             ],
           },
         },
