@@ -5,6 +5,9 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';  
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs; 
 
 import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
@@ -429,4 +432,12 @@ export class EditInvoiceComponent {
     this.invoiceDatasource = new MatTableDataSource(control.controls);
   }
 
+  generatePDF() {
+    let docDefinition = {
+      header: 'Test Header',
+      content: 'Test Content'
+    };
+
+    pdfMake.createPdf(docDefinition).open();
+  }
 } 
