@@ -482,11 +482,15 @@ export class EditInvoiceComponent {
       styles: {
         title: {
           bold: true,
+          // margin: [0, 0, 0, 10],
           // alignment: 'right',
         },
         table: {
           // margin: [0,5,0,15],
         }
+      },
+      defaultStyle: {
+        // alignment: 'justify'
       }
     };
 
