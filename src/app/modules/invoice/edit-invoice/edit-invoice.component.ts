@@ -515,8 +515,9 @@ export class EditInvoiceComponent {
       styles: {
         title: {
           bold: true,
+          italics: true,
           // margin: [0, 0, 0, 10],
-          // alignment: 'right',
+          // alignment: 'center',
         },
         table: {
           // margin: [0,5,0,15],
