@@ -477,6 +477,39 @@ export class EditInvoiceComponent {
               ['Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
             ],
           },
+          layout: {
+            /*
+            hLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.body.length) ? 2 : 1;
+            },
+            vLineWidth: function (i, node) {
+              return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+            },
+            hLineColor: function (i, node) {
+              return 'black';
+            },
+            vLineColor: function (i, node) {
+              return 'black';
+            },
+            hLineStyle: function (i, node) {
+              if (i === 0 || i === node.table.body.length) {
+                return null;
+              }
+              return {dash: {length: 10, space: 4}};
+            },
+            vLineStyle: function (i, node) {
+              if (i === 0 || i === node.table.widths.length) {
+                return null;
+              }
+              return {dash: {length: 4}};
+            },
+            */
+            // paddingLeft: function(i, node) { return 4; },
+            // paddingRight: function(i, node) { return 4; },
+            // paddingTop: function(i, node) { return 2; },
+            // paddingBottom: function(i, node) { return 2; },
+            // fillColor: function (i, node) { return null; }
+          }
         },
       ],
       styles: {
