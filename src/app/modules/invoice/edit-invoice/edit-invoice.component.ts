@@ -18,6 +18,7 @@ import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
+import { Alignment, Margins } from 'pdfmake/interfaces';
 
 const datePickerFormat = {
   parse: {
@@ -84,12 +85,6 @@ export class EditInvoiceComponent {
       discount: new FormControl(val.discount), 
       gstRate: new FormControl(val.gstRate),
       hsnCode: new FormControl(val.hsnCode),
-
-      /*
-      action: new FormControl('existingRecord'),
-      isEditable: new FormControl(true),
-      isNewRow: new FormControl(false)
-      */
     })))
   });
 
@@ -160,14 +155,12 @@ export class EditInvoiceComponent {
     this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
     this.editInvoiceAccountsForm.controls.actualAmount.setValue(0);
     
-    // this.getItemsList();
     this.getDistributorsList();
 
     if(this.data) {
       this.data.invoice.invoiceItems.map(x=>{
         this.selectedItems.push(x.item);
       })
-      // console.log(this.selectedItems);
 
       this.editInvoice();
     }
@@ -185,25 +178,11 @@ export class EditInvoiceComponent {
     )
   }
 
-  /*
-  getItemsList() {
-    this.itemsService.getItems().subscribe(
-      res => {
-        // console.log('get invoices: ', res);
-        this.items = res;
-        this.filterSearchItems(res);
-      } 
-    )
-  }
-  */
-
   searchItems(e: any) {
     const searchTerm = e.target.value;
-    // console.log('search term: ', e.target.value);
     if(searchTerm.length >= 3) {
       this.itemsService.getItemByName(searchTerm).subscribe(
         res => {
-          // console.log('get invoices: ', res);
           this.items = res;
           this.filterSearchItems(res);
         }
@@ -221,22 +200,7 @@ export class EditInvoiceComponent {
         },
       )
     )
-    
   }
-
-  /*
-  filterSearchItems(res: Item[]) {
-    this.filteredItemOptions = this.editInvoiceAccountsForm.controls.invoiceItems.controls.item.valueChanges.pipe(
-      startWith(''),
-      map(term => {
-        return res
-          .map(option => option.name)
-          .filter(option => option.toLowerCase().includes(term as string));
-        },
-      )
-    )
-  }
-  */
 
   onSelectItem(option: string, index: number) {
     const item = this.items.filter(item => item.name === option)[0];
@@ -246,12 +210,9 @@ export class EditInvoiceComponent {
 
     this.selectedItems.push(item);
 
-    // console.log('index: ', index);
-    
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
     this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
-    // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
 
     if(this.data) {
       this.selectedItems.splice(index,1,item);
@@ -312,8 +273,6 @@ export class EditInvoiceComponent {
       discount: new FormControl(), 
       gstRate: new FormControl(),
       hsnCode: new FormControl(),
-
-      // action: new FormControl('newRecord')
     })
   }
 
@@ -332,15 +291,12 @@ export class EditInvoiceComponent {
       discount: new FormControl(x.discount), 
       gstRate: new FormControl(x.gstRate),
       hsnCode: new FormControl(x.hsnCode),
-
-      // action: new FormControl('existingRecord')
     })
   }
 
   addNewRow() {
     const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
     /* Add new blank row below the last filled row */
-    // control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
     control.push(this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
   }
@@ -355,12 +311,9 @@ export class EditInvoiceComponent {
   }
 
   saveInvoice() {
-    // console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
-
     let invoiceRow: any[] = [];
     
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
-      // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
       invoiceRow.push({
         id: this.editInvoiceForm.controls.invoiceRows.value[i].id,
         item: this.selectedItems[i],
@@ -373,15 +326,6 @@ export class EditInvoiceComponent {
         discount: this.editInvoiceForm.controls.invoiceRows.value[i].discount as number,
         mrp: this.editInvoiceForm.controls.invoiceRows.value[i].mrp as number,
         rate: this.editInvoiceForm.controls.invoiceRows.value[i].rate as number,
-
-        /*
-        action: this.editInvoiceForm.controls.invoiceRows.value[i].action,
-        isEditable: this.editInvoiceForm.controls.invoiceRows.value[i].isEditable,
-        isNewRow: this.editInvoiceForm.controls.invoiceRows.value[i].isNewRow
-        */
-        // action: new FormControl('existingRecord'),
-        // isEditable: new FormControl(true),
-        // isNewRow: new FormControl(false)
       })
     }
 
@@ -400,12 +344,6 @@ export class EditInvoiceComponent {
       finalObject.invoiceItems.map(x=>{x.id = 0});
       this.invoiceService.saveInvoice(finalObject);
     } else {
-      // finalObject.invoiceItems.map(x=>{
-      //   if(!x.item) {
-          // console.log('items: ', x.item);
-
-      //   }
-      // })
       this.invoiceService.updateInvoice(finalObject.id, finalObject);
     }
   }
@@ -418,7 +356,6 @@ export class EditInvoiceComponent {
       invoiceNumber: this.data.invoice.invoiceNumber,
       invoiceDate: this.data.invoice.invoiceDate,
       distributor: this.data.invoice.distributor, 
-      // invoiceItems: this.data.invoice.invoiceItems,
       amount: this.data.invoice.amount,
       totalDiscount: this.data.invoice.totalDiscount,
       actualAmount: this.data.invoice.actualAmount,
@@ -435,9 +372,10 @@ export class EditInvoiceComponent {
   generatePDF() {
     let docDefinition = {
       header: [
+        '\n',
         {
-          text: 'Distributor Invoice',
           style: 'titleMain',
+          text: 'Distributor Invoice',
         }
       ],
       content: [
@@ -478,20 +416,19 @@ export class EditInvoiceComponent {
         titleMain: {
           bold: true,
           italics: true,
-          // alignment: 'center',
+          alignment: 'center' as Alignment,
+          fontSize: 15,
         },
         title: {
           bold: true,
           italics: true,
-          // margin: [0, 0, 0, 10],
-          // alignment: 'center',
         },
         tableTitle: {
           bold: true,
           italics: true,
         },
         table: {
-          // margin: [0,5,0,15],
+          margin: [-25,0,0,0] as Margins,
         }
       },
       defaultStyle: {
