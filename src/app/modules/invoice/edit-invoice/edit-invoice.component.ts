@@ -434,8 +434,61 @@ export class EditInvoiceComponent {
 
   generatePDF() {
     let docDefinition = {
-      header: 'Test Header',
-      content: 'Test Content'
+      header: [
+        {
+          text: 'Distributor Invoice',
+          style: 'title',
+        }
+      ],
+      content: [
+        // rows: [
+          // [
+            // {
+              // columns: [
+                // [
+        {
+          text: 'Distributor Name',
+          bold: true,
+        },
+        {
+          text: `Date: ${new Date().toLocaleDateString()}`,
+        },
+        {
+          text: `Invoice Date: ${this.editInvoiceAccountsForm.value.invoiceDate}`,
+        },
+        {
+          text: `Invoice No: ${this.editInvoiceAccountsForm.value.invoiceNumber}`
+        },
+                // ],
+              // ],
+            // }
+          // ],
+          // [
+        {
+          style: 'table',
+          table: {
+            headerRows: 1,
+            widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+            // widths: ['*','*','*','*','*','*','*','*','*','*','*','*','*'],
+            body: [
+              ['S. No.','Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
+              ...this.editInvoiceForm.controls.invoiceRows?.value.map(x=>(
+                [`${x.id}`,`${x.productName}`,`${x.pack}`,`${x.batchNo}`,`${x.mfgDate}`,`${x.expDate}`,`${x.qty}`,`${x.freeItems}`,`${x.mrp}`,`${x.rate}`,`${x.discount}`,`${x.gstRate}`,`${x.hsnCode}`]
+              )),
+              ['','Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
+            ],
+          },
+        },
+      ],
+      styles: {
+        title: {
+          bold: true,
+          // alignment: 'right',
+        },
+        table: {
+          // margin: [0,5,0,15],
+        }
+      }
     };
 
     pdfMake.createPdf(docDefinition).open();
