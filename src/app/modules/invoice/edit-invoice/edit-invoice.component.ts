@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';  
+import { Alignment, Margins } from 'pdfmake/interfaces';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs; 
 
 import { Distributor } from 'src/app/models/distributor';
@@ -18,7 +19,6 @@ import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
-import { Alignment, Margins } from 'pdfmake/interfaces';
 
 const datePickerFormat = {
   parse: {
@@ -158,10 +158,7 @@ export class EditInvoiceComponent {
     this.getDistributorsList();
 
     if(this.data) {
-      this.data.invoice.invoiceItems.map(x=>{
-        this.selectedItems.push(x.item);
-      })
-
+      this.data.invoice.invoiceItems.map(x=>{this.selectedItems.push(x.item)});
       this.editInvoice();
     }
   }
@@ -341,6 +338,7 @@ export class EditInvoiceComponent {
     } as Invoice
 
     if(!this.data) {
+      /* set ids of invoiceItems to 0 to post to database */ 
       finalObject.invoiceItems.map(x=>{x.id = 0});
       this.invoiceService.saveInvoice(finalObject);
     } else {
@@ -384,10 +382,10 @@ export class EditInvoiceComponent {
           text: 'Distributor Name',
         },
         {
-          text: `Date: ${new Date().toLocaleDateString()}`,
+          text: `Date: ${new Date().toISOString().split('T')[0]}`,
         },
         {
-          text: `Invoice Date: ${this.editInvoiceAccountsForm.value.invoiceDate}`,
+          text: `Invoice Date: ${new Date(this.editInvoiceAccountsForm.value.invoiceDate!)?.toISOString().split('T')[0]}`,
         },
         {
           text: `Invoice No: ${this.editInvoiceAccountsForm.value.invoiceNumber}`,
@@ -404,12 +402,22 @@ export class EditInvoiceComponent {
             widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
             body: [
               ['Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
-              ...this.editInvoiceForm.controls.invoiceRows?.value.map(x=>(
-                [`${x.productName}`,`${x.pack}`,`${x.batchNo}`,`${x.mfgDate?.toString().split('T')[0]}`,`${x.expDate?.toString().split('T')[0]}`,`${x.qty}`,`${x.freeItems}`,`${x.mrp}`,`${x.rate}`,`${x.discount}`,`${x.gstRate}`,`${x.hsnCode}`]
+              ...this.editInvoiceForm.controls.invoiceRows?.controls.map(x=>(
+                [`${x.controls.productName.value}`,`${x.controls.pack.value}`,`${x.controls.batchNo.value}`,`${new Date(x.controls.mfgDate.value!).toISOString().split('T')[0]}`,`${new Date(x.controls.expDate.value!).toISOString().split('T')[0]}`,`${x.controls.qty.value}`,`${x.controls.freeItems.value}`,`${x.controls.mrp.value}`,`${x.controls.rate.value}`,`${x.controls.discount.value}`,`${x.controls.gstRate.value}`,`${x.controls.hsnCode.value}`]
               )),
               ['Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
             ],
           },
+        },
+        '\n',
+        {
+          qr: `string`,
+          // fit: '50' 
+        },
+        { 
+          text: 'Signature', 
+          alignment: 'right' as Alignment, 
+          italics: true 
         },
       ],
       styles: {
