@@ -44,4 +44,8 @@ export class InvoiceService {
     // return this.http.put<Invoice>(this.baseUrl+"/Invoice/get/"+id, invoice).subscribe(()> getInvoices());
   }
 
+  getInvoiceByItemId (itemId: number) {
+    return this.http.get(this.baseUrl+"/Invoice/getitemstock/"+itemId);
+  }
+
 }
