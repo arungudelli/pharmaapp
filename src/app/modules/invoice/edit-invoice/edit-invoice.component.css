@@ -1,3 +1,41 @@
+.mat-column-invoiceDate {
+  width: 135px;
+}
+
+.mat-column-invoiceDate mat-form-field {
+  width: 130px;
+}
+
+.mat-column-invoiceNumber {
+  width: 135px;
+}
+
+.mat-column-invoiceNumber mat-form-field {
+  width: 130px;
+}
+
+::ng-deep .mat-column-invoiceDate .mat-mdc-text-field-wrapper {
+  padding-left: 5px;
+}
+
+::ng-deep .mat-column-invoiceDate .mat-datepicker-toggle .mat-mdc-icon-button {
+  padding: 0px;
+  width: 24px;
+  height: 24px;
+}
+
+.mat-column-invoiceNumber {
+  width: 75px;
+}
+
+.mat-column-invoiceNumber mat-form-field {
+  width: 70px;
+}
+
+.button-group {
+  margin-top: 30px;
+}
+
 .mat-column-select {
   width: 40px;
 }

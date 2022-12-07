@@ -131,7 +131,9 @@ export class EditInvoiceComponent {
       pinCode: new FormControl()
     }),
     invoiceNumber: new FormControl(''),
-    invoiceDate: new FormControl(new Date(Date.now())),
+    // invoiceDate: new FormControl(new Date(Date.now())),
+    // invoiceDate: new FormControl(new Date()),
+    invoiceDate: new FormControl(),
     amount: new FormControl(),
     totalDiscount: new FormControl(),
     actualAmount: new FormControl()
@@ -149,7 +151,7 @@ export class EditInvoiceComponent {
     this.editInvoiceAccountsForm.controls.id.setValue(0);
     this.editInvoiceAccountsForm.controls.invoiceNumber.setValue('');
     this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
-    this.editInvoiceAccountsForm.controls.distributor.setValue({id:1,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
     this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,discount:0});
     this.editInvoiceAccountsForm.controls.amount.setValue(0);
     this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
@@ -169,10 +171,27 @@ export class EditInvoiceComponent {
         // console.log('get distributors: ', res);
         // console.log('get first distributor: ', res[0]);
         this.distributors = res;
-        // this.filterSearchDistributors(res);
-        this.editInvoiceAccountsForm.controls.distributor.setValue(res[0])
+        this.filterSearchDistributors(res);
+        // this.editInvoiceAccountsForm.controls.distributor.setValue(res[0])
       }
     )
+  }
+
+  filterSearchDistributors(res: Distributor[]) {
+    this.filteredDistributorOptions = this.editInvoiceAccountsForm.controls.distributor.controls.name.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+      },)
+    )
+  }
+
+  onSelectDistributor(option: string) {
+    const distributor = this.distributors.filter(item => item.name === option)[0];
+    // console.log(option, distributor);
+    this.editInvoiceAccountsForm.controls.distributor.setValue(distributor);
   }
 
   searchItems(e: any) {
@@ -214,22 +233,6 @@ export class EditInvoiceComponent {
     if(this.data) {
       this.selectedItems.splice(index,1,item);
     }
-  }
-
-  filterSearchDistributors(res: Distributor[]) {
-    this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
-      startWith(''),
-      map(term => {
-        return res
-          .map(option => option.name)
-          .filter(option => option.toLowerCase().includes(term as string));
-      },)
-    )
-  }
-
-  onSelectDistributor(option: string) {
-    const distributor = this.distributors.filter(item => item.name === option)[0];
-    this.editInvoiceAccountsForm.controls.distributor.setValue(distributor);
   }
 
   /* Whether the number of selected elements matches the total number of rows. */
@@ -340,7 +343,9 @@ export class EditInvoiceComponent {
     if(!this.data) {
       /* set ids of invoiceItems to 0 to post to database */ 
       finalObject.invoiceItems.map(x=>{x.id = 0});
-      this.invoiceService.saveInvoice(finalObject);
+      // this.invoiceService.saveInvoice(finalObject);
+      console.log(finalObject);
+      
     } else {
       this.invoiceService.updateInvoice(finalObject.id, finalObject);
     }
@@ -377,10 +382,7 @@ export class EditInvoiceComponent {
         }
       ],
       content: [
-        {
-          style: 'title',
-          text: 'Distributor Name',
-        },
+        '\n',
         {
           text: `Date: ${new Date().toISOString().split('T')[0]}`,
         },
@@ -389,6 +391,17 @@ export class EditInvoiceComponent {
         },
         {
           text: `Invoice No: ${this.editInvoiceAccountsForm.value.invoiceNumber}`,
+        },
+        '\n',
+        {
+          style: 'title',
+          text: 'Distributor Details',
+        },
+        {
+          text: `Name: ${this.editInvoiceAccountsForm.value.distributor?.name}`,
+        },
+        {
+          text: `Phone No.: ${this.editInvoiceAccountsForm.value.distributor?.phoneNumber}`,
         },
         '\n',
         {
