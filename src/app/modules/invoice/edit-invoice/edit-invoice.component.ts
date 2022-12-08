@@ -343,8 +343,8 @@ export class EditInvoiceComponent {
     if(!this.data) {
       /* set ids of invoiceItems to 0 to post to database */ 
       finalObject.invoiceItems.map(x=>{x.id = 0});
-      // this.invoiceService.saveInvoice(finalObject);
-      console.log(finalObject);
+      this.invoiceService.saveInvoice(finalObject);
+      // console.log(finalObject);
       
     } else {
       this.invoiceService.updateInvoice(finalObject.id, finalObject);
