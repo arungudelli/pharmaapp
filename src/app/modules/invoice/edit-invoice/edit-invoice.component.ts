@@ -150,7 +150,7 @@ export class EditInvoiceComponent {
   ngOnInit(): void {
     this.editInvoiceAccountsForm.controls.id.setValue(0);
     this.editInvoiceAccountsForm.controls.invoiceNumber.setValue('');
-    this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
+    // this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
     this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
     this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,discount:0});
     this.editInvoiceAccountsForm.controls.amount.setValue(0);

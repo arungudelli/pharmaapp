@@ -1,35 +1,21 @@
-.mat-column-invoiceDate {
-  width: 135px;
+.invoiceNumber {
+  width: 175px;
 }
 
-.mat-column-invoiceDate mat-form-field {
-  width: 130px;
-}
-
-.mat-column-invoiceNumber {
-  width: 135px;
-}
-
-.mat-column-invoiceNumber mat-form-field {
-  width: 130px;
-}
-
-::ng-deep .mat-column-invoiceDate .mat-mdc-text-field-wrapper {
-  padding-left: 5px;
-}
-
-::ng-deep .mat-column-invoiceDate .mat-datepicker-toggle .mat-mdc-icon-button {
-  padding: 0px;
-  width: 24px;
+.invoiceDate {
+  width: 175px;
   height: 24px;
+  padding: 0px;
+  padding-left: 5px;
+  margin: 20px;
 }
 
-.mat-column-invoiceNumber {
-  width: 75px;
+.leftColumns {
+  float: left;
 }
 
-.mat-column-invoiceNumber mat-form-field {
-  width: 70px;
+.rightColumns {
+  float: right;
 }
 
 .button-group {
@@ -126,14 +112,6 @@
 
 .mat-column-hsnCode mat-form-field {
   width: 120px;
-}
-
-.leftColumns {
-  float: left;
-}
-
-.rightColumns {
-  float: right;
 }
 
 .mat-mdc-dialog-content {

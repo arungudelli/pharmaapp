@@ -9,6 +9,7 @@
         <!-- Distributor Name Field -->
         <ng-container>
           <mat-form-field appearance="outline">
+            <mat-label>Distributor Name</mat-label>
             <!-- type="text" -->
             <input
               placeholder="Select Distributor Name"
@@ -45,8 +46,9 @@
     <div class="rightColumns">
       <!-- Invoice No. Field -->
       <ng-container>
-        <mat-form-field appearance="outline">
-          <mat-label>Invoice No.</mat-label>
+        Invoice Number
+        <mat-form-field appearance="outline" class="invoiceNumber">
+          <!-- <mat-label>Invoice No.</mat-label> -->
           <!-- type="number" -->
           <input matInput formControlName="invoiceNumber" />
         </mat-form-field>
@@ -56,8 +58,9 @@
 
       <!-- Invoice Date Field -->
       <ng-container>
-        <mat-form-field appearance="outline">
-          <mat-label>Invoice Date</mat-label>
+        Invoice Date
+        <mat-form-field appearance="outline" class="invoiceDate">
+          <!-- <mat-label>Invoice Date</mat-label> -->
           <!-- type="number" -->
           <input
             matInput
