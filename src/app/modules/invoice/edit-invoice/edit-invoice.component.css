@@ -1,3 +1,14 @@
+.distributorName,
+.distributorPhoneNumber {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .invoiceNumber {
   width: 175px;
 }
