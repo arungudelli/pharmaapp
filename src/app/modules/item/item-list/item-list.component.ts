@@ -20,7 +20,7 @@ export class ItemListComponent {
 
   itemColumns: string[] = ['Item Name', 'Item Description'];
   
-  invoiceColumns: string[] = ['invoiceNumber', 'invoiceDate', 'pack', 'batchNo', 'mfgDate', 'expDate', 'qty'];
+  invoiceColumns: string[] = ['invoiceNumber', 'invoiceDate', 'name', 'pack', 'batchNo', 'mfgDate', 'expDate', 'qty'];
 
   invoices: Invoice[] = [];
 
