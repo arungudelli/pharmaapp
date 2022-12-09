@@ -1,5 +1,6 @@
+<!-- mat-button -->
 <button
-  mat-button
+  mat-raised-button
   class="example-full-width"
   color="primary"
   (click)="openItemDialog()"
@@ -10,7 +11,7 @@
 <mat-drawer-container class="example-container">
   <mat-drawer class="example-drawer" mode="side" opened>
     <mat-card>
-      Items
+      <span class="heading">Items</span>
       <hr />
       <mat-selection-list #items [multiple]="false">
         <mat-list-option
@@ -26,7 +27,7 @@
 
   <mat-drawer-content class="example-content">
     <mat-card>
-      Details
+      <span class="heading">Details</span>
       <hr />
       <div *ngFor="let item of items.selectedOptions.selected">
         Item Name:
@@ -58,7 +59,7 @@
     <br />
 
     <mat-card>
-      Transactions
+      <span class="heading">Transactions</span>
       <br />
       <table
         mat-table
