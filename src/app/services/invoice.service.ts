@@ -48,4 +48,10 @@ export class InvoiceService {
     return this.http.get(this.baseUrl+"/Invoice/getitemstock/"+itemId);
   }
 
+  getInvoiceByDistributorId (distributorId: number) {
+    return this.http.get(this.baseUrl+"/Invoice/getdistributorinvoices/"+distributorId);
+  }
+
+
+
 }
