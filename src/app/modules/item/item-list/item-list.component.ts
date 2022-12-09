@@ -22,11 +22,13 @@ export class ItemListComponent {
   
   invoiceColumns: string[] = ['invoiceNumber', 'invoiceDate', 'name', 'pack', 'batchNo', 'mfgDate', 'expDate', 'qty'];
 
-  invoices: Invoice[] = [];
+  invoice: Invoice[] = [];
 
   itemDataSource = new MatTableDataSource<Item>();
   
   invoiceDataSource = new MatTableDataSource<Invoice>();
+
+  totalQty:number = 0;
 
   constructor(public dialog: MatDialog, public itemService: ItemService, public invoiceService: InvoiceService) {
     this.selectedItem = {} as Item;
@@ -54,7 +56,8 @@ export class ItemListComponent {
     this.invoiceService.getInvoiceByItemId(itemId).subscribe(
       res => {
         // console.log(res);
-        this.invoices = res as Invoice[];
+        this.invoice = res as Invoice[];
+        this.totalQty = this.invoice.map(x=>x.invoiceItems.map(y=>y.qty).at(0)).reduce((a,b)=>a!+b!,0) as number;
         this.invoiceDataSource.data = res as Invoice[];
       }
     )

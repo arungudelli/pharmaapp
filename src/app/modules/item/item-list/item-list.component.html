@@ -45,8 +45,12 @@
         Manufacturer:
         {{ item.value.manfacturer.name }}
         <br />
+        Total Quantity:
+        {{ totalQty }}
+        <br />
+        <!-- mat-button -->
         <button
-          mat-button
+          mat-raised-button
           class="example-full-width"
           color="primary"
           (click)="editItemDialog(item.value)"
@@ -70,7 +74,6 @@
         <ng-container matColumnDef="invoiceNumber">
           <th mat-header-cell *matHeaderCellDef>Invoice No.</th>
           <td mat-cell *matCellDef="let element">
-            <!-- {{ !element.invoiceItems[0] ? "" : element.invoiceNumber }} -->
             {{ element.invoiceItems[0] && element.invoiceNumber }}
           </td>
         </ng-container>
@@ -79,7 +82,6 @@
         <ng-container matColumnDef="invoiceDate">
           <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
           <td mat-cell *matCellDef="let element">
-            <!-- !element.invoiceItems[0] ? "" : element.invoiceDate.split("T")[0] -->
             {{ element.invoiceItems[0] && element.invoiceDate.split("T")[0] }}
           </td>
         </ng-container>
@@ -88,9 +90,7 @@
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Distributor Name</th>
           <td mat-cell *matCellDef="let element">
-            <!-- !element.invoiceItems[0] ? "" : element.invoiceDate.split("T")[0] -->
-            <!-- {{ element.distributor.name | json }} -->
-            {{ element.distributor | json }}
+            {{ element.distributor.name }}
           </td>
         </ng-container>
 
