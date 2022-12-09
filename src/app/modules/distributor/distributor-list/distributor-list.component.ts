@@ -6,6 +6,7 @@ import { Invoice } from 'src/app/models/invoice';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { EditInvoiceComponent } from '../../invoice/edit-invoice/edit-invoice.component';
+import { ViewInvoiceComponent } from '../../invoice/view-invoice/view-invoice.component';
 import { EditDistributorComponent } from '../edit-distributor/edit-distributor.component';
 
 @Component({
@@ -90,7 +91,9 @@ export class DistributorListComponent {
       })
     })
 
-    this.dialog.open(EditInvoiceComponent, 
+    this.dialog.open(
+      // EditInvoiceComponent, 
+      ViewInvoiceComponent,
       {
         maxWidth: '100vw', 
         maxHeight: '100vh', 
