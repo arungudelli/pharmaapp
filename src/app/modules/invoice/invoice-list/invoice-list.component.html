@@ -1,5 +1,6 @@
+<!-- mat-button -->
 <button
-  mat-button
+  mat-raised-button
   class="example-full-width"
   color="primary"
   (click)="openInvoiceDialog()"
@@ -8,7 +9,7 @@
 </button>
 
 <mat-card>
-  Transactions
+  <span class="heading">Transactions</span>
   <hr />
 
   <table mat-table [dataSource]="invoiceDatasource" class="mat-elevation-z8">
