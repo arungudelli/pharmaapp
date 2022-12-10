@@ -33,32 +33,56 @@
         <div class="distributor-details">
           <div>
             <b>Distributor Name:</b>
-            {{ d.value.name }}
+            <!-- {{ d.value.name }} -->
             <br />
             <b>GSTIN:</b>
-            {{ d.value.gstin }}
+            <!-- {{ d.value.gstin }} -->
             <br />
             <b>Phone Number:</b>
-            {{ d.value.phoneNumber }}
+            <!-- {{ d.value.phoneNumber }} -->
             <br />
             <b>Email:</b>
+            <!-- {{ d.value.email }} -->
+            <br />
+          </div>
+          <!---->
+          <div>
+            {{ d.value.name }}
+            <br />
+            {{ d.value.gstin }}
+            <br />
+            {{ d.value.phoneNumber }}
+            <br />
             {{ d.value.email }}
             <br />
           </div>
+          <!---->
           <div>
             <b>GST Address:</b>
-            {{ d.value.address }}
+            <!-- {{ d.value.address }} -->
             <br />
             <b>City:</b>
-            {{ d.value.city }}
+            <!-- {{ d.value.city }} -->
             <br />
             <b>State:</b>
-            {{ d.value.state }}
+            <!-- {{ d.value.state }} -->
             <br />
             <b>Postal code:</b>
+            <!-- {{ d.value.pinCode }} -->
+            <br />
+          </div>
+          <!---->
+          <div>
+            {{ d.value.address }}
+            <br />
+            {{ d.value.city }}
+            <br />
+            {{ d.value.state }}
+            <br />
             {{ d.value.pinCode }}
             <br />
           </div>
+          <!---->
         </div>
         <!-- mat-button -->
         <button
@@ -77,11 +101,13 @@
     <mat-card>
       <span class="heading">Transactions</span>
       <br />
+      <!--
       <mat-chip-listbox>
         <mat-chip *ngFor="let chosen of distributors.selectedOptions.selected">
           {{ chosen.value.name }}
         </mat-chip>
       </mat-chip-listbox>
+      -->
       <hr />
 
       <table
