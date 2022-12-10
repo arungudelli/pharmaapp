@@ -30,24 +30,30 @@
       <span class="heading">Details</span>
       <hr />
       <div *ngFor="let item of items.selectedOptions.selected">
-        Item Name:
-        {{ item.value.name }}
-        <br />
-        Item Description:
-        {{ item.value.description }}
-        <br />
-        HSN Code:
-        {{ item.value.hsn.hsnCode }}
-        <br />
-        GST Rate:
-        {{ item.value.hsn.gstRate }}
-        <br />
-        Manufacturer:
-        {{ item.value.manfacturer.name }}
-        <br />
-        Total Quantity:
-        {{ totalQty }}
-        <br />
+        <div class="distributor-details">
+          <div>
+            <b>Item Name:</b>
+            {{ item.value.name }}
+            <br />
+            <b>Item Description:</b>
+            {{ item.value.description }}
+            <br />
+            <b>HSN Code:</b>
+            {{ item.value.hsn.hsnCode }}
+            <br />
+          </div>
+          <div>
+            <b>GST Rate:</b>
+            {{ item.value.hsn.gstRate }}
+            <br />
+            <b>Manufacturer:</b>
+            {{ item.value.manfacturer.name }}
+            <br />
+            <b>Total Quantity:</b>
+            {{ totalQty }}
+            <br />
+          </div>
+        </div>
         <!-- mat-button -->
         <button
           mat-raised-button
