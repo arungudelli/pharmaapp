@@ -5,10 +5,6 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';  
-import { Alignment, Margins } from 'pdfmake/interfaces';
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs; 
 
 import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
@@ -19,6 +15,7 @@ import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
+import { DocGenInvoice } from 'src/app/pdfmake-docs/doc-gen-invoice';
 
 const datePickerFormat = {
   parse: {
@@ -131,7 +128,6 @@ export class EditInvoiceComponent {
       pinCode: new FormControl()
     }),
     invoiceNumber: new FormControl(''),
-    // invoiceDate: new FormControl(new Date(Date.now())),
     // invoiceDate: new FormControl(new Date()),
     invoiceDate: new FormControl(),
     amount: new FormControl(),
@@ -168,11 +164,8 @@ export class EditInvoiceComponent {
   getDistributorsList() {
     this.distributorService.getDistributors().subscribe(
       res => {
-        // console.log('get distributors: ', res);
-        // console.log('get first distributor: ', res[0]);
         this.distributors = res;
         this.filterSearchDistributors(res);
-        // this.editInvoiceAccountsForm.controls.distributor.setValue(res[0])
       }
     )
   }
@@ -190,7 +183,6 @@ export class EditInvoiceComponent {
 
   onSelectDistributor(option: string) {
     const distributor = this.distributors.filter(item => item.name === option)[0];
-    // console.log(option, distributor);
     this.editInvoiceAccountsForm.controls.distributor.setValue(distributor);
   }
 
@@ -310,7 +302,7 @@ export class EditInvoiceComponent {
     this.selection =  new SelectionModel<InvoiceRows>(true, []);
   }
 
-  saveInvoice() {
+  createFinalObject() {
     let invoiceRow: any[] = [];
     
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
@@ -340,14 +332,16 @@ export class EditInvoiceComponent {
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount
     } as Invoice
 
+    return finalObject;
+  }
+
+  saveInvoice() {
     if(!this.data) {
       /* set ids of invoiceItems to 0 to post to database */ 
-      finalObject.invoiceItems.map(x=>{x.id = 0});
-      this.invoiceService.saveInvoice(finalObject);
-      // console.log(finalObject);
-      
+      this.createFinalObject().invoiceItems.map(x=>{x.id = 0});
+      this.invoiceService.saveInvoice(this.createFinalObject());
     } else {
-      this.invoiceService.updateInvoice(finalObject.id, finalObject);
+      this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
     }
   }
 
@@ -373,90 +367,6 @@ export class EditInvoiceComponent {
   }
 
   generatePDF() {
-    let docDefinition = {
-      header: [
-        '\n',
-        {
-          style: 'titleMain',
-          text: 'Distributor Invoice',
-        }
-      ],
-      content: [
-        '\n',
-        {
-          text: `Date: ${new Date().toISOString().split('T')[0]}`,
-        },
-        {
-          text: `Invoice Date: ${new Date(this.editInvoiceAccountsForm.value.invoiceDate!)?.toISOString().split('T')[0]}`,
-        },
-        {
-          text: `Invoice No: ${this.editInvoiceAccountsForm.value.invoiceNumber}`,
-        },
-        '\n',
-        {
-          style: 'title',
-          text: 'Distributor Details',
-        },
-        {
-          text: `Name: ${this.editInvoiceAccountsForm.value.distributor?.name}`,
-        },
-        {
-          text: `Phone No.: ${this.editInvoiceAccountsForm.value.distributor?.phoneNumber}`,
-        },
-        '\n',
-        {
-          style: 'tableTitle',
-          text: 'List of Products',
-        },
-        {
-          style: 'table',
-          table: {
-            headerRows: 1,
-            widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-            body: [
-              ['Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
-              ...this.editInvoiceForm.controls.invoiceRows?.controls.map(x=>(
-                [`${x.controls.productName.value}`,`${x.controls.pack.value}`,`${x.controls.batchNo.value}`,`${new Date(x.controls.mfgDate.value!).toISOString().split('T')[0]}`,`${new Date(x.controls.expDate.value!).toISOString().split('T')[0]}`,`${x.controls.qty.value}`,`${x.controls.freeItems.value}`,`${x.controls.mrp.value}`,`${x.controls.rate.value}`,`${x.controls.discount.value}`,`${x.controls.gstRate.value}`,`${x.controls.hsnCode.value}`]
-              )),
-              ['Amount',`${this.editInvoiceAccountsForm.value.amount}`,'','','Total Discount',`${this.editInvoiceAccountsForm.value.totalDiscount}`,'','','Total Amount',`${this.editInvoiceAccountsForm.value.actualAmount}`,'','']
-            ],
-          },
-        },
-        '\n',
-        {
-          qr: `string`,
-          // fit: '50' 
-        },
-        { 
-          text: 'Signature', 
-          alignment: 'right' as Alignment, 
-          italics: true 
-        },
-      ],
-      styles: {
-        titleMain: {
-          bold: true,
-          italics: true,
-          alignment: 'center' as Alignment,
-          fontSize: 15,
-        },
-        title: {
-          bold: true,
-          italics: true,
-        },
-        tableTitle: {
-          bold: true,
-          italics: true,
-        },
-        table: {
-          margin: [-25,0,0,0] as Margins,
-        }
-      },
-      defaultStyle: {
-        // alignment: 'justify'
-      }
-    };
-
-    pdfMake.createPdf(docDefinition).open();
+    DocGenInvoice(this.createFinalObject());
   }
 } 
