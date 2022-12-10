@@ -25,10 +25,12 @@
 }
 
 .item-heading {
-  font-size: large;
   align-self: center;
   text-align: center;
+  font-size: large;
   font-weight: bolder;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .item-details {
@@ -43,4 +45,18 @@
 .edit-selected-item {
   width: 100%;
   margin: 10px;
+}
+
+.mat-mdc-card {
+  background-color: navy;
+  color: white;
+  vertical-align: middle;
+  padding-top: 5px;
+}
+
+.selected-item-details,
+mat-selection-list {
+  background-color: white;
+  color: black;
+  padding-top: 5px;
 }

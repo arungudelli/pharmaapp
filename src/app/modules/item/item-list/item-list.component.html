@@ -12,7 +12,7 @@
   <mat-drawer class="item-drawer" mode="side" opened>
     <mat-card>
       <span class="item-heading">Items</span>
-      <hr />
+      <!-- <br /> -->
       <mat-selection-list #items [multiple]="false">
         <mat-list-option
           *ngFor="let element of item"
@@ -28,8 +28,10 @@
   <mat-drawer-content class="item-content">
     <mat-card>
       <span class="item-heading">Details</span>
-      <hr />
-      <div *ngFor="let item of items.selectedOptions.selected">
+      <div
+        *ngFor="let item of items.selectedOptions.selected"
+        class="selected-item-details"
+      >
         <div class="item-details">
           <div>
             <b>Item Name:</b>
@@ -86,7 +88,6 @@
 
     <mat-card>
       <span class="item-heading">Transactions</span>
-      <br />
       <table
         mat-table
         [dataSource]="invoiceDataSource"
