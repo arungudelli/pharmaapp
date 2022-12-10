@@ -1,17 +1,17 @@
 <!-- mat-button -->
 <button
   mat-raised-button
-  class="example-full-width"
+  class="item-button-add"
   color="primary"
   (click)="openItemDialog()"
 >
   Add Item
 </button>
 
-<mat-drawer-container class="example-container">
-  <mat-drawer class="example-drawer" mode="side" opened>
+<mat-drawer-container class="item-container">
+  <mat-drawer class="item-drawer" mode="side" opened>
     <mat-card>
-      <span class="heading">Items</span>
+      <span class="item-heading">Items</span>
       <hr />
       <mat-selection-list #items [multiple]="false">
         <mat-list-option
@@ -25,12 +25,12 @@
     </mat-card>
   </mat-drawer>
 
-  <mat-drawer-content class="example-content">
+  <mat-drawer-content class="item-content">
     <mat-card>
-      <span class="heading">Details</span>
+      <span class="item-heading">Details</span>
       <hr />
       <div *ngFor="let item of items.selectedOptions.selected">
-        <div class="distributor-details">
+        <div class="item-details">
           <div>
             <b>Item Name:</b>
             <!-- {{ item.value.name }} -->
@@ -85,7 +85,7 @@
     <br />
 
     <mat-card>
-      <span class="heading">Transactions</span>
+      <span class="item-heading">Transactions</span>
       <br />
       <table
         mat-table
