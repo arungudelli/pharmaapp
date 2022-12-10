@@ -24,7 +24,7 @@ export class ItemService {
   }
 
   getItemByName(name: string) {
-    return this.http.get<Item>(this.baseUrl+"/Item/name/"+name);
+    return this.http.get<Item[]>(this.baseUrl+"/Item/name/"+name);
   }
 
   updateItem(id: number, item: Item) {

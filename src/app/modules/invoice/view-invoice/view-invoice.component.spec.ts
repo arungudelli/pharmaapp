@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectionTableComponent } from './selection-table.component';
+import { ViewInvoiceComponent } from './view-invoice.component';
 
-describe('SelectionTableComponent', () => {
-  let component: SelectionTableComponent;
-  let fixture: ComponentFixture<SelectionTableComponent>;
+describe('ViewInvoiceComponent', () => {
+  let component: ViewInvoiceComponent;
+  let fixture: ComponentFixture<ViewInvoiceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelectionTableComponent ]
+      declarations: [ ViewInvoiceComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SelectionTableComponent);
+    fixture = TestBed.createComponent(ViewInvoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

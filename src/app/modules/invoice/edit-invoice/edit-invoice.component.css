@@ -1,3 +1,38 @@
+.distributorName,
+.distributorPhoneNumber {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.invoiceNumber {
+  width: 175px;
+}
+
+.invoiceDate {
+  width: 175px;
+  height: 24px;
+  padding: 0px;
+  padding-left: 5px;
+  margin: 20px;
+}
+
+.leftColumns {
+  float: left;
+}
+
+.rightColumns {
+  float: right;
+}
+
+.button-group {
+  margin-top: 30px;
+}
+
 .mat-column-select {
   width: 40px;
 }
@@ -88,14 +123,6 @@
 
 .mat-column-hsnCode mat-form-field {
   width: 120px;
-}
-
-.leftColumns {
-  float: left;
-}
-
-.rightColumns {
-  float: right;
 }
 
 .mat-mdc-dialog-content {

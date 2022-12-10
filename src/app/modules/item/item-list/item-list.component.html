@@ -1,48 +1,165 @@
-<button mat-button class="example-full-width" color="primary" (click)="openItemDialog()">Add Item</button>
+<!-- mat-button -->
+<button
+  mat-raised-button
+  class="item-button-add"
+  color="primary"
+  (click)="openItemDialog()"
+>
+  Add Item
+</button>
 
-<mat-drawer-container class="example-container">
+<mat-drawer-container class="item-container">
+  <mat-drawer class="item-drawer" mode="side" opened>
+    <mat-card>
+      <span class="item-heading">Items</span>
+      <!-- <br /> -->
+      <mat-selection-list #items [multiple]="false">
+        <mat-list-option
+          *ngFor="let element of item"
+          [value]="element"
+          (click)="getInvoicesBySelectedItem(element.id)"
+        >
+          {{ element.name }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+  </mat-drawer>
 
-    <mat-drawer class="example-drawer" mode="side" opened>
-        <mat-card>
-            Items
-            <hr/>
-            <mat-selection-list #items [multiple]="false">
-                <mat-list-option *ngFor="let element of item" [value]="element">
-                    {{element.name}}
-                </mat-list-option>
-            </mat-selection-list>
-        </mat-card>
-    </mat-drawer>
+  <mat-drawer-content class="item-content">
+    <mat-card>
+      <span class="item-heading">Details</span>
+      <div
+        *ngFor="let item of items.selectedOptions.selected"
+        class="selected-item-details"
+      >
+        <div class="item-details">
+          <div>
+            <b>Item Name:</b>
+            <!-- {{ item.value.name }} -->
+            <br />
+            <b>Item Description:</b>
+            <!-- {{ item.value.description }} -->
+            <br />
+            <b>HSN Code:</b>
+            <!-- {{ item.value.hsn.hsnCode }} -->
+            <br />
+          </div>
+          <div>
+            {{ item.value.name }}
+            <br />
+            {{ item.value.description }}
+            <br />
+            {{ item.value.hsn.hsnCode }}
+            <br />
+          </div>
+          <div>
+            <b>GST Rate:</b>
+            <!-- {{ item.value.hsn.gstRate }} -->
+            <br />
+            <b>Manufacturer:</b>
+            <!-- {{ item.value.manfacturer.name }} -->
+            <br />
+            <b>Total Quantity:</b>
+            <!-- {{ totalQty }} -->
+            <br />
+          </div>
+          <div>
+            {{ item.value.hsn.gstRate }}
+            <br />
+            {{ item.value.manfacturer.name }}
+            <br />
+            {{ totalQty }}
+            <br />
+          </div>
+        </div>
+        <!-- mat-button -->
+        <button
+          mat-raised-button
+          class="edit-selected-item"
+          color="primary"
+          (click)="editItemDialog(item.value)"
+        >
+          Edit Item
+        </button>
+      </div>
+    </mat-card>
 
-    <mat-drawer-content class="example-content">
-        <mat-card>
-            Details
-            <hr/>
-            <div *ngFor="let item of items.selectedOptions.selected">
-                Item Name:
-                {{ item.value.name }}
-                <br/>
-                Item Description:
-                {{ item.value.description }}
-                <br/>
-                HSN Code:
-                {{ item.value.hsn.hsnCode }}
-                <br/>
-                GST Rate:
-                {{ item.value.hsn.gstRate }}
-                <br/>
-                Manufacturer:
-                {{ item.value.manfacturer.name }}
-                <br/>
-                <button mat-button class="example-full-width" color="primary" (click)="editItemDialog(item.value)">Edit Item</button>
-            </div>
-        </mat-card>
+    <br />
 
-        <br/>
+    <mat-card>
+      <span class="item-heading">Transactions</span>
+      <table
+        mat-table
+        [dataSource]="invoiceDataSource"
+        class="mat-elevation-z8"
+      >
+        <!-- Invoice No. Column -->
+        <ng-container matColumnDef="invoiceNumber">
+          <th mat-header-cell *matHeaderCellDef>Invoice No.</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0] && element.invoiceNumber }}
+          </td>
+        </ng-container>
 
-        <mat-card>
-            Transactions
-        </mat-card>
-    </mat-drawer-content>
+        <!-- Invoice Date Column -->
+        <ng-container matColumnDef="invoiceDate">
+          <th mat-header-cell *matHeaderCellDef>Invoice Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0] && element.invoiceDate.split("T")[0] }}
+          </td>
+        </ng-container>
 
+        <!-- Distributor Date Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Distributor Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.distributor.name }}
+          </td>
+        </ng-container>
+
+        <!-- Pack Column -->
+        <ng-container matColumnDef="pack">
+          <th mat-header-cell *matHeaderCellDef>Pack</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0]?.pack }}
+          </td>
+        </ng-container>
+
+        <!-- Batch No. Column -->
+        <ng-container matColumnDef="batchNo">
+          <th mat-header-cell *matHeaderCellDef>Batch No.</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0]?.batchNo }}
+          </td>
+        </ng-container>
+
+        <!-- Mfg. Date Column -->
+        <ng-container matColumnDef="mfgDate">
+          <th mat-header-cell *matHeaderCellDef>Mfg. Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0]?.mfgDate.split("T")[0] }}
+          </td>
+        </ng-container>
+
+        <!-- Exp. Date Column -->
+        <ng-container matColumnDef="expDate">
+          <th mat-header-cell *matHeaderCellDef>Exp. Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0]?.expDate.split("T")[0] }}
+          </td>
+        </ng-container>
+
+        <!-- Qty Column -->
+        <ng-container matColumnDef="qty">
+          <th mat-header-cell *matHeaderCellDef>Qty</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.invoiceItems[0]?.qty }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="invoiceColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: invoiceColumns"></tr>
+      </table>
+    </mat-card>
+  </mat-drawer-content>
 </mat-drawer-container>

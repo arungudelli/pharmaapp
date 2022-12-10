@@ -15,6 +15,7 @@ import { InvoiceRows } from 'src/app/models/invoiceRows';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
+import { DocGenInvoice } from 'src/app/pdfmake-docs/doc-gen-invoice';
 
 const datePickerFormat = {
   parse: {
@@ -64,28 +65,7 @@ export class EditInvoiceComponent {
 
   ELEMENT_DATA: InvoiceRows[] = [];
 
-  // indexNumber: number = 0;
-
   selectedItems: Item[] = [];
-
-  /*
-  columnSchema = [
-    { key: 'select', type: '', label: '' }, 
-    { key: 'id', type: 'text', label: '#' }, 
-    { key: 'productName', type: 'text', label: 'Product Name' }, 
-    { key: 'pack', type: 'text', label: 'Pack' }, 
-    { key: 'batchNo', type: 'text', label: 'Batch No.' }, 
-    { key: 'mfgDate', type: 'date', label: 'Manufacturing Date' }, 
-    { key: 'expDate', type: 'date', label: 'Expiry Date' }, 
-    { key: 'qty', type: 'number', label: 'Qty' }, 
-    { key: 'freeItems', type: 'number', label: 'Free' }, 
-    { key: 'mrp', type: 'number', label: 'MRP' }, 
-    { key: 'rate', type: 'number', label: 'Rate' }, 
-    { key: 'discount', type: 'number', label: 'Discount' }, 
-    { key: 'gstRate', type: 'number', label: 'GST %' }, 
-    { key: 'hsnCode', type: 'text', label: 'HSN Code' },
-  ];
-  */
 
   editInvoiceForm = new FormGroup({
     invoiceRows: new FormArray(this.ELEMENT_DATA.map(val => new FormGroup({
@@ -102,10 +82,6 @@ export class EditInvoiceComponent {
       discount: new FormControl(val.discount), 
       gstRate: new FormControl(val.gstRate),
       hsnCode: new FormControl(val.hsnCode),
-
-      action: new FormControl('existingRecord'),
-      isEditable: new FormControl(true),
-      isNewRow: new FormControl(false)
     })))
   });
 
@@ -152,7 +128,8 @@ export class EditInvoiceComponent {
       pinCode: new FormControl()
     }),
     invoiceNumber: new FormControl(''),
-    invoiceDate: new FormControl(new Date(Date.now())),
+    // invoiceDate: new FormControl(new Date()),
+    invoiceDate: new FormControl(),
     amount: new FormControl(),
     totalDiscount: new FormControl(),
     actualAmount: new FormControl()
@@ -162,25 +139,24 @@ export class EditInvoiceComponent {
   
   selection = new SelectionModel<InvoiceRows>(true, []);
 
-  // invoiceColumns: string[] = this.columnSchema.map(col => col.key);
-  invoiceColumns: string[] = ['select','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
+  invoiceColumns: string[] = ['select','id','productName','pack','batchNo','mfgDate','expDate','qty','freeItems','mrp','rate','discount','gstRate','hsnCode'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {invoice: Invoice, invoiceRows: InvoiceRows[]}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService,public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.editInvoiceAccountsForm.controls.id.setValue(0);
     this.editInvoiceAccountsForm.controls.invoiceNumber.setValue('');
-    this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
-    this.editInvoiceAccountsForm.controls.distributor.setValue({id:1,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
+    // this.editInvoiceAccountsForm.controls.invoiceDate.setValue(new Date());
+    this.editInvoiceAccountsForm.controls.distributor.setValue({id:0,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
     this.editInvoiceAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,discount:0});
     this.editInvoiceAccountsForm.controls.amount.setValue(0);
     this.editInvoiceAccountsForm.controls.totalDiscount.setValue(0);
     this.editInvoiceAccountsForm.controls.actualAmount.setValue(0);
     
-    this.getItemsList();
     this.getDistributorsList();
 
     if(this.data) {
+      this.data.invoice.invoiceItems.map(x=>{this.selectedItems.push(x.item)});
       this.editInvoice();
     }
   }
@@ -188,69 +164,14 @@ export class EditInvoiceComponent {
   getDistributorsList() {
     this.distributorService.getDistributors().subscribe(
       res => {
-        // console.log('get distributors: ', res);
-        // console.log('get first distributor: ', res[0]);
         this.distributors = res;
-        // this.filterSearchDistributors(res);
-        this.editInvoiceAccountsForm.controls.distributor.setValue(res[0])
+        this.filterSearchDistributors(res);
       }
     )
   }
-    
-  getItemsList() {
-    this.itemsService.getItems().subscribe(
-      res => {
-        // console.log('get invoices: ', res);
-        this.items = res;
-        this.filterSearchItems(res);
-      } 
-    )
-  }
-
-  filterSearchItems(res: Item[]) {
-    this.filteredItemOptions = this.editInvoiceAccountsForm.controls.invoiceItems.controls.item.valueChanges.pipe(
-      startWith(''),
-      map(term => {
-        return res
-          .map(option => option.name)
-          .filter(option => option.toLowerCase().includes(term as string));
-        },
-      )
-    )
-    
-  }
-
-  onSelectItem(option: string, index: number) {
-    const item = this.items.filter(item => item.name === option)[0];
-    const productName = this.items.filter(item => item.name === option)[0].name;
-    const gstRate = this.items.filter(item => item.name === option)[0].hsn.gstRate;
-    const hsnCode = this.items.filter(item => item.name === option)[0].hsn.hsnCode;
-
-    this.selectedItems.push(item);
-
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.hsnCode.setValue(hsnCode);
-    this.editInvoiceForm.controls.invoiceRows.at(0).controls.id.setValue(this.indexNumber);
-    */
-
-    /*
-    console.log('index: ', this.indexNumber);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.hsnCode.setValue(hsnCode);
-    this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
-    */
-    
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
-    this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
-    // this.editInvoiceForm.controls.invoiceRows.at(this.indexNumber-1).controls.id.setValue(this.indexNumber);
-  }
 
   filterSearchDistributors(res: Distributor[]) {
-    this.filteredDistributorOptions = this.editInvoiceForm.controls.invoiceRows.get('distributor.name')?.valueChanges.pipe(
+    this.filteredDistributorOptions = this.editInvoiceAccountsForm.controls.distributor.controls.name.valueChanges.pipe(
       startWith(''),
       map(term => {
         return res
@@ -263,6 +184,47 @@ export class EditInvoiceComponent {
   onSelectDistributor(option: string) {
     const distributor = this.distributors.filter(item => item.name === option)[0];
     this.editInvoiceAccountsForm.controls.distributor.setValue(distributor);
+  }
+
+  searchItems(e: any) {
+    const searchTerm = e.target.value;
+    if(searchTerm.length >= 3) {
+      this.itemsService.getItemByName(searchTerm).subscribe(
+        res => {
+          this.items = res;
+          this.filterSearchItems(res);
+        }
+      )
+    }
+  }
+
+  filterSearchItems(res: Item[]) {
+    this.filteredItemOptions = this.editInvoiceAccountsForm.controls.invoiceItems.controls.item.valueChanges.pipe(
+      startWith(''),
+      map(term => {
+        return res
+          .map(option => option.name)
+          .filter(option => option.toLowerCase().includes(term as string));
+        },
+      )
+    )
+  }
+
+  onSelectItem(option: string, index: number) {
+    const item = this.items.filter(item => item.name === option)[0];
+    const productName = this.items.filter(item => item.name === option)[0].name;
+    const gstRate = this.items.filter(item => item.name === option)[0].hsn.gstRate;
+    const hsnCode = this.items.filter(item => item.name === option)[0].hsn.hsnCode;
+
+    this.selectedItems.push(item);
+
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.productName.setValue(productName);
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.gstRate.setValue(gstRate);
+    this.editInvoiceForm.controls.invoiceRows.at(index).controls.hsnCode.setValue(hsnCode);
+
+    if(this.data) {
+      this.selectedItems.splice(index,1,item);
+    }
   }
 
   /* Whether the number of selected elements matches the total number of rows. */
@@ -303,19 +265,32 @@ export class EditInvoiceComponent {
       discount: new FormControl(), 
       gstRate: new FormControl(),
       hsnCode: new FormControl(),
+    })
+  }
 
-      action: new FormControl('newRecord')
+  patchInvoiceRows(x: InvoiceRows): FormGroup {
+    return new FormGroup({
+      id: new FormControl(x.id),
+      productName: new FormControl(x.productName),
+      pack: new FormControl(x.pack), 
+      batchNo: new FormControl(x.batchNo), 
+      mfgDate: new FormControl(x.mfgDate), 
+      expDate: new FormControl(x.expDate), 
+      qty: new FormControl(x.qty), 
+      freeItems: new FormControl(x.freeItems), 
+      mrp: new FormControl(x.mrp), 
+      rate: new FormControl(x.rate), 
+      discount: new FormControl(x.discount), 
+      gstRate: new FormControl(x.gstRate),
+      hsnCode: new FormControl(x.hsnCode),
     })
   }
 
   addNewRow() {
     const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
     /* Add new blank row below the last filled row */
-    // control.insert(this.ELEMENT_DATA.length, this.initiateInvoiceForm());
     control.push(this.initiateInvoiceForm());
     this.invoiceDatasource = new MatTableDataSource(control.controls);
-    // console.log('length: ', control.length);
-    // this.indexNumber = control.length;
   }
 
   removeRows() {
@@ -324,19 +299,15 @@ export class EditInvoiceComponent {
       this.invoiceDatasource.data.splice(index, 1);
       this.invoiceDatasource = new MatTableDataSource(this.invoiceDatasource.data);
     });
-    // this.selection =  new SelectionModel<InvoiceItems>(true, []);
     this.selection =  new SelectionModel<InvoiceRows>(true, []);
   }
 
-  saveInvoice() {
-    console.log('invoice items: ', this.editInvoiceForm.controls.invoiceRows.value);
-    
+  createFinalObject() {
     let invoiceRow: any[] = [];
-
+    
     for (var i=0; i<this.editInvoiceForm.controls.invoiceRows.value.length; i++){
-      // invoiceRow.push({ ...this.editInvoiceForm.controls.invoiceRows.value[i], item: this.selectedItems[i] })
       invoiceRow.push({
-        id: 0,
+        id: this.editInvoiceForm.controls.invoiceRows.value[i].id,
         item: this.selectedItems[i],
         pack: this.editInvoiceForm.controls.invoiceRows.value[i].pack,
         batchNo: this.editInvoiceForm.controls.invoiceRows.value[i].batchNo,
@@ -361,98 +332,41 @@ export class EditInvoiceComponent {
       actualAmount: this.editInvoiceAccountsForm.value.actualAmount
     } as Invoice
 
-    // console.log('final object: ', finalObject);
+    return finalObject;
+  }
 
+  saveInvoice() {
     if(!this.data) {
-      this.invoiceService.saveInvoice(finalObject);
+      /* set ids of invoiceItems to 0 to post to database */ 
+      this.createFinalObject().invoiceItems.map(x=>{x.id = 0});
+      this.invoiceService.saveInvoice(this.createFinalObject());
+    } else {
+      this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
     }
   }
 
   editInvoice() {
-    /*
-    this.editInvoiceForm.controls.invoiceRows.at(0).patchValue({
-      productName: this.data.invoice.invoiceItems.at(0)?.item.name,
-      pack: this.data.invoice.invoiceItems.at(0)?.pack,
-      batchNo: this.data.invoice.invoiceItems.at(0)?.batchNo, 
-      mfgDate: this.data.invoice.invoiceItems.at(0)?.mfgDate, 
-      expDate: this.data.invoice.invoiceItems.at(0)?.expDate, 
-      qty: this.data.invoice.invoiceItems.at(0)?.qty, 
-      freeItems: this.data.invoice.invoiceItems.at(0)?.freeItems, 
-      mrp: this.data.invoice.invoiceItems.at(0)?.mrp, 
-      rate: this.data.invoice.invoiceItems.at(0)?.rate, 
-      discount: this.data.invoice.invoiceItems.at(0)?.discount, 
-      gstRate: this.data.invoice.invoiceItems.at(0)?.item.hsn.gstRate,
-      hsnCode: this.data.invoice.invoiceItems.at(0)?.item.hsn.hsnCode,
-    })
-    */
-
-    /*
-    this.data.invoice.invoiceItems.map(y=>{
-      // console.log(y.item.name,y.pack);
-      this.editInvoiceForm.controls.invoiceRows.controls.map(x=>x.patchValue({
-        productName: y.item.name,
-        pack: y.pack,
-        batchNo: y.batchNo, 
-        mfgDate: y.mfgDate, 
-        expDate: y.expDate, 
-        qty: y.qty, 
-        freeItems: y.freeItems, 
-        mrp: y.mrp, 
-        rate: y.rate, 
-        discount: y.discount, 
-        gstRate: y.item.hsn.gstRate,
-        hsnCode: y.item.hsn.hsnCode,
-      }))
-    })
-    */
-    
-    // console.log('invoiceItems: ', this.data.invoice.invoiceItems);
-
-    /*
-    const invoiceRow: any[] = [];
-
-    for (var i=0; i<this.data.invoice.invoiceItems.length; i++){
-      invoiceRow.push({
-        id: this.data.invoice.invoiceItems[i].id,
-        productName: this.data.invoice.invoiceItems[i].item.name,
-        pack: this.data.invoice.invoiceItems[i].pack,
-        batchNo: this.data.invoice.invoiceItems[i].batchNo,
-        mfgDate: this.data.invoice.invoiceItems[i].mfgDate,
-        expDate: this.data.invoice.invoiceItems[i].expDate,
-        qty: this.data.invoice.invoiceItems[i].qty,
-        freeItems: this.data.invoice.invoiceItems[i].freeItems,
-        mrp: this.data.invoice.invoiceItems[i].mrp,
-        rate: this.data.invoice.invoiceItems[i].rate,
-        discount: this.data.invoice.invoiceItems[i].discount,
-        gstRate: this.data.invoice.invoiceItems[i].item.hsn.gstRate,
-        hsnCode: this.data.invoice.invoiceItems[i].item.hsn.hsnCode,
-      })
-    };
-
-    console.log('invoice rows created: ', invoiceRow);
-    */
-    
-    // this.editInvoiceForm.controls.invoiceRows.patchValue(invoiceRow);
-
-    /*
-    invoiceRow.map(x => 
-      this.editInvoiceForm.controls.invoiceRows.patchValue([
-        { id: x.id },
-        { productName: x.productName },
-      ])
-    )
-    */
+    this.editInvoiceForm.controls.invoiceRows.patchValue(this.data.invoiceRows);
 
     this.editInvoiceAccountsForm.patchValue({
       id: this.data.invoice.id, 
       invoiceNumber: this.data.invoice.invoiceNumber,
       invoiceDate: this.data.invoice.invoiceDate,
-        distributor: this.data.invoice.distributor, 
-        // invoiceItems: this.data.invoice.invoiceItems,
-        amount: this.data.invoice.amount,
-        totalDiscount: this.data.invoice.totalDiscount,
-        actualAmount: this.data.invoice.actualAmount,
+      distributor: this.data.invoice.distributor, 
+      amount: this.data.invoice.amount,
+      totalDiscount: this.data.invoice.totalDiscount,
+      actualAmount: this.data.invoice.actualAmount,
     })
+
+    const control = this.editInvoiceForm.get('invoiceRows') as FormArray;
+    /* Add new blank row below the last filled row */
+    this.data.invoiceRows.map(x=>(
+      control.push(this.patchInvoiceRows(x))
+    ));
+    this.invoiceDatasource = new MatTableDataSource(control.controls);
   }
 
+  generatePDF() {
+    DocGenInvoice(this.createFinalObject());
+  }
 } 

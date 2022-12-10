@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceService } from 'src/app/services/invoice.service';
-import { EditInvoiceStaticComponent } from '../edit-invoice-static/edit-invoice-static.component';
 import { EditInvoiceComponent } from '../edit-invoice/edit-invoice.component';
 
 @Component({
@@ -83,7 +82,6 @@ export class InvoiceListComponent {
   openInvoiceDialog() {
     this.dialog.open(
       EditInvoiceComponent, 
-      // EditInvoiceStaticComponent,
       {
         maxWidth: '100vw', 
         maxHeight: '100vh', 
@@ -96,6 +94,7 @@ export class InvoiceListComponent {
   }
 
   getAllInvoices() {
+    /*
     this.invoiceService.getInvoices().subscribe(
       res => {
         // console.log('get invoices: ', res);
@@ -103,13 +102,47 @@ export class InvoiceListComponent {
         this.invoiceDatasource.data = res;
       }
     )
+    */
+
+    this.invoiceService.getInvoices();
+    this.invoiceService.allInvoices.subscribe(res=>{
+      // console.log('get invoices: ', res);
+      this.invoice = res;
+      this.invoiceDatasource.data = res;
+    });
   }
 
   editSelectedInvoice(invoice: Invoice[]) {
-    console.log('selected invoice object: ', invoice);
+
+    const index = Object.entries(invoice).at(0)?.at(1)?.valueOf();
     
+    const invoiceRow = this.invoice.find(x=>x.id === index);
+
+    const invoiceRows: any[] = [];
+
+    invoiceRow?.invoiceItems.map(x=> {
+      invoiceRows.push({
+        id: x.id,
+        productName: x.item.name,
+        pack: x.pack,
+        batchNo: x.batchNo,
+        mfgDate: x.mfgDate,
+        expDate: x.expDate,
+        qty: x.qty,
+        freeItems: x.freeItems,
+        mrp: x.mrp,
+        rate: x.rate,
+        discount: x.discount,
+        gstRate: x.item.hsn.gstRate,
+        hsnCode: x.item.hsn.hsnCode,
+
+        // action: x.action,
+        // isEditable: x.isEditable,
+        // isNewRow: x.isNewRow
+      })
+    })
+   
     this.dialog.open(
-      // EditInvoiceStaticComponent, 
       EditInvoiceComponent,
       {
         maxWidth: '100vw', 
@@ -118,7 +151,7 @@ export class InvoiceListComponent {
         height: '98%', 
         panelClass: 'fixActionRow',
         autoFocus: false,
-        data: {invoice}
+        data: { invoice , invoiceRows}
       }
     );
   }

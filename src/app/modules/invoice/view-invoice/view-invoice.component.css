@@ -1,0 +1,13 @@
+.leftColumns {
+  float: left;
+}
+
+.rightColumns {
+  float: right;
+}
+
+.heading {
+  padding-left: 30px;
+  padding-right: 30px;
+  font-weight: bolder;
+}

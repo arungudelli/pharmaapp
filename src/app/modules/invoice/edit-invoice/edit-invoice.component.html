@@ -3,6 +3,83 @@
 <mat-dialog-content class="mat-typography" style="height: calc(100% - 130px)">
   <div class="dist-form"></div>
 
+  <form [formGroup]="editInvoiceAccountsForm" autocomplete="off">
+    <div formGroupName="distributor">
+      <div class="leftColumns">
+        <!-- Distributor Name Field -->
+        <ng-container>
+          <mat-form-field appearance="outline" class="distributorName">
+            <mat-label>Distributor Name</mat-label>
+            <!-- type="text" -->
+            <input
+              placeholder="Select Distributor Name"
+              matInput
+              formControlName="name"
+              [matAutocomplete]="autoDistributor"
+            />
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoDistributor="matAutocomplete"
+              (optionSelected)="onSelectDistributor($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let option of filteredDistributorOptions | async"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- Distributor Phone No. Field -->
+        <ng-container>
+          <mat-form-field appearance="outline" class="distributorPhoneNumber">
+            <mat-label>Phone No.</mat-label>
+            <!-- type="number" -->
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="rightColumns">
+      <!-- Invoice No. Field -->
+      <ng-container>
+        Invoice Number
+        <mat-form-field appearance="outline" class="invoiceNumber">
+          <!-- <mat-label>Invoice No.</mat-label> -->
+          <!-- type="number" -->
+          <input matInput formControlName="invoiceNumber" />
+        </mat-form-field>
+      </ng-container>
+
+      <br />
+
+      <!-- Invoice Date Field -->
+      <ng-container>
+        Invoice Date
+        <mat-form-field appearance="outline" class="invoiceDate">
+          <!-- <mat-label>Invoice Date</mat-label> -->
+          <!-- type="number" -->
+          <input
+            matInput
+            type="date"
+            [matDatepicker]="invoiceDatePicker"
+            formControlName="invoiceDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="invoiceDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #invoiceDatePicker></mat-datepicker>
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </form>
+
+  <br />
+
   <div class="button-group">
     <!-- Add New Blank Row -->
     <button mat-raised-button color="primary" (click)="addNewRow()">
@@ -49,6 +126,23 @@
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef hidden>ID</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+              hidden
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="text" -->
+                <input matInput formControlName="id" readonly hidden />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef hidden></td>
+          </ng-container>
+
           <!-- Product Name Column -->
           <ng-container matColumnDef="productName">
             <th mat-header-cell *matHeaderCellDef>Product Name</th>
@@ -58,13 +152,15 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
+                <!-- type="text" -->
                 <input
                   placeholder="Select Product Name"
-                  type="text"
                   matInput
                   formControlName="productName"
                   [matAutocomplete]="autoItem"
+                  (keyup)="searchItems($event)"
                 />
+                <!-- (keyup.enter)="searchItems($event)" -->
                 <mat-autocomplete
                   autoActiveFirstOption
                   #autoItem="matAutocomplete"
@@ -81,17 +177,17 @@
             </td>
             <td mat-footer-cell *matFooterCellDef>
               <form [formGroup]="editInvoiceAccountsForm">
-                <div class="leftColumns">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Amount</mat-label>
-                    <input
-                      type="number"
-                      placeholder="amount"
-                      matInput
-                      formControlName="amount"
-                    />
-                  </mat-form-field>
-                </div>
+                <!-- <div class="leftColumns"> -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Amount</mat-label>
+                  <!-- type="number" -->
+                  <input
+                    placeholder="amount"
+                    matInput
+                    formControlName="amount"
+                  />
+                </mat-form-field>
+                <!-- </div> -->
               </form>
             </td>
           </ng-container>
@@ -105,7 +201,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="pack" />
+                <!-- type="text" -->
+                <input matInput formControlName="pack" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -120,7 +217,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="batchNo" />
+                <!-- type="text" -->
+                <input matInput formControlName="batchNo" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -165,9 +263,6 @@
                   matInput
                   type="date"
                   formControlName="expDate"
-                  [readonly]="
-                    editInvoiceForm.get('invoiceRows')!.value[i].isEditable
-                  "
                 />
                 <mat-datepicker-toggle
                   matSuffix
@@ -180,8 +275,8 @@
               <form [formGroup]="editInvoiceAccountsForm">
                 <mat-form-field appearance="outline">
                   <mat-label>Total Discount</mat-label>
+                  <!-- type="number" -->
                   <input
-                    type="number"
                     placeholder="Total Discount"
                     matInput
                     formControlName="totalDiscount"
@@ -200,7 +295,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="qty" />
+                <!-- type="number" -->
+                <input matInput formControlName="qty" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -215,7 +311,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="freeItems" />
+                <!-- type="number" -->
+                <input matInput formControlName="freeItems" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -230,7 +327,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="mrp" />
+                <!-- type="number" -->
+                <input matInput formControlName="mrp" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -245,15 +343,16 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="rate" />
+                <!-- type="number" -->
+                <input matInput formControlName="rate" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef>
               <form [formGroup]="editInvoiceAccountsForm">
                 <mat-form-field appearance="outline">
                   <mat-label>Actual Amount</mat-label>
+                  <!-- type="number" -->
                   <input
-                    type="number"
                     placeholder="Actual Amount"
                     matInput
                     formControlName="actualAmount"
@@ -272,7 +371,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="discount" />
+                <!-- type="number" -->
+                <input matInput formControlName="discount" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -287,7 +387,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="number" formControlName="gstRate" />
+                <!-- type="number"  -->
+                <input matInput formControlName="gstRate" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -302,7 +403,8 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <input matInput type="text" formControlName="hsnCode" />
+                <!-- type="text" -->
+                <input matInput formControlName="hsnCode" />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -333,6 +435,9 @@
     (click)="saveInvoice()"
   >
     Save
+  </button>
+  <button color="primary" mat-raised-button (click)="generatePDF()">
+    Generate PDF
   </button>
 </mat-dialog-actions>
 <!-- </mat-dialog-content> -->

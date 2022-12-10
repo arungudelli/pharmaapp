@@ -1,0 +1,21 @@
+/*
+mat-nav-list {
+  height: 100%;
+  height: 100vh;
+  background-color: #010142;
+}
+*/
+/*
+::ng-deep .mat-drawer-inner-container {
+  background-color: #010142;
+  height: 100%;
+}
+*/
+
+span {
+  color: white;
+}
+
+.is-active {
+  background-color: #5a5a5a;
+}

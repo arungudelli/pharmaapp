@@ -23,6 +23,10 @@ export class LeftNavigationMenuComponent {
     {
       label: 'Invoice List',
       route: '/invoice-list'
+    },
+    {
+      label: 'Practice',
+      route: '/practice'
     }
   ];
 }

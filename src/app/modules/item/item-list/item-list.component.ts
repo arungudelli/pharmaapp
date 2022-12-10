@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Invoice } from 'src/app/models/invoice';
 import { Item } from 'src/app/models/item';
+import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
 import { EditItemComponent } from '../edit-item/edit-item.component';
 
@@ -17,10 +19,18 @@ export class ItemListComponent {
   selectedItem : Item;
 
   itemColumns: string[] = ['Item Name', 'Item Description'];
+  
+  invoiceColumns: string[] = ['invoiceNumber', 'invoiceDate', 'name', 'pack', 'batchNo', 'mfgDate', 'expDate', 'qty'];
+
+  invoice: Invoice[] = [];
 
   itemDataSource = new MatTableDataSource<Item>();
+  
+  invoiceDataSource = new MatTableDataSource<Invoice>();
 
-  constructor(public dialog: MatDialog, public itemService: ItemService) {
+  totalQty:number = 0;
+
+  constructor(public dialog: MatDialog, public itemService: ItemService, public invoiceService: InvoiceService) {
     this.selectedItem = {} as Item;
   }
 
@@ -38,8 +48,18 @@ export class ItemListComponent {
         this.item = res;
         this.itemDataSource.data = res;
       },
-      err => console.log(err),
-      () => console.log("completed")
+    )
+  }
+
+  getInvoicesBySelectedItem(itemId: any) {
+    // console.log(itemId);
+    this.invoiceService.getInvoiceByItemId(itemId).subscribe(
+      res => {
+        // console.log(res);
+        this.invoice = res as Invoice[];
+        this.totalQty = this.invoice.map(x=>x.invoiceItems.map(y=>y.qty).at(0)).reduce((a,b)=>a!+b!,0) as number;
+        this.invoiceDataSource.data = res as Invoice[];
+      }
     )
   }
 
