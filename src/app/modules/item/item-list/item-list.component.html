@@ -33,23 +33,39 @@
         <div class="distributor-details">
           <div>
             <b>Item Name:</b>
-            {{ item.value.name }}
+            <!-- {{ item.value.name }} -->
             <br />
             <b>Item Description:</b>
-            {{ item.value.description }}
+            <!-- {{ item.value.description }} -->
             <br />
             <b>HSN Code:</b>
+            <!-- {{ item.value.hsn.hsnCode }} -->
+            <br />
+          </div>
+          <div>
+            {{ item.value.name }}
+            <br />
+            {{ item.value.description }}
+            <br />
             {{ item.value.hsn.hsnCode }}
             <br />
           </div>
           <div>
             <b>GST Rate:</b>
-            {{ item.value.hsn.gstRate }}
+            <!-- {{ item.value.hsn.gstRate }} -->
             <br />
             <b>Manufacturer:</b>
-            {{ item.value.manfacturer.name }}
+            <!-- {{ item.value.manfacturer.name }} -->
             <br />
             <b>Total Quantity:</b>
+            <!-- {{ totalQty }} -->
+            <br />
+          </div>
+          <div>
+            {{ item.value.hsn.gstRate }}
+            <br />
+            {{ item.value.manfacturer.name }}
+            <br />
             {{ totalQty }}
             <br />
           </div>
