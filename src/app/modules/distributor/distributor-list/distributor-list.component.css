@@ -39,3 +39,8 @@
   flex: 1;
   margin: 10px;
 }
+
+.edit-selected-distributor {
+  width: 100%;
+  margin: 10px;
+}
