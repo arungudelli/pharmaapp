@@ -1,7 +1,8 @@
 .example-full-width {
   width: 100%;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin: 10px;
+  /* margin-top: 30px; */
+  /* margin-bottom: 30px; */
 }
 
 .example-container {
@@ -29,4 +30,13 @@
   align-self: center;
   text-align: center;
   font-weight: bolder;
+}
+
+.distributor-details {
+  display: flex;
+}
+
+.distributor-details > div {
+  flex: 1;
+  margin: 10px;
 }

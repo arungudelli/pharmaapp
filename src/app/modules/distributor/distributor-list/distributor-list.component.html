@@ -23,25 +23,6 @@
           {{ element.name }}
         </mat-list-option>
       </mat-selection-list>
-
-      <!-- <p>Options selected : {{ distributors.selectedOptions.selected.length }} </p> -->
-
-      <!--
-            <table>
-                <thead>
-                    <tr>
-                        <th>Distributor</th>
-                        <th>operation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let d of distributor">
-                        <td> {{d.Name}} </td>
-                        <td><button (click)="getSelectedDistributor(d.Name)">select</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            -->
     </mat-card>
   </mat-drawer>
   <mat-drawer-content class="example-content">
@@ -49,30 +30,36 @@
       <span class="heading">Details</span>
       <hr />
       <div *ngFor="let d of distributors.selectedOptions.selected">
-        Distributor Name:
-        {{ d.value.name }}
-        <br />
-        GSTIN:
-        {{ d.value.gstin }}
-        <br />
-        Phone Number:
-        {{ d.value.phoneNumber }}
-        <br />
-        Email:
-        {{ d.value.email }}
-        <br />
-        GST Address:
-        {{ d.value.address }}
-        <br />
-        City:
-        {{ d.value.city }}
-        <br />
-        State:
-        {{ d.value.state }}
-        <br />
-        Postal code:
-        {{ d.value.pinCode }}
-        <br />
+        <div class="distributor-details">
+          <div>
+            <b>Distributor Name:</b>
+            {{ d.value.name }}
+            <br />
+            <b>GSTIN:</b>
+            {{ d.value.gstin }}
+            <br />
+            <b>Phone Number:</b>
+            {{ d.value.phoneNumber }}
+            <br />
+            <b>Email:</b>
+            {{ d.value.email }}
+            <br />
+          </div>
+          <div>
+            <b>GST Address:</b>
+            {{ d.value.address }}
+            <br />
+            <b>City:</b>
+            {{ d.value.city }}
+            <br />
+            <b>State:</b>
+            {{ d.value.state }}
+            <br />
+            <b>Postal code:</b>
+            {{ d.value.pinCode }}
+            <br />
+          </div>
+        </div>
         <!-- mat-button -->
         <button
           mat-raised-button
@@ -96,19 +83,6 @@
         </mat-chip>
       </mat-chip-listbox>
       <hr />
-
-      <!--
-      <table mat-table [dataSource]="distributorDatasource" trackBy="trackByName" class="mat-elevation-z8">
-
-          <ng-container>
-            <th mat-header-cell *matHeaderCellDef> Distributor </th>
-            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="  distributorColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns:   distributorColumns;"></tr>
-      </table>
-      -->
 
       <table
         mat-table
