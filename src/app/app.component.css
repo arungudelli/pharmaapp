@@ -6,6 +6,7 @@
   right: 0;
   background: #fff;
 }
+
 .router-container {
   padding: 5px;
   margin: 5px;
@@ -14,5 +15,5 @@
 /* app-left-navigation-menu */
 mat-drawer {
   background-color: #010142;
-  color: white !important;
+  /* color: white !important; */
 }
