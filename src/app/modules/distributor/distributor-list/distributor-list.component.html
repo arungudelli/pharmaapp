@@ -12,8 +12,6 @@
   <mat-drawer class="distributor-drawer" mode="side" opened>
     <mat-card>
       <span class="distributor-heading">Distributors</span>
-      <hr />
-
       <mat-selection-list #distributors [multiple]="false">
         <mat-list-option
           *ngFor="let element of distributor"
@@ -25,11 +23,14 @@
       </mat-selection-list>
     </mat-card>
   </mat-drawer>
+
   <mat-drawer-content class="distributor-content">
     <mat-card>
       <span class="distributor-heading">Details</span>
-      <hr />
-      <div *ngFor="let d of distributors.selectedOptions.selected">
+      <div
+        *ngFor="let d of distributors.selectedOptions.selected"
+        class="selected-distributor-details"
+      >
         <div class="distributor-details">
           <div>
             <b>Distributor Name:</b>
@@ -100,7 +101,6 @@
 
     <mat-card>
       <span class="distributor-heading">Transactions</span>
-      <br />
       <!--
       <mat-chip-listbox>
         <mat-chip *ngFor="let chosen of distributors.selectedOptions.selected">
@@ -108,7 +108,6 @@
         </mat-chip>
       </mat-chip-listbox>
       -->
-      <hr />
 
       <table
         mat-table
