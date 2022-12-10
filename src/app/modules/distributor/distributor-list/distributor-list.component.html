@@ -1,17 +1,17 @@
 <!-- mat-button -->
 <button
   mat-raised-button
-  class="example-full-width"
+  class="distributor-button-add"
   color="primary"
   (click)="openDistributorDialog()"
 >
   Add Distributor
 </button>
 
-<mat-drawer-container class="example-container">
-  <mat-drawer class="example-drawer" mode="side" opened>
+<mat-drawer-container class="distributor-container">
+  <mat-drawer class="distributor-drawer" mode="side" opened>
     <mat-card>
-      <span class="heading">Distributors</span>
+      <span class="distributor-heading">Distributors</span>
       <hr />
 
       <mat-selection-list #distributors [multiple]="false">
@@ -25,9 +25,9 @@
       </mat-selection-list>
     </mat-card>
   </mat-drawer>
-  <mat-drawer-content class="example-content">
+  <mat-drawer-content class="distributor-content">
     <mat-card>
-      <span class="heading">Details</span>
+      <span class="distributor-heading">Details</span>
       <hr />
       <div *ngFor="let d of distributors.selectedOptions.selected">
         <div class="distributor-details">
@@ -99,7 +99,7 @@
     <br />
 
     <mat-card>
-      <span class="heading">Transactions</span>
+      <span class="distributor-heading">Transactions</span>
       <br />
       <!--
       <mat-chip-listbox>
@@ -112,8 +112,8 @@
 
       <table
         mat-table
-        [dataSource]="invoiceDatasource"
         class="mat-elevation-z8"
+        [dataSource]="invoiceDatasource"
       >
         <ng-container matColumnDef="invoiceNumber">
           <th mat-header-cell *matHeaderCellDef>Invoice Number</th>
