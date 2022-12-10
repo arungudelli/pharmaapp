@@ -19,7 +19,7 @@ export function DocGenInvoice(formValues: any) {
         text: `Date: ${new Date().toISOString().split('T')[0]}`,
       },
       {
-        text: `Invoice Date: ${new Date(formValues.invoiceDate!)?.toISOString().split('T')[0]}`,
+        text: `Invoice Date: ${new Date(formValues.invoiceDate)?.toISOString().split('T')[0]}`,
       },
       {
         text: `Invoice No: ${formValues.invoiceNumber}`,
@@ -48,7 +48,6 @@ export function DocGenInvoice(formValues: any) {
           body: [
             ['Product Name','Pack','Batch No.','Mfg. Date','Exp. Date','Qty','Free Items','MRP','Rate','Discount','GST %','HSN Code'],
             ...formValues.invoiceItems.map((x: { item: { name: any; hsn: { gstRate: any; hsnCode: any; }; }; pack: any; batchNo: any; mfgDate: any; expDate: any; qty: any; freeItems: any; mrp: any; rate: any; discount: any; })=>(
-              // [`${x.item.name}`,`${x.item.pack}`,`${x.item.batchNo}`,`${new Date(x.item.mfgDate!).toISOString().split('T')[0]}`,`${new Date(x.item.expDate!).toISOString().split('T')[0]}`,`${x.item.qty}`,`${x.item.freeItems}`,`${x.item.mrp}`,`${x.item.rate}`,`${x.item.discount}`,`${x.item.hsn.gstRate}`,`${x.item.hsn.hsnCode}`]
               [`${x.item.name}`,`${x.pack}`,`${x.batchNo}`,`${new Date(x.mfgDate).toISOString().split('T')[0]}`,`${new Date(x.expDate).toISOString().split('T')[0]}`,`${x.qty}`,`${x.freeItems}`,`${x.mrp}`,`${x.rate}`,`${x.discount}`,`${x.item.hsn.gstRate}`,`${x.item.hsn.hsnCode}`]
             )),
             ['Amount',`${formValues.amount}`,'','','Total Discount',`${formValues.totalDiscount}`,'','','Total Amount',`${formValues.actualAmount}`,'','']
