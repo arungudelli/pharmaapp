@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -70,6 +71,16 @@ export class BillListComponent {
 
   ngOnInit(): void {
     this.getAllBills();
+
+    // /*
+    // const filterPredicate = this.billDatasource.filterPredicate;
+    // this.billDatasource.filterPredicate = (data: AbstractControl|any, filter) => {
+    this.billDatasource.filterPredicate = (data: Invoice, filter) => {
+      // return filterPredicate.call(this.billDatasource, data, filter);
+      const dataStr = JSON.stringify(data).toLowerCase();
+      return dataStr.indexOf(filter) != -1; 
+    };
+    // */
   }
 
   ngAfterViewInit(): void {
@@ -88,8 +99,8 @@ export class BillListComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.billDatasource.filter = filterValue.trim().toLowerCase();
-    
-    if (this.billDatasource.paginator) {
+
+    if(this.billDatasource.paginator) {
       this.billDatasource.paginator.firstPage();
     }
   }
