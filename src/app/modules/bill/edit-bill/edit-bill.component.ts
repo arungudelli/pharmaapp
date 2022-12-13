@@ -47,10 +47,12 @@ const datePickerFormat = {
   selector: 'app-edit-bill',
   templateUrl: './edit-bill.component.html',
   styleUrls: ['./edit-bill.component.css'],
+  // /*
   providers: [
     { provide: DateAdapter, useClass: PickDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: datePickerFormat }
   ]
+  // */
 })
 
 export class EditBillComponent {
@@ -121,7 +123,7 @@ export class EditBillComponent {
       state: new FormControl(),
       pinCode: new FormControl()
     }),
-    invoiceNumber: new FormControl(''),
+    invoiceNumber: new FormControl(),
     // invoiceDate: new FormControl(new Date()),
     invoiceDate: new FormControl(),
     amount: new FormControl(),
@@ -261,8 +263,14 @@ export class EditBillComponent {
       batchNo: new FormControl(x.batchNo), 
       discount: new FormControl(x.discount), 
       mrp: new FormControl(x.mrp), 
+      /*
       mfgDate: new FormControl(x.mfgDate), 
       expDate: new FormControl(x.expDate), 
+      */
+      // /*
+      mfgDate: new FormControl(x.mfgDate.toString().split('T')[0]), 
+      expDate: new FormControl(x.expDate.toString().split('T')[0]), 
+      // */
     })
   }
 
@@ -290,8 +298,8 @@ export class EditBillComponent {
         id: this.editBillForm.controls.billRows.value[i].id,
         item: this.selectedItems[i],
         batchNo: this.editBillForm.controls.billRows.value[i].batchNo,
-        mfgDate: this.editBillForm.controls.billRows.value[i].mfgDate,
-        expDate: this.editBillForm.controls.billRows.value[i].expDate,
+        mfgDate: this.editBillForm.controls.billRows.value[i].mfgDate+"T00:00:00",
+        expDate: this.editBillForm.controls.billRows.value[i].expDate+"T00:00:00",
         qty: this.editBillForm.controls.billRows.value[i].qty as number,
         discount: this.editBillForm.controls.billRows.value[i].discount as number,
         mrp: this.editBillForm.controls.billRows.value[i].mrp as number,
@@ -316,9 +324,11 @@ export class EditBillComponent {
     if(!this.data) {
       /* set ids of invoiceItems to 0 to post to database */ 
       this.createFinalObject().invoiceItems.map(x=>{x.id = 0});
-      this.invoiceService.saveInvoice(this.createFinalObject());
+      // this.invoiceService.saveInvoice(this.createFinalObject());
+      console.log(this.createFinalObject());
     } else {
-      this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
+      // this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
+      console.log(this.createFinalObject().id, this.createFinalObject());
     }
   }
 

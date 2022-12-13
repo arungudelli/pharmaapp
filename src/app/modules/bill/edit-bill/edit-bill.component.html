@@ -278,19 +278,15 @@
             >
               <mat-form-field appearance="outline">
                 <!-- [matDatepicker]="mfgDatePicker" -->
-                <input
-                  matInput
-                  [matDatepicker]="mfgDatePicker"
-                  type="date"
-                  formControlName="mfgDate"
-                />
-                <!---->
+                <input matInput type="date" formControlName="mfgDate" />
+                <!-- <input matInput type="text" formControlName="mfgDate" /> -->
+                <!--
                 <mat-datepicker-toggle
                   matSuffix
                   [for]="mfgDatePicker"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #mfgDatePicker></mat-datepicker>
-                <!---->
+                -->
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -306,19 +302,15 @@
             >
               <mat-form-field appearance="outline">
                 <!-- [matDatepicker]="expDatePicker" -->
-                <input
-                  matInput
-                  [matDatepicker]="expDatePicker"
-                  type="date"
-                  formControlName="expDate"
-                />
-                <!---->
+                <input matInput type="date" formControlName="expDate" />
+                <!-- <input matInput type="text" formControlName="expDate" /> -->
+                <!--
                 <mat-datepicker-toggle
                   matSuffix
                   [for]="expDatePicker"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #expDatePicker></mat-datepicker>
-                <!---->
+                -->
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef>
