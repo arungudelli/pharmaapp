@@ -1,11 +1,13 @@
-export interface BillRows {
+import { Item } from "./item";
+
+export interface BillItems {
     id: number, 
-    productName: string,
+    item: Item,
     batchNo: string, 
     mfgDate: Date, 
     expDate: Date, 
     qty: number, 
-    mrp: number, 
     discount: number, 
+    mrp: number, 
     amount: number, 
 }
