@@ -24,26 +24,11 @@
           <mat-form-field appearance="outline" class="patientPhoneNumber">
             <mat-label>Phone No.</mat-label>
             <!-- type="number" -->
-            <!-- [matAutocomplete]="autoPatient" -->
             <input
               matInput
               formControlName="phoneNumber"
               placeholder="Select Patient Phone Number"
             />
-            <!-- 
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoPatient="matAutocomplete"
-              (optionSelected)="onSelectPatient($event.option.value)"
-            >
-              <mat-option
-                *ngFor="let option of filteredDistributorOptions | async"
-                [value]="option"
-              >
-                {{ option }}
-              </mat-option>
-            </mat-autocomplete> 
-          -->
           </mat-form-field>
         </ng-container>
         <button mat-raised-button color="primary" (click)="onSelectPatient()">
@@ -53,35 +38,35 @@
     </div>
 
     <div class="rightColumns">
-      <!-- Invoice No. Field -->
+      <!-- Bill No. Field -->
       <ng-container>
         Bill Number
         <mat-form-field appearance="outline" class="billNumber">
-          <!-- <mat-label>Invoice No.</mat-label> -->
+          <!-- <mat-label>Bill No.</mat-label> -->
           <!-- type="number" -->
-          <input matInput formControlName="invoiceNumber" />
+          <input matInput formControlName="billNumber" />
         </mat-form-field>
       </ng-container>
 
       <br />
 
-      <!-- Invoice Date Field -->
+      <!-- Bill Date Field -->
       <ng-container>
         Bill Date
         <mat-form-field appearance="outline" class="billDate">
-          <!-- <mat-label>Invoice Date</mat-label> -->
+          <!-- <mat-label>Bill Date</mat-label> -->
           <!-- type="number" -->
           <input
             matInput
             type="date"
-            [matDatepicker]="invoiceDatePicker"
-            formControlName="invoiceDate"
+            [matDatepicker]="billDatePicker"
+            formControlName="billDate"
           />
           <mat-datepicker-toggle
             matSuffix
-            [for]="invoiceDatePicker"
+            [for]="billDatePicker"
           ></mat-datepicker-toggle>
-          <mat-datepicker #invoiceDatePicker></mat-datepicker>
+          <mat-datepicker #billDatePicker></mat-datepicker>
         </mat-form-field>
       </ng-container>
     </div>
@@ -169,7 +154,6 @@
                   [matAutocomplete]="autoItem"
                   (keyup)="searchItems($event)"
                 />
-                <!-- (keyup.enter)="searchItems($event)" -->
                 <mat-autocomplete
                   autoActiveFirstOption
                   #autoItem="matAutocomplete"
@@ -201,22 +185,6 @@
             </td>
           </ng-container>
 
-          <!-- Qty Column -->
-          <ng-container matColumnDef="qty">
-            <th mat-header-cell *matHeaderCellDef>Qty</th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = index"
-              [formGroup]="element"
-            >
-              <mat-form-field appearance="outline">
-                <!-- type="number" -->
-                <input matInput formControlName="qty" />
-              </mat-form-field>
-            </td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
-
           <!-- Batch No. Column -->
           <ng-container matColumnDef="batchNo">
             <th mat-header-cell *matHeaderCellDef>Batch No.</th>
@@ -226,52 +194,18 @@
               [formGroup]="element"
             >
               <mat-form-field appearance="outline">
-                <!-- type="text" -->
-                <input matInput formControlName="batchNo" />
-              </mat-form-field>
-            </td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
-
-          <!-- Discount Column -->
-          <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef>Discount</th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = index"
-              [formGroup]="element"
-            >
-              <mat-form-field appearance="outline">
-                <!-- type="number" -->
-                <input matInput formControlName="discount" />
-              </mat-form-field>
-            </td>
-            <td mat-footer-cell *matFooterCellDef>
-              <form [formGroup]="editBillAccountsForm">
-                <mat-form-field appearance="outline">
-                  <mat-label>Total Discount</mat-label>
-                  <!-- type="number" -->
-                  <input
-                    placeholder="Total Discount"
-                    matInput
-                    formControlName="totalDiscount"
-                  />
-                </mat-form-field>
-              </form>
-            </td>
-          </ng-container>
-
-          <!-- MRP Column -->
-          <ng-container matColumnDef="mrp">
-            <th mat-header-cell *matHeaderCellDef>MRP</th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = index"
-              [formGroup]="element"
-            >
-              <mat-form-field appearance="outline">
-                <!-- type="number" -->
-                <input matInput formControlName="mrp" />
+                <!-- <mat-label>Batch No.</mat-label> -->
+                <mat-select
+                  formControlName="invoiceItem"
+                  multiple="false"
+                  (selectionChange)="onSelectBatchNo(i)"
+                >
+                  <mat-option
+                    *ngFor="let option of selectedManufacturers"
+                    [value]="option"
+                    >{{ option.batchNo }}</mat-option
+                  >
+                </mat-select>
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -290,12 +224,12 @@
                 <input matInput type="date" formControlName="mfgDate" />
                 <!-- <input matInput type="text" formControlName="mfgDate" /> -->
                 <!--
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="mfgDatePicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #mfgDatePicker></mat-datepicker>
-                -->
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="mfgDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #mfgDatePicker></mat-datepicker>
+      -->
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>
@@ -314,23 +248,99 @@
                 <input matInput type="date" formControlName="expDate" />
                 <!-- <input matInput type="text" formControlName="expDate" /> -->
                 <!--
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="expDatePicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #expDatePicker></mat-datepicker>
-                -->
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="expDatePicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #expDatePicker></mat-datepicker>
+      -->
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef>
               <form [formGroup]="editBillAccountsForm">
                 <mat-form-field appearance="outline">
-                  <mat-label>Actual Amount</mat-label>
+                  <mat-label>Total Discount</mat-label>
                   <!-- type="number" -->
                   <input
-                    placeholder="Actual Amount"
+                    placeholder="Total Discount"
                     matInput
-                    formControlName="actualAmount"
+                    formControlName="totalDiscount"
+                  />
+                </mat-form-field>
+              </form>
+            </td>
+          </ng-container>
+
+          <!-- Qty Column -->
+          <ng-container matColumnDef="qty">
+            <th mat-header-cell *matHeaderCellDef>Qty</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="number" -->
+                <input matInput formControlName="qty" />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <!-- Discount Column -->
+          <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef>Discount</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="number" -->
+                <input matInput formControlName="discount" />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <!-- MRP Column -->
+          <ng-container matColumnDef="mrp">
+            <th mat-header-cell *matHeaderCellDef>MRP</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="number" -->
+                <input matInput formControlName="mrp" />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <!-- Amount Column -->
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="number" -->
+                <input matInput formControlName="amount" />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              <form [formGroup]="editBillAccountsForm">
+                <mat-form-field appearance="outline">
+                  <mat-label>Discounted Amount</mat-label>
+                  <!-- type="number" -->
+                  <input
+                    placeholder="Discounted Amount"
+                    matInput
+                    formControlName="discountedAmount"
                   />
                 </mat-form-field>
               </form>
