@@ -4,23 +4,37 @@
   <div class="dist-form"></div>
 
   <form [formGroup]="editBillAccountsForm" autocomplete="off">
-    <div formGroupName="distributor">
+    <div formGroupName="patient">
       <div class="leftColumns">
-        <!-- Distributor Name Field -->
+        <!-- Patient Name Field -->
         <ng-container>
-          <mat-form-field appearance="outline" class="distributorName">
+          <mat-form-field appearance="outline" class="patientName">
             <mat-label>Customer Name</mat-label>
             <!-- type="text" -->
             <input
-              placeholder="Select Distributor Name"
+              placeholder="Patient Name"
               matInput
-              formControlName="name"
-              [matAutocomplete]="autoDistributor"
+              formControlName="patientName"
             />
+          </mat-form-field>
+        </ng-container>
+
+        <!-- Patient Phone No. Field -->
+        <ng-container>
+          <mat-form-field appearance="outline" class="patientPhoneNumber">
+            <mat-label>Phone No.</mat-label>
+            <!-- type="number" -->
+            <!-- [matAutocomplete]="autoPatient" -->
+            <input
+              matInput
+              formControlName="phoneNumber"
+              placeholder="Select Patient Phone Number"
+            />
+            <!-- 
             <mat-autocomplete
               autoActiveFirstOption
-              #autoDistributor="matAutocomplete"
-              (optionSelected)="onSelectDistributor($event.option.value)"
+              #autoPatient="matAutocomplete"
+              (optionSelected)="onSelectPatient($event.option.value)"
             >
               <mat-option
                 *ngFor="let option of filteredDistributorOptions | async"
@@ -28,18 +42,13 @@
               >
                 {{ option }}
               </mat-option>
-            </mat-autocomplete>
+            </mat-autocomplete> 
+          -->
           </mat-form-field>
         </ng-container>
-
-        <!-- Distributor Phone No. Field -->
-        <ng-container>
-          <mat-form-field appearance="outline" class="distributorPhoneNumber">
-            <mat-label>Phone No.</mat-label>
-            <!-- type="number" -->
-            <input matInput formControlName="phoneNumber" />
-          </mat-form-field>
-        </ng-container>
+        <button mat-raised-button color="primary" (click)="onSelectPatient()">
+          Search
+        </button>
       </div>
     </div>
 

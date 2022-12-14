@@ -11,11 +11,13 @@ import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceItems } from 'src/app/models/invoiceItems';
 import { Item } from 'src/app/models/item';
+import { Patient } from 'src/app/models/patient';
 import { PickDateAdapter } from 'src/app/models/pickDateAdapter';
 import { DocGenBill } from 'src/app/pdfmake-docs/doc-gen-bill';
 import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
+import { PatientService } from 'src/app/services/patient.service';
 
 const datePickerFormat = {
   parse: {
@@ -56,8 +58,10 @@ const datePickerFormat = {
 })
 
 export class EditBillComponent {
-  distributors: Distributor[] = [];
+  patients: Patient[] = [];
   
+  selectedPatient: Patient = {} as Patient;
+
   items: Item[] = [];
 
   filteredItemOptions?: Observable<string[]>;
@@ -123,9 +127,22 @@ export class EditBillComponent {
       state: new FormControl(),
       pinCode: new FormControl()
     }),
-    invoiceNumber: new FormControl(),
-    // invoiceDate: new FormControl(new Date()),
-    invoiceDate: new FormControl(),
+    patient: new FormGroup({
+      id: new FormControl(),
+      primaryPatiendId: new FormControl(),
+      patientName: new FormControl(),
+      dateOfBirth: new FormControl(),
+      gender: new FormControl(),
+      emailId: new FormControl(),
+      phoneNumber: new FormControl(),
+      bloodGroup: new FormControl(),
+      address: new FormControl(),
+      location: new FormControl(),
+      pinCode: new FormControl(),
+    }),
+    billNumber: new FormControl(),
+    // billDate: new FormControl(new Date()),
+    billDate: new FormControl(),
     amount: new FormControl(),
     totalDiscount: new FormControl(),
     actualAmount: new FormControl()
@@ -137,49 +154,30 @@ export class EditBillComponent {
 
   billColumns: string[] = ['select','id','productName','qty','batchNo','discount','mrp','mfgDate','expDate'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {bill: Invoice, billRows: BillRows[]}, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService, public dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {bill: Invoice, billRows: BillRows[]}, public patientService: PatientService, public itemservice: ItemService, public invoiceService: InvoiceService, public distributorService: DistributorService, public itemsService: ItemService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.editBillAccountsForm.controls.id.setValue(0);
-    this.editBillAccountsForm.controls.invoiceNumber.setValue('');
-    // this.editBillAccountsForm.controls.invoiceDate.setValue(new Date());
+    this.editBillAccountsForm.controls.billNumber.setValue('');
+    // this.editBillAccountsForm.controls.billDate.setValue(new Date());
     this.editBillAccountsForm.controls.distributor.setValue({id:0,name:'',phoneNumber:0,email:'',dlno:'',pan:'',state:'',address:'',city:'',gstin:'',pinCode:''});
     this.editBillAccountsForm.controls.invoiceItems.setValue({id:0,item:{id:0,name:'',description:'',hsn:{id:0,hsnCode:'',description:'',gstRate:0},manfacturer:{id:0,name:''}},pack:'',batchNo:'',mfgDate:new Date(),expDate:new Date(),qty:0,freeItems:0,mrp:0,rate:0,discount:0});
+    this.editBillAccountsForm.controls.patient.setValue({id:0,primaryPatiendId:0,patientName:'',dateOfBirth:'',gender:'',emailId:'',phoneNumber:0,bloodGroup:0,address:'',location:'',pinCode:''});
     this.editBillAccountsForm.controls.amount.setValue(0);
     this.editBillAccountsForm.controls.totalDiscount.setValue(0);
     this.editBillAccountsForm.controls.actualAmount.setValue(0);
     
-    this.getDistributorsList();
-
     if(this.data) {
       this.data.bill.invoiceItems.map(x=>{this.selectedItems.push(x.item)});
       this.editBill();
     }
   }
 
-  getDistributorsList() {
-    this.distributorService.getDistributors().subscribe(
-      res => {
-        this.distributors = res;
-        this.filterSearchDistributors(res);
-      }
-    )
-  }
-
-  filterSearchDistributors(res: Distributor[]) {
-    this.filteredDistributorOptions = this.editBillAccountsForm.controls.distributor.controls.name.valueChanges.pipe(
-      startWith(''),
-      map(term => {
-        return res
-          .map(option => option.name)
-          .filter(option => option.toLowerCase().includes(term as string));
-      },)
-    )
-  }
-
-  onSelectDistributor(option: string) {
-    const distributor = this.distributors.filter(item => item.name === option)[0];
-    this.editBillAccountsForm.controls.distributor.setValue(distributor);
+  onSelectPatient() {
+    this.patientService.getPatientByPhoneNumber(this.editBillAccountsForm.value.patient?.phoneNumber).subscribe(res => {
+      this.selectedPatient = Object.values(res).at(0);
+      this.editBillAccountsForm.controls.patient.setValue(this.selectedPatient as Patient);
+    })
   }
 
   searchItems(e: any) {
@@ -207,8 +205,18 @@ export class EditBillComponent {
   }
 
   onSelectItem(option: string, index: number) {
+    console.log("option: ", option,"index: ", index);
+    
+    this.invoiceService.getInvoiceByItemId(index).subscribe(res => {
+      console.log("selected invoice: ", res);
+      
+    })
+
+
     const item = this.items.filter(item => item.name === option)[0];
     const productName = this.items.filter(item => item.name === option)[0].name;
+    console.log("on select item: ", item);
+    
 
     this.selectedItems.push(item);
 
@@ -291,6 +299,7 @@ export class EditBillComponent {
   }
 
   createFinalObject() {
+    /*
     let billRow: any[] = [];
     
     for (var i=0; i<this.editBillForm.controls.billRows.value.length; i++){
@@ -311,6 +320,7 @@ export class EditBillComponent {
       invoiceNumber: this.editBillAccountsForm.value.invoiceNumber,
       invoiceDate: this.editBillAccountsForm.value.invoiceDate,
       distributor: this.editBillAccountsForm.value.distributor,
+      patient: this.editBillAccountsForm.value.patient,
       invoiceItems: billRow as InvoiceItems[],
       amount: this.editBillAccountsForm.value.amount,
       totalDiscount: this.editBillAccountsForm.value.totalDiscount,
@@ -318,11 +328,13 @@ export class EditBillComponent {
     } as Invoice
 
     return finalObject;
+    */
   }
 
   saveBill() {
+    /*
     if(!this.data) {
-      /* set ids of invoiceItems to 0 to post to database */ 
+      // set ids of invoiceItems to 0 to post to database
       this.createFinalObject().invoiceItems.map(x=>{x.id = 0});
       // this.invoiceService.saveInvoice(this.createFinalObject());
       console.log(this.createFinalObject());
@@ -330,9 +342,11 @@ export class EditBillComponent {
       // this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
       console.log(this.createFinalObject().id, this.createFinalObject());
     }
+    */
   }
 
   editBill() {
+    /*
     this.editBillForm.controls.billRows.patchValue(this.data.billRows);
 
     this.editBillAccountsForm.patchValue({
@@ -340,17 +354,19 @@ export class EditBillComponent {
       invoiceNumber: this.data.bill.invoiceNumber,
       invoiceDate: this.data.bill.invoiceDate,
       distributor: this.data.bill.distributor, 
+      patient: this.data.bill.patient, 
       amount: this.data.bill.amount,
       totalDiscount: this.data.bill.totalDiscount,
       actualAmount: this.data.bill.actualAmount,
     })
 
     const control = this.editBillForm.get('billRows') as FormArray;
-    /* Add new blank row below the last filled row */
+    // Add new blank row below the last filled row
     this.data.billRows.map(x=>(
       control.push(this.patchBillRows(x))
     ));
     this.billDatasource = new MatTableDataSource(control.controls);
+    */
   }
 
   generatePDF() {
