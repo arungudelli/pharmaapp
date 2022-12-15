@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay } from 'rxjs';
 import { Bill } from '../models/bill';
 
 @Injectable({
@@ -19,6 +19,10 @@ export class BillService {
     this.http.get<Bill[]>(this.baseUrl+"/Bill/get").pipe(shareReplay(1)).subscribe(
       res => this.behaviorSubject.next(res)
     );
+  }
+
+  get allBills(): Observable<Bill[]> {
+    return this.behaviorSubject.asObservable();
   }
 
   saveBill(billData: Bill) {
