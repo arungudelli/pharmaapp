@@ -90,7 +90,7 @@
 
   <div>
     <form [formGroup]="editBillForm" autocomplete="off">
-      <ng-container formArrayName="invoiceRows">
+      <ng-container formArrayName="billRows">
         <table
           #table
           mat-table
@@ -172,12 +172,12 @@
               <form [formGroup]="editBillAccountsForm">
                 <!-- <div class="leftColumns"> -->
                 <mat-form-field appearance="outline">
-                  <mat-label>Amount</mat-label>
+                  <mat-label>Total Amount</mat-label>
                   <!-- type="number" -->
                   <input
-                    placeholder="amount"
+                    placeholder="Total Amount"
                     matInput
-                    formControlName="amount"
+                    formControlName="totalAmount"
                   />
                 </mat-form-field>
                 <!-- </div> -->
@@ -287,22 +287,6 @@
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
 
-          <!-- Discount Column -->
-          <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef>Discount</th>
-            <td
-              mat-cell
-              *matCellDef="let element; let i = index"
-              [formGroup]="element"
-            >
-              <mat-form-field appearance="outline">
-                <!-- type="number" -->
-                <input matInput formControlName="discount" />
-              </mat-form-field>
-            </td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
-
           <!-- MRP Column -->
           <ng-container matColumnDef="mrp">
             <th mat-header-cell *matHeaderCellDef>MRP</th>
@@ -314,6 +298,26 @@
               <mat-form-field appearance="outline">
                 <!-- type="number" -->
                 <input matInput formControlName="mrp" />
+              </mat-form-field>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <!-- Discount Column -->
+          <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef>Discount</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [formGroup]="element"
+            >
+              <mat-form-field appearance="outline">
+                <!-- type="number" -->
+                <input
+                  matInput
+                  formControlName="discount"
+                  (keyup)="calculateTotalAmount(i)"
+                />
               </mat-form-field>
             </td>
             <td mat-footer-cell *matFooterCellDef></td>

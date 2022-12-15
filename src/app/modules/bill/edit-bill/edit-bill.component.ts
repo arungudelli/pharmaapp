@@ -9,15 +9,12 @@ import { Bill } from 'src/app/models/bill';
 import { BillItems } from 'src/app/models/billItems';
 
 import { BillRows } from 'src/app/models/billRows';
-import { Distributor } from 'src/app/models/distributor';
 import { Invoice } from 'src/app/models/invoice';
-import { InvoiceItems } from 'src/app/models/invoiceItems';
 import { Item } from 'src/app/models/item';
 import { Patient } from 'src/app/models/patient';
 import { PickDateAdapter } from 'src/app/models/pickDateAdapter';
 import { DocGenBill } from 'src/app/pdfmake-docs/doc-gen-bill';
 import { BillService } from 'src/app/services/bill.service';
-import { DistributorService } from 'src/app/services/distributor.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { ItemService } from 'src/app/services/item.service';
 import { PatientService } from 'src/app/services/patient.service';
@@ -146,7 +143,7 @@ export class EditBillComponent {
 
   billColumns: string[] = ['select','id','productName','batchNo','mfgDate','expDate','mrp','qty','discount','amount'];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {bill: Invoice, billRows: BillRows[]}, public patientService: PatientService, public itemservice: ItemService, public invoiceService: InvoiceService, public itemsService: ItemService, public billInvoice: BillService, public dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {bill: Bill, billRows: BillRows[]}, public patientService: PatientService, public itemservice: ItemService, public invoiceService: InvoiceService, public itemsService: ItemService, public billService: BillService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.editBillAccountsForm.controls.id.setValue(0);
@@ -157,9 +154,9 @@ export class EditBillComponent {
     this.editBillAccountsForm.controls.totalAmount.setValue(0);
     this.editBillAccountsForm.controls.totalDiscount.setValue(0);
     this.editBillAccountsForm.controls.discountedAmount.setValue(0);
-    
+
     if(this.data) {
-      this.data.bill.invoiceItems.map(x=>{this.selectedItems.push(x.item)});
+      this.data.bill.billItems.map(x=>{this.selectedItems.push(x.item)});
       this.editBill();
     }
   }
@@ -202,14 +199,6 @@ export class EditBillComponent {
       this.selectedInvoices = res as Invoice[];
       this.selectedInvoices.map(x=>x.invoiceItems.map(x=>x)).flat().map(x=>this.selectedManufacturers.push(x));
     })
-
-    // console.log("invoice item: ", this.editBillForm.controls.billRows.value.at(index));
-
-    /*
-    if(this.data) {
-      this.selectedItems.splice(index,1,);
-    }
-    */
   }
 
   onSelectBatchNo(index: number) {
@@ -218,11 +207,28 @@ export class EditBillComponent {
     const mfgDate = this.editBillForm.controls.billRows.value.at(index)?.invoiceItem?.mfgDate;
     const expDate = this.editBillForm.controls.billRows.value.at(index)?.invoiceItem?.expDate;
     const mrp = this.editBillForm.controls.billRows.value.at(index)?.invoiceItem?.mrp;
+    
+    this.itemsService.getItemById(id as number).subscribe(res =>{
+      // console.log(res);
+      this.selectedItems.push(res);
+      
+      if(this.data) {
+        this.selectedItems.splice(index,1,res);
+      }
+    });
 
     this.editBillForm.controls.billRows.controls.at(index)?.controls.batchNo.setValue(batchNo!);
     this.editBillForm.controls.billRows.controls.at(index)?.controls.mfgDate.setValue(mfgDate!.toString().split('T')[0] as unknown as Date);
     this.editBillForm.controls.billRows.controls.at(index)?.controls.expDate.setValue(expDate!.toString().split('T')[0] as unknown as Date);
     this.editBillForm.controls.billRows.controls.at(index)?.controls.mrp.setValue(mrp!);
+  }
+  
+  calculateTotalAmount(index: number) {
+    let mrp = this.editBillForm.controls.billRows.value.at(index)?.mrp as number;
+    let qty = this.editBillForm.controls.billRows.value.at(index)?.qty as number;
+    let discount = this.editBillForm.controls.billRows.value.at(index)?.discount as number;
+    let amount = (mrp * qty) - discount;
+    this.editBillForm.controls.billRows.controls.at(index)?.controls.amount.setValue(amount);
   }
 
   /* Whether the number of selected elements matches the total number of rows. */
@@ -273,12 +279,12 @@ export class EditBillComponent {
       mfgDate: new FormControl(x.mfgDate), 
       expDate: new FormControl(x.expDate), 
       */
-     // /*
-     mfgDate: new FormControl(x.mfgDate.toString().split('T')[0]), 
-     expDate: new FormControl(x.expDate.toString().split('T')[0]), 
-     // */
-     qty: new FormControl(x.qty), 
-     discount: new FormControl(x.discount), 
+      // /*
+      mfgDate: new FormControl(x.mfgDate.toString().split('T')[0]), 
+      expDate: new FormControl(x.expDate.toString().split('T')[0]), 
+      // */
+      qty: new FormControl(x.qty), 
+      discount: new FormControl(x.discount), 
       mrp: new FormControl(x.mrp), 
       amount: new FormControl(x.amount), 
     })
@@ -301,20 +307,18 @@ export class EditBillComponent {
   }
 
   createFinalObject() {
-    // /*
     let billRows: any[] = [];
     
     for (var i=0; i<this.editBillForm.controls.billRows.value.length; i++){
       billRows.push({
         id: this.editBillForm.controls.billRows.value[i].id,
-        selectedManufacturers: this.selectedManufacturers[i],
-        selectedMfr: this.editBillForm.controls.billRows.value[i].invoiceItem,
+        item: this.selectedItems[i],
         batchNo: this.editBillForm.controls.billRows.value[i].batchNo,
-        mfgDate: this.editBillForm.controls.billRows.value[i].mfgDate+"T00:00:00",
-        expDate: this.editBillForm.controls.billRows.value[i].expDate+"T00:00:00",
+        mfgDate: new Date(this.editBillForm.controls.billRows.value[i].mfgDate!),
+        expDate: new Date(this.editBillForm.controls.billRows.value[i].expDate!),
         qty: this.editBillForm.controls.billRows.value[i].qty as number,
-        mrp: this.editBillForm.controls.billRows.value[i].mrp as number,
         discount: this.editBillForm.controls.billRows.value[i].discount as number,
+        mrp: this.editBillForm.controls.billRows.value[i].mrp as number,
         amount: this.editBillForm.controls.billRows.value[i].amount as number,
       })
     }
@@ -331,45 +335,40 @@ export class EditBillComponent {
     } as Bill
 
     return finalObject;
-    // */
   }
 
   saveBill() {
-    // /*
     if(!this.data) {
-      // set ids of invoiceItems to 0 to post to database
-      // this.createFinalObject().invoiceItems.map(x=>{x.id = 0});
-      // this.invoiceService.saveInvoice(this.createFinalObject());
-      console.log(this.createFinalObject());
+      /* set ids of invoiceItems to 0 to post to database */
+      this.createFinalObject().billItems.map(x=>{x.id = 0});
+      
+      // console.log(this.createFinalObject());
+      this.billService.saveBill(this.createFinalObject());
     } else {
       // this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
       console.log(this.createFinalObject().id, this.createFinalObject());
     }
-    // */
   }
 
   editBill() {
-    /*
     this.editBillForm.controls.billRows.patchValue(this.data.billRows);
 
     this.editBillAccountsForm.patchValue({
       id: this.data.bill.id, 
-      invoiceNumber: this.data.bill.invoiceNumber,
-      invoiceDate: this.data.bill.invoiceDate,
-      distributor: this.data.bill.distributor, 
+      billNumber: this.data.bill.billNumber,
+      billDate: this.data.bill.billDate,
       patient: this.data.bill.patient, 
-      amount: this.data.bill.amount,
+      totalAmount: this.data.bill.totalAmount,
       totalDiscount: this.data.bill.totalDiscount,
-      actualAmount: this.data.bill.actualAmount,
+      discountedAmount: this.data.bill.discountedAmount,
     })
 
     const control = this.editBillForm.get('billRows') as FormArray;
-    // Add new blank row below the last filled row
+    /* Add new blank row below the last filled row */
     this.data.billRows.map(x=>(
       control.push(this.patchBillRows(x))
     ));
     this.billDatasource = new MatTableDataSource(control.controls);
-    */
   }
 
   generatePDF() {
