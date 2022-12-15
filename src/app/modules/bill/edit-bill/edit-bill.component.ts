@@ -342,7 +342,7 @@ export class EditBillComponent {
       /* set ids of invoiceItems to 0 to post to database */
       // this.createFinalObject().billItems.map(x=>{x.id = 0});
       
-      // console.log(this.createFinalObject());
+      console.log(this.createFinalObject());
       this.billService.saveBill(this.createFinalObject());
     } else {
       // this.invoiceService.updateInvoice(this.createFinalObject().id, this.createFinalObject());
