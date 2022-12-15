@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Bill } from 'src/app/models/bill';
-import { Invoice } from 'src/app/models/invoice';
+import { BillService } from 'src/app/services/bill.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { EditBillComponent } from '../edit-bill/edit-bill.component';
 
@@ -14,50 +14,20 @@ import { EditBillComponent } from '../edit-bill/edit-bill.component';
 })
 
 export class BillListComponent {
-  bill: Invoice[] = [];
-  // bill: Bill[] = [];
+  bill: Bill[] = [];
 
-  selectedBill: Invoice = {} as Invoice;
-  // selectedBill: Bill = {} as Bill;
+  selectedBill: Bill = {} as Bill;
 
   columnSchema = [
     {key: 'select', type: '', label: '', object:'', isObject: false, formGroupName: ''},
     {key: 'id', type: 'number', label: '#', object:'', isObject: false, formGroupName: ''},
-    {key: 'invoiceNumber', type: 'number', label: 'Bill Number', object:'', isObject: false, formGroupName: ''},
-    {key: 'invoiceDate', type: 'text', label: 'Bill Date', object:'', isObject: false, formGroupName: ''},
-    // {key: 'id', type: 'number', label: 'id', object:'distributor', isObject: true, formGroupName: ''},
-    {key: 'name', type: 'text', label: 'Customer Name', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'email', type: 'text', label: 'email', object:'distributor', isObject: true, formGroupName: ''},
-    {key: 'phoneNumber', type: 'number', label: 'Phone Number', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'gstin ', type: 'text', label: 'gstin', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'pan', type: 'text', label: 'pan', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'dlno', type: 'text', label: 'dlno', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'address', type: 'text', label: 'address', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'city', type: 'text', label: 'city', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'state', type: 'text', label: 'state', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'pinCode', type: 'text', label: 'pinCode', object:'distributor', isObject: true, formGroupName: ''},
-    // {key: 'id', type: 'number', label: 'id', object: 'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'id', type: 'number', label: 'id', object:'item', isObject: true, formGroupName: ''},
-    // {key: 'name', type: 'text', label: 'name', object:'item', isObject: true, formGroupName: ''},
-    // {key: 'description', type: 'text', label: 'description', object:'item', isObject: true, formGroupName: ''},
-    // {key: 'id', type: 'number', label: 'id', object:'hsn', isObject: true, formGroupName: ''},
-    // {key: 'hsnCode', type: 'text', label: 'hsnCode', object:'hsn', isObject: true, formGroupName: ''},
-    // {key: 'description', type: 'text', label: 'description', object:'hsn', isObject: true, formGroupName: ''},
-    // {key: 'gstRate', type: 'number', label: 'gstRate', object:'hsn', isObject: true, formGroupName: ''},
-    // {key: 'id', type: 'number', label: 'id', object:'manfacturer', isObject: true, formGroupName: ''},
-    // {key: 'name', type: 'text', label: 'name', object:'manfacturer', isObject: true, formGroupName: ''},
-    // {key: 'pack', type: 'text', label: 'pack', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'batchNo', type: 'text', label: 'batchNo', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'mfgDate', type: 'date', label: 'Mfg. Date', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'expDate', type: 'date', label: 'expDate', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'qty', type: 'number', label: 'qty', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'freeItems', type: 'number', label: 'freeItems', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'discount', type: 'number', label: 'discount', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'mrp', type: 'number', label: 'mrp', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'rate', type: 'number', label: 'rate', object:'invoiceItems', isObject: true, formGroupName: ''},
-    // {key: 'amount', type: 'number', label: 'Amount', object:'', isObject: false, formGroupName: ''},
-    // {key: 'totalDiscount', type: 'number', label: 'Total Discount', object:'', isObject: false, formGroupName: ''},
-    {key: 'actualAmount', type: 'number', label: 'Total Amount', object:'', isObject: false, formGroupName: ''},
+    {key: 'billNumber', type: 'number', label: 'Bill Number', object:'', isObject: false, formGroupName: ''},
+    {key: 'billDate', type: 'text', label: 'Bill Date', object:'', isObject: false, formGroupName: ''},
+    /*
+    {key: 'patientName', type: 'text', label: 'Customer Name', object:'patient', isObject: true, formGroupName: ''},
+    {key: 'phoneNumber', type: 'number', label: 'Phone Number', object:'patient', isObject: true, formGroupName: ''},
+    */
+    {key: 'discountedAmount', type: 'number', label: 'Amount', object:'', isObject: false, formGroupName: ''},
     {key: 'action', type: '', label: 'Action', object: '', isObject: false, formGroup: ''}
   ];
 
@@ -65,19 +35,17 @@ export class BillListComponent {
 
   // invoiceColumns: string[] = ['id', 'items', 'amount', 'totalDiscount', 'actualAmount'];
 
-  billDatasource = new MatTableDataSource<Invoice>();
+  billDatasource = new MatTableDataSource<Bill>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(public dialog: MatDialog, public invoiceService: InvoiceService) { }
+  constructor(public dialog: MatDialog, public billService: BillService, public invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.getAllBills();
 
     // /*
-    // const filterPredicate = this.billDatasource.filterPredicate;
-    // this.billDatasource.filterPredicate = (data: AbstractControl|any, filter) => {
-    this.billDatasource.filterPredicate = (data: Invoice, filter) => {
+    this.billDatasource.filterPredicate = (data: Bill, filter) => {
       // return filterPredicate.call(this.billDatasource, data, filter);
       const dataStr = JSON.stringify(data).toLowerCase();
       return dataStr.indexOf(filter) != -1; 
@@ -90,8 +58,8 @@ export class BillListComponent {
   }
 
   getAllBills() {
-    this.invoiceService.getInvoices();
-    this.invoiceService.allInvoices.subscribe(res=>{
+    this.billService.getBills();
+    this.billService.allBills.subscribe(res=>{
       // console.log('get invoices: ', res);
       this.bill = res;
       this.billDatasource.data = res;
@@ -121,7 +89,7 @@ export class BillListComponent {
     );
   }
 
-  editSelectedBill(bill: Invoice[]) {
+  editSelectedBill(bill: Bill[]) {
 
     const index = Object.entries(bill).at(0)?.at(1)?.valueOf();
     
@@ -129,20 +97,21 @@ export class BillListComponent {
 
     const billRows: any[] = [];
 
-    billRow?.invoiceItems.map(x=> {
+    billRow?.billItems.map(x=> {
       billRows.push({
         id: x.id,
         productName: x.item.name,
-        qty: x.qty,
         batchNo: x.batchNo,
-        discount: x.discount,
-        mrp: x.mrp,
         mfgDate: x.mfgDate,
         expDate: x.expDate,
+        qty: x.qty,
+        discount: x.discount,
+        mrp: x.mrp,
+        amount: x.amount,
       })
     })
    
-    // console.log(index, billRow, billRows);
+    console.log(index, billRow, billRows);
    
     this.dialog.open(
       EditBillComponent,
