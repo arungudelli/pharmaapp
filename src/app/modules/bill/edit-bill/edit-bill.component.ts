@@ -311,7 +311,7 @@ export class EditBillComponent {
     
     for (var i=0; i<this.editBillForm.controls.billRows.value.length; i++){
       billRows.push({
-        id: this.editBillForm.controls.billRows.value[i].id,
+        id: this.editBillForm.controls.billRows.value[i].id == null ? 0 :  this.editBillForm.controls.billRows.value[i].id,
         item: this.selectedItems[i],
         batchNo: this.editBillForm.controls.billRows.value[i].batchNo,
         mfgDate: new Date(this.editBillForm.controls.billRows.value[i].mfgDate!),
@@ -324,7 +324,7 @@ export class EditBillComponent {
     }
 
     const finalObject = {
-      id: this.editBillAccountsForm.value.id,
+      id: this.editBillAccountsForm.value.id == null ? 0 : this.editBillAccountsForm.value.id,
       billNumber: this.editBillAccountsForm.value.billNumber,
       billDate: this.editBillAccountsForm.value.billDate,
       patient: this.editBillAccountsForm.value.patient,
@@ -340,7 +340,7 @@ export class EditBillComponent {
   saveBill() {
     if(!this.data) {
       /* set ids of invoiceItems to 0 to post to database */
-      this.createFinalObject().billItems.map(x=>{x.id = 0});
+      // this.createFinalObject().billItems.map(x=>{x.id = 0});
       
       // console.log(this.createFinalObject());
       this.billService.saveBill(this.createFinalObject());

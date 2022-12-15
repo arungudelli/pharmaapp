@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Bill } from 'src/app/models/bill';
 import { Invoice } from 'src/app/models/invoice';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { EditBillComponent } from '../edit-bill/edit-bill.component';
@@ -14,8 +15,10 @@ import { EditBillComponent } from '../edit-bill/edit-bill.component';
 
 export class BillListComponent {
   bill: Invoice[] = [];
+  // bill: Bill[] = [];
 
   selectedBill: Invoice = {} as Invoice;
+  // selectedBill: Bill = {} as Bill;
 
   columnSchema = [
     {key: 'select', type: '', label: '', object:'', isObject: false, formGroupName: ''},
