@@ -195,9 +195,10 @@
             >
               <mat-form-field appearance="outline">
                 <!-- <mat-label>Batch No.</mat-label> -->
+                <!-- formControlName="billItem" -->
                 <mat-select
-                  formControlName="invoiceItem"
                   multiple="false"
+                  formControlName="invoiceItem"
                   (selectionChange)="onSelectBatchNo(i)"
                 >
                   <mat-option

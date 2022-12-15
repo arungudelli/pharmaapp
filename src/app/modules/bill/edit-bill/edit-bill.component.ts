@@ -157,9 +157,31 @@ export class EditBillComponent {
 
     if(this.data) {
       this.data.bill.billItems.map(x=>{this.selectedItems.push(x.item)});
+
+      this.data.bill.billItems.map(y => {
+        console.log(y.item.id);
+        this.invoiceService.getInvoiceByItemId(y.item.id).subscribe(res => {
+          console.log(res, this.selectedInvoices);
+          this.selectedInvoices = res as Invoice[];
+          this.selectedInvoices.map(x=>x.invoiceItems.map(x=>x).flat().map(x=>this.selectedManufacturers.push(res)));
+        })
+      });
+  
+      // this.editBillForm.controls.billRows.controls.map(x=>this.selectedManufacturers.push(x.controls.batchNo.value));
+      /*
+      this.data.billRows.map(z=>{
+        this.editBillForm.controls.billRows.controls.map(x=>x.controls.batchNo.setValue(z.batchNo));
+        this.selectedInvoices.map(x=>x.invoiceItems.map(x=>x)).flat().map(x=>this.selectedManufacturers.push(x));
+      })
+      this.editBillForm.controls.billRows.controls.at(index)?.controls.batchNo.setValue(batchNo!);
+      this.editBillForm.controls.billRows.controls.at(index)?.controls.mfgDate.setValue(mfgDate!.toString().split('T')[0] as unknown as Date);
+      this.editBillForm.controls.billRows.controls.at(index)?.controls.expDate.setValue(expDate!.toString().split('T')[0] as unknown as Date);
+      this.editBillForm.controls.billRows.controls.at(index)?.controls.mrp.setValue(mrp!);
+      */
       this.editBill();
     }
   }
+
 
   onSelectPatient() {
     this.patientService.getPatientByPhoneNumber(this.editBillAccountsForm.value.patient?.phoneNumber).subscribe(res => {
@@ -198,6 +220,7 @@ export class EditBillComponent {
     this.invoiceService.getInvoiceByItemId(itemId).subscribe(res => {
       this.selectedInvoices = res as Invoice[];
       this.selectedInvoices.map(x=>x.invoiceItems.map(x=>x)).flat().map(x=>this.selectedManufacturers.push(x));
+      console.log(this.selectedManufacturers);
     })
   }
 

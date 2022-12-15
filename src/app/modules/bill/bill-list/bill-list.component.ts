@@ -111,7 +111,7 @@ export class BillListComponent {
       })
     })
    
-    console.log(index, billRow, billRows);
+    // console.log(index, billRow, billRows);
    
     this.dialog.open(
       EditBillComponent,
