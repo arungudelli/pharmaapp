@@ -1,0 +1,15 @@
+export interface InvoiceRows {
+    id: number, 
+    productName: string,
+    pack: string, 
+    batchNo: string, 
+    mfgDate: Date, 
+    expDate: Date, 
+    qty: number, 
+    freeItems: number, 
+    mrp: number, 
+    rate: number, 
+    discount: number, 
+    gstRate: number,
+    hsnCode: string,
+}

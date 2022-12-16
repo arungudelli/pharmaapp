@@ -1,23 +1,63 @@
-.example-full-width {
-    width: 100%;
+.distributor-button-add {
+  width: 99%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-.example-container {
-    width: 100%;
-    height: 100vh;
-    margin-left:10px;
+.distributor-container {
+  height: 100vh;
+  margin-left: 10px;
 }
 
-.example-drawer {
-    width: 30%;
-    height: 100vh;
-    margin-right:10px;
+.distributor-drawer {
+  width: 30%;
+  height: 100vh;
+  margin-right: 10px;
 }
 
 .table {
-    width: 100%;
+  width: 100%;
 }
 
-.example-content mat-card{
-    margin-left:10px;
+.distributor-content mat-card {
+  margin-left: 10px;
+}
+
+.distributor-heading {
+  font-size: large;
+  align-self: center;
+  text-align: center;
+  font-weight: bolder;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.distributor-details {
+  display: flex;
+}
+
+.distributor-details > div {
+  flex: 1;
+  margin: 10px;
+}
+
+.edit-selected-distributor {
+  width: 98%;
+  margin: 10px;
+}
+
+.mat-mdc-card {
+  background-color: navy;
+  color: white;
+  vertical-align: middle;
+  padding-top: 5px;
+}
+
+.selected-distributor-details,
+mat-selection-list {
+  background-color: white;
+  color: black;
+  padding-top: 5px;
 }

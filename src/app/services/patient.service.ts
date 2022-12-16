@@ -10,16 +10,20 @@ import { Patient } from '../models/patient';
 })
 export class PatientService
 {
-
     constructor(private http: HttpClient) { }
 
     baseUrl = "https://localhost:44396/api";
 
-    public getPatients(phoneNumber: Number): Observable<Patient[]> {
-        const url = `${this.baseUrl}/Patient/phone/${phoneNumber}`;
-        return this.http.get<Patient[]>(url);
+    public getPatientById(id: Number): Observable<Patient> {
+        const url = `${this.baseUrl}/Patient/get/${id}`;
+        return this.http.get<Patient>(url);
     }
 
+    public getPatientByPhoneNumber(phoneNumber: Number): Observable<Patient> {
+        const url = `${this.baseUrl}/Patient/phone/${phoneNumber}`;
+        return this.http.get<Patient>(url);
+    }
+    
     public savePatient(patient : Patient): void{
         this.http.post(this.baseUrl+"/Patient/save", patient).subscribe();
     }

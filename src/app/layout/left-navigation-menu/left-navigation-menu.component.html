@@ -1,3 +1,10 @@
 <mat-nav-list class="list-background">
-    <a mat-list-item [routerLink]="link.route" *ngFor="let link of links">{{ link.label }}</a>
+  <a
+    mat-list-item
+    [routerLink]="link.route"
+    [routerLinkActive]="['is-active']"
+    *ngFor="let link of links"
+  >
+    <span>{{ link.label }}</span></a
+  >
 </mat-nav-list>

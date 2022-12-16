@@ -7,7 +7,6 @@ import { LeftNavigationMenuComponent } from './layout/left-navigation-menu/left-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,

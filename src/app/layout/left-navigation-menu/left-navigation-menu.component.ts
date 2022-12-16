@@ -9,16 +9,28 @@ export class LeftNavigationMenuComponent {
 
   links : link[] = [
     {
-      label : 'Add Item',
+      label : 'Bills List',
+      route: '/bill-list'
+    },
+    {
+      label : 'Items List',
       route: '/item-list'
     },
     {
-      label: 'Add Distributor',
+      label: 'Distributors List',
       route: '/distributor-list'
     },
     {
       label: 'HSN List',
       route: '/hsn-list'
+    },
+    {
+      label: 'Invoice List',
+      route: '/invoice-list'
+    },
+    {
+      label: 'Practice',
+      route: '/practice'
     }
   ];
 }
