@@ -1,7 +1,7 @@
 
 export interface Patient {
     id : Number;
-    primaryPatientId:Number;
+    primaryPatiendId:Number;
     patientName: string;
     dateOfBirth: string;
     gender:Number;

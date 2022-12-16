@@ -9,6 +9,10 @@ export class LeftNavigationMenuComponent {
 
   links : link[] = [
     {
+      label : 'Bills List',
+      route: '/bill-list'
+    },
+    {
       label : 'Items List',
       route: '/item-list'
     },

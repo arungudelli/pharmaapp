@@ -19,11 +19,11 @@ import { DocGenInvoice } from 'src/app/pdfmake-docs/doc-gen-invoice';
 
 const datePickerFormat = {
   parse: {
-      dateInput: {
+    dateInput: {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric'
-      },
+    },
   },
   display: {
     dateInput: 'input',

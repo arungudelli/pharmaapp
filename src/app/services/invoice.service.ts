@@ -41,7 +41,7 @@ export class InvoiceService {
 
   updateInvoice(id: number, invoice: Invoice) {
     console.log('invoice update: \nid:', id, '\ninvoice: ', invoice);
-    // return this.http.put<Invoice>(this.baseUrl+"/Invoice/get/"+id, invoice).subscribe(()> getInvoices());
+    // return this.http.put<Invoice>(this.baseUrl+"/Invoice/get/"+id, invoice).subscribe(() => getInvoices());
   }
 
   getInvoiceByItemId (itemId: number) {
@@ -51,7 +51,5 @@ export class InvoiceService {
   getInvoiceByDistributorId (distributorId: number) {
     return this.http.get(this.baseUrl+"/Invoice/getdistributorinvoices/"+distributorId);
   }
-
-
 
 }
