@@ -83,6 +83,7 @@ export class InvoiceListComponent {
     this.dialog.open(
       EditInvoiceComponent, 
       {
+        disableClose: true,
         maxWidth: '100vw', 
         maxHeight: '100vh', 
         width: '98%', 
@@ -145,6 +146,7 @@ export class InvoiceListComponent {
     this.dialog.open(
       EditInvoiceComponent,
       {
+        disableClose: true,
         maxWidth: '100vw', 
         maxHeight: '100vh', 
         width: '98%', 

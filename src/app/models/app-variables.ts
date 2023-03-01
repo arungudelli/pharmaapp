@@ -57,11 +57,8 @@ var TabletQuantity = ["1", "1/2", "1/3", "1/4"];
 
 var SyrupQuantity = ["2","2.5","3","3.5","4","4.5","5","5.5","6","6.5","7","7.5","8","8.5","9","9.5","10","10.5"];
 
-
 var DurationType = ["Days", "Weeks", "Months"]
 
 var Duration = [1,2,3,4,5,6,7,8,9,10,15,20,25,30,45];
 
-
-export { WeeklyPrescription, Instructions, DailyPrescription, TabletQuantity, DurationType,SyrupQuantity,Duration };
-
+export { WeeklyPrescription, Instructions, DailyPrescription, TabletQuantity, DurationType, SyrupQuantity, Duration };

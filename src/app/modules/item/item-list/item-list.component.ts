@@ -39,7 +39,7 @@ export class ItemListComponent {
   }
 
   openItemDialog() {
-    this.dialog.open(EditItemComponent);
+    this.dialog.open(EditItemComponent, { disableClose: true });
   }
 
   getAllItems() {
@@ -64,7 +64,10 @@ export class ItemListComponent {
   }
 
   editItemDialog(item: Item) {
-    this.dialog.open(EditItemComponent, {data: {item}});
+    this.dialog.open(EditItemComponent, {
+      disableClose: true,
+      data: {item}
+    });
   }
 
 }

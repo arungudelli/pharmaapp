@@ -79,6 +79,7 @@ export class BillListComponent {
     this.dialog.open(
       EditBillComponent, 
       {
+        disableClose: true,
         maxWidth: '100vw', 
         maxHeight: '100vh', 
         width: '98%', 
@@ -116,6 +117,7 @@ export class BillListComponent {
     this.dialog.open(
       EditBillComponent,
       {
+        disableClose: true,
         maxWidth: '100vw', 
         maxHeight: '100vh', 
         width: '98%', 

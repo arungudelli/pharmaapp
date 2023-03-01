@@ -39,7 +39,7 @@ export class DistributorListComponent {
   }
 
   openDistributorDialog() {
-    this.dialog.open(EditDistributorComponent);
+    this.dialog.open(EditDistributorComponent, { disableClose: true });
   }
 
   getAllDistributors() {
@@ -52,7 +52,10 @@ export class DistributorListComponent {
   }
 
   editSelectedDistributor(distributor: Distributor[]) {
-    this.dialog.open(EditDistributorComponent, {data: {distributor}});
+    this.dialog.open(EditDistributorComponent, {
+      disableClose: true,
+      data: {distributor}
+    });
   }
 
   getSelectedInvoice(index: number) {
@@ -95,6 +98,7 @@ export class DistributorListComponent {
       // EditInvoiceComponent, 
       ViewInvoiceComponent,
       {
+        disableClose: true,
         maxWidth: '100vw', 
         maxHeight: '100vh', 
         width: '98%', 
